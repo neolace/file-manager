@@ -1,9 +1,9 @@
-import logging
 import shutil
+from logging import getLogger
 from pathlib import Path
 
 
-def delete_all_files_folders_within_folder(folder_path: Path, dry_run: bool = False, logger=None) -> None:
+def delete_all_files_folders_within_folder(folder_path: Path, dry_run: bool = False, logger: object = None) -> None:
     """
     Delete all files and folders within the specified folder without removing the folder itself.
 
@@ -13,7 +13,7 @@ def delete_all_files_folders_within_folder(folder_path: Path, dry_run: bool = Fa
         logger: Logger instance for output
     """
     if logger is None:
-        logger = logging.getLogger(__name__)
+        logger = getLogger(__name__)
 
     folder_path = Path(folder_path)
 
