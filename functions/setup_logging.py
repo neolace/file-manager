@@ -1,5 +1,6 @@
 import logging
 import os
+from pathlib import Path
 
 
 def setup_logging(level=logging.INFO, log_file=None):
@@ -14,6 +15,10 @@ def setup_logging(level=logging.INFO, log_file=None):
         Root logger instance
     """
     handlers = []
+
+    if log_file is None:
+        # If no log file is specified, use the default StreamHandler
+        log_file = Path("C:/tmp/file_manager.log")
 
     # Console handler
     console_handler = logging.StreamHandler()
