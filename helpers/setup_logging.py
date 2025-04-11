@@ -1,9 +1,10 @@
 import logging
 import os
+from logging import Logger
 from pathlib import Path
 
 
-def setup_logging(level=logging.INFO, log_file=None):
+def setup_logging(level: str = logging.INFO, log_file: Path = None) -> Logger:
     """
     Configure logging with appropriate format.
 
@@ -13,6 +14,9 @@ def setup_logging(level=logging.INFO, log_file=None):
 
     Returns:
         Root logger instance
+        :param level:
+        :param log_file:
+        :return:
     """
     handlers = []
 

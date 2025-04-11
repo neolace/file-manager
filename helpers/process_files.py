@@ -1,7 +1,7 @@
 import logging
 from pathlib import Path
 
-from functions.move_files_by_extension import move_files_by_extension
+from helpers.move_files_by_extension import move_files_by_extension
 
 
 def process_files(src: Path, dst: Path, file_types: [], dry_run: bool, logger: logging.Logger) -> None:

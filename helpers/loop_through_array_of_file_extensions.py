@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 from typing import List
 
-from functions.rename_files_by_extension import rename_files_by_extension
+from helpers.rename_files_by_extension import rename_files_by_extension
 
 
 def rename_all_files_by_extensions(root_path: Path, extensions: List[str], dry_run: bool = False, logger=None) -> None:

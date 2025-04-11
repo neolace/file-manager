@@ -1,32 +1,31 @@
 # File Manager
 
-A versatile file management utility that supports both Python and TypeScript/Node.js implementations for organizing
-files by their extensions.
+A Python utility for organizing files by extension and cleaning up source directories.
+
+## Overview
+
+This utility helps manage files by:
+
+1. Moving files from a source directory to organized destination directories based on file extensions
+2. Cleaning up the source directory by removing empty folders and unwanted files
 
 ## Features
 
-- Move or copy files by extension
-- Recursive file search support
-- Dry run capability (preview mode)
-- Duplicate file handling
-- Configurable source and destination folders
-- Logging support
+- Organize files by extension into separate folders
+- Keep only specified file types
+- Dry run option for testing without making changes
+- Detailed logging of operations
 
-## Python Usage
+## Requirements
 
-```python
-from pathlib import Path
-from functions.move_files_by_extension import move_files_by_extension
+- Python 3.6 or higher
+- No external dependencies required
 
-# Move all PDF files from source to target
-source = Path("./input")
-target = Path("./output")
-move_files_by_extension(source, target, "pdf")
+## Installation
 
-# Dry run to preview changes
-move_files_by_extension(source, target, "pdf", dry_run=True)
+Clone the repository and navigate to the project directory:
+
+```bash
+git clone https://github.com/neolace/file-manager.git
+cd file-manager
 ```
-
-# Python dependencies
-
-pip install -r requirements.txt
