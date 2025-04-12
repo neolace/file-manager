@@ -3,8 +3,13 @@ import shutil
 from pathlib import Path
 
 
-def copy_files_by_extension(source_folder: Path, target_folder: Path, file_type: str, dry_run: bool = False,
-                            logger=None) -> None:
+def copy_files_by_extension(
+    source_folder: Path,
+    target_folder: Path,
+    file_type: str,
+    dry_run: bool = False,
+    logger=None,
+) -> None:
     if logger is None:
         logger = logging.getLogger(__name__)
 
@@ -41,4 +46,6 @@ def copy_files_by_extension(source_folder: Path, target_folder: Path, file_type:
         else:
             logger.info(f"Would copy {file} to {target_path}")
 
-    logger.info(f"{'Would copy' if dry_run else 'Copied'} {copied_count} .{file_type} files")
+    logger.info(
+        f"{'Would copy' if dry_run else 'Copied'} {copied_count} .{file_type} files"
+    )

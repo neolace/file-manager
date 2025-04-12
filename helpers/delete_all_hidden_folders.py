@@ -3,7 +3,9 @@ import shutil
 from pathlib import Path
 
 
-def delete_all_hidden_folders(folder_path: Path, dry_run: bool = False, logger=None) -> None:
+def delete_all_hidden_folders(
+    folder_path: Path, dry_run: bool = False, logger=None
+) -> None:
     if logger is None:
         logger = logging.getLogger(__name__)
 
@@ -39,4 +41,6 @@ def delete_all_hidden_folders(folder_path: Path, dry_run: bool = False, logger=N
         except Exception as e:
             logger.error(f"Failed to delete {item}: {e}")
 
-    logger.info(f"{'Would delete' if dry_run else 'Deleted'} {deleted_count} items from {folder_path}")
+    logger.info(
+        f"{'Would delete' if dry_run else 'Deleted'} {deleted_count} items from {folder_path}"
+    )

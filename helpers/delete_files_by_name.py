@@ -3,7 +3,9 @@ from pathlib import Path
 from typing import List
 
 
-def delete_files_by_name(root_path: Path, filename: str, dry_run: bool = False, logger=None) -> List[Path]:
+def delete_files_by_name(
+    root_path: Path, filename: str, dry_run: bool = False, logger=None
+) -> List[Path]:
     if logger is None:
         logger = logging.getLogger(__name__)
 

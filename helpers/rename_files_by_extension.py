@@ -2,8 +2,13 @@ import logging
 from pathlib import Path
 
 
-def rename_files_by_extension(root_path: Path, file_type: str, new_name: str, dry_run: bool = False,
-                              logger: object = None) -> None:
+def rename_files_by_extension(
+    root_path: Path,
+    file_type: str,
+    new_name: str,
+    dry_run: bool = False,
+    logger: object = None,
+) -> None:
     """
     Rename all files of a specific type in the directory.
 
@@ -35,4 +40,6 @@ def rename_files_by_extension(root_path: Path, file_type: str, new_name: str, dr
         else:
             logger.info(f"Would rename {file} to {new_file_path}")
 
-    logger.info(f"{'Would rename' if dry_run else 'Renamed'} {renamed_count} .{file_type} files")
+    logger.info(
+        f"{'Would rename' if dry_run else 'Renamed'} {renamed_count} .{file_type} files"
+    )

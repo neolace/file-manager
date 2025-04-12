@@ -1,10 +1,14 @@
 import logging
 from pathlib import Path
 
-from helpers.delete_all_files_folders_within_folder import delete_all_files_folders_within_folder
+from helpers.delete_all_files_folders_within_folder import (
+    delete_all_files_folders_within_folder,
+)
 
 
-def remove_folder_by_name(root_path: Path, folder_name: str, dry_run: bool = False, logger=None) -> None:
+def remove_folder_by_name(
+    root_path: Path, folder_name: str, dry_run: bool = False, logger=None
+) -> None:
     """
     Find and remove all folders with the specified name.
 

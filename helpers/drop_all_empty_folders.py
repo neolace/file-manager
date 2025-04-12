@@ -3,7 +3,9 @@ import shutil
 from pathlib import Path
 
 
-def drop_all_empty_folders(root_path: Path, remove_all: bool = False, logger=None) -> None:
+def drop_all_empty_folders(
+    root_path: Path, remove_all: bool = False, logger=None
+) -> None:
     if logger is None:
         logger = logging.getLogger(__name__)
 
@@ -22,7 +24,9 @@ def drop_all_empty_folders(root_path: Path, remove_all: bool = False, logger=Non
                     logger.error(f"Error deleting {item}: {e}")
     else:
         # Delete empty folders only, bottom-up
-        for folder in sorted(root_path.rglob("*"), key=lambda x: len(str(x)), reverse=True):
+        for folder in sorted(
+            root_path.rglob("*"), key=lambda x: len(str(x)), reverse=True
+        ):
             if folder.is_dir() and not any(folder.iterdir()):
                 try:
                     folder.rmdir()  # Use rmdir for empty directories instead of rmtree

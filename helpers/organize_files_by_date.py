@@ -4,9 +4,14 @@ import shutil
 from pathlib import Path
 
 
-def organize_files_by_date(root_path: Path, target_folder: Path,
-                           date_format: str = "%Y-%m", use_modified_date: bool = True,
-                           dry_run: bool = False, logger=None) -> None:
+def organize_files_by_date(
+    root_path: Path,
+    target_folder: Path,
+    date_format: str = "%Y-%m",
+    use_modified_date: bool = True,
+    dry_run: bool = False,
+    logger=None,
+) -> None:
     if logger is None:
         logger = logging.getLogger(__name__)
 
@@ -55,7 +60,9 @@ def organize_files_by_date(root_path: Path, target_folder: Path,
             else:
                 logger.info(f"Would organize {file} to {date_folder_path / file.name}")
 
-        logger.info(f"{'Would organize' if dry_run else 'Organized'} {organized_count} files")
+        logger.info(
+            f"{'Would organize' if dry_run else 'Organized'} {organized_count} files"
+        )
 
     except Exception as e:
         logger.error(f"Error organizing files by date: {e}")

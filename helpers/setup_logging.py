@@ -39,7 +39,7 @@ def setup_logging(level: str = logging.INFO, log_file: Path = None) -> Logger:
         level=level,
         format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
         datefmt="%Y-%m-%d %H:%M:%S",
-        handlers=handlers if log_file else None
+        handlers=handlers if log_file else None,
     )
 
     return logging.getLogger()  # Return root logger

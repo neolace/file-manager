@@ -4,9 +4,13 @@ from pathlib import Path
 from typing import List
 
 
-def search_files_by_content(root_path: Path, search_text: str,
-                            file_types: List[str] = None, case_sensitive: bool = False,
-                            logger=None) -> List[Path]:
+def search_files_by_content(
+    root_path: Path,
+    search_text: str,
+    file_types: List[str] = None,
+    case_sensitive: bool = False,
+    logger=None,
+) -> List[Path]:
     if logger is None:
         logger = logging.getLogger(__name__)
 
@@ -14,9 +18,32 @@ def search_files_by_content(root_path: Path, search_text: str,
     matched_files = []
 
     default_text_extensions = [
-        'txt', 'log', 'md', 'csv', 'json', 'xml', 'html', 'htm',
-        'py', 'js', 'ts', 'java', 'c', 'cpp', 'cs', 'go', 'rb', 'php',
-        'sh', 'bat', 'ps1', 'yaml', 'yml', 'ini', 'cfg', 'conf'
+        "txt",
+        "log",
+        "md",
+        "csv",
+        "json",
+        "xml",
+        "html",
+        "htm",
+        "py",
+        "js",
+        "ts",
+        "java",
+        "c",
+        "cpp",
+        "cs",
+        "go",
+        "rb",
+        "php",
+        "sh",
+        "bat",
+        "ps1",
+        "yaml",
+        "yml",
+        "ini",
+        "cfg",
+        "conf",
     ]
 
     extensions = file_types if file_types else default_text_extensions
@@ -33,7 +60,7 @@ def search_files_by_content(root_path: Path, search_text: str,
 
         for file in files:
             try:
-                with open(file, 'r', encoding='utf-8', errors='ignore') as f:
+                with open(file, "r", encoding="utf-8", errors="ignore") as f:
                     for line in f:
                         if pattern.search(line):
                             matched_files.append(file)

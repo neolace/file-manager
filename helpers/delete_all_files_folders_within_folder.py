@@ -3,7 +3,9 @@ from logging import getLogger
 from pathlib import Path
 
 
-def delete_all_files_folders_within_folder(folder_path: Path, dry_run: bool = False, logger: object = None) -> None:
+def delete_all_files_folders_within_folder(
+    folder_path: Path, dry_run: bool = False, logger: object = None
+) -> None:
     """
     Delete all files and folders within the specified folder without removing the folder itself.
 
@@ -47,4 +49,6 @@ def delete_all_files_folders_within_folder(folder_path: Path, dry_run: bool = Fa
         except Exception as e:
             logger.error(f"Failed to delete {item}: {e}")
 
-    logger.info(f"{'Would delete' if dry_run else 'Deleted'} {deleted_count} items from {folder_path}")
+    logger.info(
+        f"{'Would delete' if dry_run else 'Deleted'} {deleted_count} items from {folder_path}"
+    )
