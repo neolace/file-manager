@@ -1,7 +1,9 @@
-from pathlib import Path
+import pathlib
+import sys
 
-from helpers import setup_logging
-from helpers.traverse_folders import traverse_folders
+from helpers import drop_all_empty_folders
+from helpers.process_files import process_files
+from helpers.setup_logging import setup_logging
 
 FILE_TYPES_TO_KEEP = [
     "jpg",
@@ -27,6 +29,7 @@ FILE_TYPES_TO_KEEP = [
     "xls",
     "rtf",
     "zip",
+    "iso",
     "csv",
     "log",
     "rar",
@@ -62,31 +65,41 @@ FILE_TYPES_TO_KEEP = [
     "vcf",
 ]
 
+FOLDERS_TO_REMOVE = ["pip", "node_modules"]
+
 
 def main(dry_run=False):
-    src, dst = Path("C:/Users/terti/OneDrive/mp4/Google"), Path(
+    """
+    Main function to manage files and folders.
+    :param dry_run: If True, perform a dry run without making changes.
+    :return:
+    """
+
+    src, dst = pathlib.Path("C:/Users/terti/OneDrive/bck"), pathlib.Path(
         "C:/Users/terti/OneDrive"
     )
 
-    logger = setup_logging
-    logger = logger.setup_logging(log_file=Path("C:/tmp/file_manager.log"))
+    logger = setup_logging(log_file=pathlib.Path("C:/tmp/file_manager.log"))
     logger.info(f"Source: {src}, Destination: {dst}")
 
     # Process files
-    # process_files(src, dst, file_types=FILE_TYPES_TO_KEEP, dry_run=dry_run, logger=logger)
+    process_files(
+        src, dst, file_types=FILE_TYPES_TO_KEEP, dry_run=dry_run, logger=logger
+    )
 
     # Delete files and folders
-    # remove_folder_by_name(src, ".git", dry_run=dry_run, logger=logger)
+    # helpers.remove_folder_by_name.remove_folder_by_name(
+    #  src, dry_run=dry_run, logger=logger
+    # )
 
     # logger.info(find_all_files_recursive(src))
 
-    # delete_all_files_folders_within_folder(src, dry_run=dry_run, logger=logger)
-    traverse_folders(src)
-
+    drop_all_empty_folders(src, dry_run=dry_run, logger=logger)
     logger.info("File Manager completed.")
 
     return 0
 
 
 if __name__ == "__main__":
-    exit(main())
+    main()
+    sys.exit()

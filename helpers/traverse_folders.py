@@ -1,8 +1,7 @@
-import shutil
-from pathlib import Path
+from shutil import rmtree
 
 
-def traverse_folders(path=Path.cwd()):
+def traverse_folders(path):
     """
     Recursively loop through all folders and subfolders starting from the given path.
     Default path is the current working directory.
@@ -16,7 +15,7 @@ def traverse_folders(path=Path.cwd()):
 
             try:
                 # Attempt to delete the folder
-                shutil.rmtree(item)
+                rmtree(item)
                 print(f"Deleted folder: {item}")
             except OSError as e:
                 print(f"Failed to delete folder {item}: {e}")

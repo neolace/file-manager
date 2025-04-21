@@ -1,13 +1,17 @@
-import logging
 import shutil
 from pathlib import Path
 
 
 def drop_all_empty_folders(
-    root_path: Path, remove_all: bool = False, logger=None
+    root_path: Path, remove_all: bool = False, logger: None = None
 ) -> None:
-    if logger is None:
-        logger = logging.getLogger(__name__)
+    """
+    Recursively delete all empty folders under the given root path.
+    :param root_path:
+    :param remove_all:
+    :param logger:
+    :return:
+    """
 
     root_path = Path(root_path)
     deleted_count = 0
