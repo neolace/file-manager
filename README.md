@@ -1,6 +1,3 @@
-Here's a comprehensive README.md for your file management project:
-
-```markdown
 # File Manager
 
 A Python utility for efficient file management, cleaning, and organization.
@@ -11,8 +8,32 @@ This tool helps manage directories by:
 
 - Processing and organizing files by type
 - Cleaning up empty folders
-- Removing specific folder types (e.g., .git, hidden folders)
+- Removing specific folder types (e.g., node_modules, pip)
 - Deleting unwanted files while preserving specified file types
+
+## Project Structure
+
+```
+file-manager/
+├── config.py                  # Configuration settings
+├── main.py                    # Main entry point
+├── setup.py                   # Package installation
+├── requirements.txt           # Dependencies
+├── README.md                  # Documentation
+└── helpers/                   # Utility functions
+    ├── __init__.py            # Package exports
+    ├── copy_files_by_extension.py
+    ├── delete_all_files_folders_within_folder.py
+    ├── delete_all_hidden_folders.py
+    ├── delete_dot_folders_recursive.py
+    ├── delete_empty_folders.py
+    ├── delete_files_by_extension.py
+    ├── delete_files_by_name.py
+    ├── drop_all_empty_folders.py
+    ├── find_first_char.py
+    ├── process_files.py
+    └── setup_logging.py
+```
 
 ## Features
 
@@ -26,47 +47,43 @@ This tool helps manage directories by:
 ## Installation
 
 1. Clone this repository:
-   ```
-
-git clone https://github.com/yourusername/file-manager.git
-cd file-manager
-
+   ```bash
+   git clone https://github.com/yourusername/file-manager.git
+   cd file-manager
    ```
 
 2. Set up a virtual environment (optional but recommended):
-   ```
-
-python -m venv venv
-source venv/bin/activate # On Windows: venv\Scripts\activate
-
+   ```bash
+   python -m venv venv
+   source venv/bin/activate  # On Windows: venv\Scripts\activate
    ```
 
 3. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
    ```
 
-pip install -r requirements.txt
-
+4. Install as a package (optional):
+   ```bash
+   pip install -e .
    ```
 
 ## Usage
 
 ### Basic Usage
 
-```
-
+```bash
 python main.py
-
 ```
 
 ### Command Line Options
 
-```
-
-python main.py --dry-run --src "C:/path/to/source" --dst "C:/path/to/destination"
-
+```bash
+python main.py --dry-run --src "C:/path/to/source" --dst "C:/path/to/destination" --log "C:/path/to/logfile.log"
 ```
 
 Options:
+
 - `--dry-run`: Run without making changes (preview mode)
 - `--src`: Source directory path
 - `--dst`: Destination directory path
@@ -75,22 +92,15 @@ Options:
 ### Configuration
 
 Edit `config.py` to customize:
-- File types to keep
+
+- File types to keep (`FILE_TYPES_TO_KEEP`)
+- Folders to remove (`FOLDERS_TO_REMOVE`)
 - Default paths
-- Other settings
-
-## Modules
-
-- **process_files**: Move and organize files between directories
-- **delete_all_files_folders_within_folder**: Clean directories while preserving specified file types
-- **drop_all_empty_folders**: Remove empty directories
-- **remove_folder_by_name**: Delete folders with specific names
-- **delete_dot_folders_recursive**: Remove hidden (dot) folders
-- **traverse_folders**: Recursively process directory structures
 
 ## Examples
 
 ### Clean Up a Directory
+
 ```python
 from pathlib import Path
 from helpers.delete_all_files_folders_within_folder import delete_all_files_folders_within_folder
@@ -99,7 +109,6 @@ from config import FILE_TYPES_TO_KEEP
 # Keep only specified file types in a directory
 delete_all_files_folders_within_folder(
     Path("C:/Users/Documents"), 
-    FILE_TYPES_TO_KEEP, 
     dry_run=False
 )
 ```
@@ -108,7 +117,7 @@ delete_all_files_folders_within_folder(
 
 ```python
 from pathlib import Path
-from helpers.drop_all_empty_folders import drop_all_empty_folders
+from helpers import drop_all_empty_folders
 
 # Clean up empty directories
 drop_all_empty_folders(Path("C:/Users/Downloads"))
@@ -118,7 +127,7 @@ drop_all_empty_folders(Path("C:/Users/Downloads"))
 
 ```python
 from pathlib import Path
-from helpers.delete_dot_folders_recursive import delete_dot_folders_recursive
+from helpers import delete_dot_folders_recursive
 
 # Remove all hidden folders (e.g., .git, .vscode)
 delete_dot_folders_recursive(Path("C:/Users/Projects"))
@@ -127,5 +136,3 @@ delete_dot_folders_recursive(Path("C:/Users/Projects"))
 ## License
 
 [MIT License](LICENSE)
-
-```

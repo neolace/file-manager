@@ -1,15 +1,26 @@
 import logging
 import shutil
 from pathlib import Path
+from typing import Optional, Union
 
 
 def copy_files_by_extension(
-    source_folder: Path,
-    target_folder: Path,
+    source_folder: Union[str, Path],
+    target_folder: Union[str, Path],
     file_type: str,
     dry_run: bool = False,
-    logger=None,
+    logger: Optional[logging.Logger] = None,
 ) -> None:
+    """
+    Copy all files with a specific extension from source folder to target folder.
+    
+    Args:
+        source_folder: Path to the source directory
+        target_folder: Path to the target directory
+        file_type: File extension to copy (without dot)
+        dry_run: If True, only show what would be copied without actually copying
+        logger: Logger instance for output
+    """
     if logger is None:
         logger = logging.getLogger(__name__)
 
