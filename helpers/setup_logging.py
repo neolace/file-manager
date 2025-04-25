@@ -1,45 +1,46 @@
 import logging
-import os
-from logging import Logger
 from pathlib import Path
+from typing import Optional
 
 
-def setup_logging(level: str = logging.INFO, log_file: Path = None) -> Logger:
+def setup_logging(
+    log_file: Optional[Path] = None,
+    console_level: int = logging.INFO,
+    file_level: int = logging.DEBUG,
+) -> logging.Logger:
     """
-    Configure logging with appropriate format.
+    Set up logging configuration for the application.
 
     Args:
-        level: Logging level (default: INFO)
-        log_file: Optional path to log file
+        log_file: Path to the log file
+        console_level: Logging level for console output
+        file_level: Logging level for file output
 
     Returns:
-        Root logger instance
-        :param level:
-        :param log_file:
-        :return:
+        Configured logger instance
     """
-    handlers = []
+    logger = logging.getLogger("file_manager")
+    logger.setLevel(logging.DEBUG)
 
-    if log_file is None:
-        # If no log file is specified, use the default StreamHandler
-        log_file = Path("C:/tmp/file_manager.log")
+    # Remove existing handlers to prevent duplicate logs
+    logger.handlers.clear()
 
-    # Console handler
+    console_formatter = logging.Formatter("%(levelname)s: %(message)s")
+    file_formatter = logging.Formatter("%(asctime)s - %(levelname)s - %(message)s")
+
     console_handler = logging.StreamHandler()
-    handlers.append(console_handler)
+    console_handler.setLevel(console_level)
+    console_handler.setFormatter(console_formatter)
+    logger.addHandler(console_handler)
 
-    # File handler if log_file is specified
     if log_file:
-        os.makedirs(os.path.dirname(log_file), exist_ok=True)
-        file_handler = logging.FileHandler(log_file)
-        handlers.append(file_handler)
+        log_file = Path(log_file)
+        if log_file.parent:
+            log_file.parent.mkdir(parents=True, exist_ok=True)
+        file_handler = logging.FileHandler(log_file, mode="a")
+        file_handler.setLevel(file_level)
+        file_handler.setFormatter(file_formatter)
+        logger.addHandler(file_handler)
+        logger.info(f"Logging to file: {log_file}")
 
-    # Configure logging
-    logging.basicConfig(
-        level=level,
-        format="%(asctime)s - %(levelname)s - %(name)s - %(message)s",
-        datefmt="%Y-%m-%d %H:%M:%S",
-        handlers=handlers if log_file else None,
-    )
-
-    return logging.getLogger()  # Return root logger
+    return logger

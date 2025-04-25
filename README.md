@@ -108,7 +108,7 @@ from config import FILE_TYPES_TO_KEEP
 
 # Keep only specified file types in a directory
 delete_all_files_folders_within_folder(
-    Path("C:/Users/Documents"), 
+    Path("C:/Users/Documents"),
     dry_run=False
 )
 ```

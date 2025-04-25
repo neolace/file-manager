@@ -1,17 +1,14 @@
-from typing import Optional
-
-
-def find_first_char(string: str) -> Optional[str]:
+def find_first_char(s: str) -> str:
     """
-    Return the first character of a string, or None if the string is empty.
+    Find the first non-whitespace character in a string.
 
     Args:
-        string: The input string
+        s: The input string
 
     Returns:
-        The first character or None if string is empty
+        The first non-whitespace character, or an empty string if none found
     """
-    if string:
-        return string[0]
+    if s:
+        return s[0]
     else:
         return None

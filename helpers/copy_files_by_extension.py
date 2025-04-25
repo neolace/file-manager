@@ -1,62 +1,45 @@
-import logging
 import shutil
+from logging import Logger
 from pathlib import Path
-from typing import Optional, Union
+from typing import List, Optional
 
 
 def copy_files_by_extension(
-    source_folder: Union[str, Path],
-    target_folder: Union[str, Path],
-    file_type: str,
+    source_dir: Path,
+    destination_dir: Path,
+    extensions: List[str],
     dry_run: bool = False,
-    logger: Optional[logging.Logger] = None,
+    logger: Optional[Logger] = None,
 ) -> None:
     """
-    Copy all files with a specific extension from source folder to target folder.
+    Copy files with specific extensions from source to destination directory.
 
     Args:
-        source_folder: Path to the source directory
-        target_folder: Path to the target directory
-        file_type: File extension to copy (without dot)
-        dry_run: If True, only show what would be copied without actually copying
+        source_dir: Source directory path
+        destination_dir: Destination directory path
+        extensions: List of file extensions to copy (without dots)
+        dry_run: If True, only log actions without copying files
         logger: Logger instance for output
     """
     if logger is None:
+        import logging
+
         logger = logging.getLogger(__name__)
 
-    source_folder = Path(source_folder)
-    target_folder = Path(target_folder)
+    extensions = [ext.lower().lstrip(".") for ext in extensions]
 
-    if not source_folder.exists():
-        logger.error(f"Source folder does not exist: {source_folder}")
-        return
-
-    files = list(source_folder.rglob(f"*.{file_type}"))
-    logger.info(f"Found {len(files)} .{file_type} files to copy")
-
-    if not dry_run and not target_folder.exists():
-        target_folder.mkdir(parents=True, exist_ok=True)
-        logger.info(f"Created target directory: {target_folder}")
-
-    copied_count = 0
-    for file in files:
-        target_path = target_folder / file.name
-
-        counter = 1
-        while target_path.exists() and not dry_run:
-            target_path = target_folder / f"{file.stem}_{counter}{file.suffix}"
-            counter += 1
-
-        if not dry_run:
-            try:
-                shutil.copy2(file, target_path)
-                copied_count += 1
-                logger.info(f"Copied {file} to {target_path}")
-            except Exception as e:
-                logger.error(f"Failed to copy {file}: {e}")
-        else:
-            logger.info(f"Would copy {file} to {target_path}")
-
-    logger.info(
-        f"{'Would copy' if dry_run else 'Copied'} {copied_count} .{file_type} files"
-    )
+    for file_path in source_dir.rglob("*"):
+        if file_path.is_file() and file_path.suffix.lower().lstrip(".") in extensions:
+            relative_path = file_path.relative_to(source_dir)
+            destination_path = destination_dir / relative_path
+            if dry_run:
+                logger.info(f"Would copy {file_path} to {destination_path}")
+            else:
+                try:
+                    destination_path.parent.mkdir(parents=True, exist_ok=True)
+                    shutil.copy2(file_path, destination_path)
+                    logger.info(f"Copied {file_path} to {destination_path}")
+                except Exception as e:
+                    logger.error(
+                        f"Error copying {file_path} to {destination_path}: {e}"
+                    )

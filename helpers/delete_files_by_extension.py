@@ -1,34 +1,43 @@
-import logging
+from logging import Logger
 from pathlib import Path
-from typing import List
+from typing import List, Optional
 
 
 def delete_files_by_extension(
-    root_path: Path, extension: str, dry_run: bool = False, logger=None
-) -> List[Path]:
+    path: Path,
+    extensions: List[str],
+    dry_run: bool = False,
+    logger: Optional[Logger] = None,
+) -> None:
+    """
+    Delete all files with the specified extensions in the given path.
+
+    Args:
+        path: The directory path to search for files
+        extensions: List of file extensions to delete (without dots)
+        dry_run: If True, only log actions without deleting files
+        logger: Logger instance for output
+    """
     if logger is None:
+        import logging
+
         logger = logging.getLogger(__name__)
 
-    root = Path(root_path)
-    files_to_delete = list(root.rglob(f"*.{extension}"))
+    normalized_extensions = [ext.lower().lstrip(".") for ext in extensions]
 
-    count = len(files_to_delete)
-    logger.info(f"Found {count} .{extension} files")
-
-    deleted_count = 0
-    if not dry_run and files_to_delete:
-        for file in files_to_delete:
-            try:
-                file.unlink()
-                deleted_count += 1
-                logger.info(f"Deleted: {file}")
-            except PermissionError:
-                logger.error(f"Permission denied: {file}")
-            except Exception as e:
-                logger.error(f"Error deleting {file}: {e}")
-        logger.info(f"Removed {deleted_count} .{extension} files")
-    elif dry_run and files_to_delete:
-        for file in files_to_delete:
-            logger.info(f"Would delete: {file}")
-
-    return files_to_delete
+    try:
+        for item in path.rglob("*"):
+            if (
+                item.is_file()
+                and item.suffix.lower().lstrip(".") in normalized_extensions
+            ):
+                if dry_run:
+                    logger.info(f"Would delete file: {item}")
+                else:
+                    try:
+                        item.unlink()
+                        logger.info(f"Deleted file: {item}")
+                    except Exception as e:
+                        logger.error(f"Error deleting file {item}: {e}")
+    except Exception as e:
+        logger.error(f"Error accessing {path}: {e}")

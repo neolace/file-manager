@@ -1,42 +1,45 @@
-import shutil
+from logging import Logger
 from pathlib import Path
+from typing import Optional
 
 
 def drop_all_empty_folders(
-    root_path: Path, remove_all: bool = False, logger: None = None
+    path: Path,
+    dry_run: bool = False,
+    logger: Optional[Logger] = None,
 ) -> None:
     """
-    Recursively delete all empty folders under the given root path.
-    :param root_path:
-    :param remove_all:
-    :param logger:
-    :return:
+    Recursively find and delete all empty folders within the given path.
+    Continues iterating until no more empty folders can be found.
+
+    Args:
+        path: The directory path to start cleaning
+        dry_run: If True, only log actions without deleting folders
+        logger: Logger instance for output
     """
+    if logger is None:
+        import logging
 
-    root_path = Path(root_path)
-    deleted_count = 0
+        logger = logging.getLogger(__name__)
 
-    if remove_all:
-        # Delete everything under root
-        for item in root_path.iterdir():
-            if item.is_dir():
-                try:
-                    shutil.rmtree(item)
-                    deleted_count += 1
-                    logger.info(f"Deleted folder and contents: {item}")
-                except OSError as e:
-                    logger.error(f"Error deleting {item}: {e}")
-    else:
-        # Delete empty folders only, bottom-up
-        for folder in sorted(
-            root_path.rglob("*"), key=lambda x: len(str(x)), reverse=True
-        ):
-            if folder.is_dir() and not any(folder.iterdir()):
-                try:
-                    folder.rmdir()  # Use rmdir for empty directories instead of rmtree
-                    deleted_count += 1
-                    logger.info(f"Deleted empty folder: {folder}")
-                except OSError as e:
-                    logger.error(f"Error deleting {folder}: {e}")
+    if not path.exists() or not path.is_dir():
+        logger.warning(f"Path does not exist or is not a directory: {path}")
+        return
 
-    logger.info(f"Cleaned {deleted_count} folders")
+    folders_deleted = True
+    while folders_deleted:
+        folders_deleted = False
+        dirs = [d for d in path.rglob("*") if d.is_dir()]
+        dirs.sort(key=lambda x: len(x.parts), reverse=True)
+
+        for folder in dirs:
+            try:
+                if not any(folder.iterdir()):
+                    if dry_run:
+                        logger.info(f"Would delete empty folder: {folder}")
+                    else:
+                        folder.rmdir()
+                        logger.info(f"Deleted empty folder: {folder}")
+                        folders_deleted = True
+            except Exception as e:
+                logger.error(f"Error processing folder {folder}: {e}")

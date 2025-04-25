@@ -1,54 +1,48 @@
 import shutil
-from logging import getLogger
+from logging import Logger
 from pathlib import Path
+from typing import List, Optional
 
 
 def delete_all_files_folders_within_folder(
-    folder_path: Path, dry_run: bool = False, logger: object = None
+    path: Path,
+    excluded_names: Optional[List[str]] = None,
+    dry_run: bool = False,
+    logger: Optional[Logger] = None,
 ) -> None:
     """
-    Delete all files and folders within the specified folder without removing the folder itself.
+    Delete all files and folders within the specified folder.
 
     Args:
-        folder_path: Path to the folder whose contents should be deleted
-        dry_run: If True, only show what would be deleted without actually deleting
+        path: The path to the folder
+        excluded_names: List of file/folder names to exclude from deletion
+        dry_run: If True, only log actions without deleting anything
         logger: Logger instance for output
     """
     if logger is None:
-        logger = getLogger(__name__)
+        import logging
 
-    folder_path = Path(folder_path)
+        logger = logging.getLogger(__name__)
 
-    if not folder_path.exists():
-        logger.error(f"Folder does not exist: {folder_path}")
+    if not path.exists() or not path.is_dir():
+        logger.warning(f"Directory does not exist or is not a directory: {path}")
         return
 
-    if not folder_path.is_dir():
-        logger.error(f"Path is not a directory: {folder_path}")
-        return
+    excluded_names = excluded_names or []
 
-    # Count items for reporting
-    items = list(folder_path.iterdir())
-    logger.info(f"Found {len(items)} items to delete in {folder_path}")
-
-    deleted_count = 0
-    for item in items:
-        try:
-            if not dry_run:
-                if item.is_file():
+    for item in path.iterdir():
+        if item.name in excluded_names:
+            logger.info(f"Skipping excluded item: {item}")
+            continue
+        if dry_run:
+            logger.info(f"Would delete: {item}")
+        else:
+            try:
+                if item.is_file() or item.is_symlink():
                     item.unlink()
                     logger.info(f"Deleted file: {item}")
-                else:
+                elif item.is_dir():
                     shutil.rmtree(item)
                     logger.info(f"Deleted directory: {item}")
-                deleted_count += 1
-            else:
-                item_type = "file" if item.is_file() else "directory"
-                logger.info(f"Would delete {item_type}: {item}")
-                deleted_count += 1
-        except Exception as e:
-            logger.error(f"Failed to delete {item}: {e}")
-
-    logger.info(
-        f"{'Would delete' if dry_run else 'Deleted'} {deleted_count} items from {folder_path}"
-    )
+            except Exception as e:
+                logger.error(f"Error deleting {item}: {e}")

@@ -1,62 +1,50 @@
-import logging
 import shutil
+from logging import Logger
 from pathlib import Path
-from typing import Optional, Union
+from typing import Optional, List
 
 
 def delete_all_hidden_folders(
-    folder_path: Union[str, Path],
+    path: Path,
+    excluded_names: Optional[List[str]] = None,
     dry_run: bool = False,
-    logger: Optional[logging.Logger] = None,
-) -> int:
+    logger: Optional[Logger] = None,
+) -> None:
     """
-    Delete all hidden folders (starting with '.') in the given directory.
+    Delete all hidden folders (starting with '.') within the specified path.
 
     Args:
-        folder_path: Path to the directory to clean
-        dry_run: If True, only show what would be deleted without actually deleting
+        path: The path to search for hidden folders
+        excluded_names: List of hidden folder names to exclude from deletion
+        dry_run: If True, only log actions without deleting anything
         logger: Logger instance for output
-
-    Returns:
-        Number of folders deleted or that would be deleted
     """
     if logger is None:
+        import logging
+
         logger = logging.getLogger(__name__)
 
-    folder_path = Path(folder_path)
+    if not path.exists() or not path.is_dir():
+        logger.warning(f"Directory does not exist or is not a directory: {path}")
+        return
 
-    if not folder_path.exists():
-        logger.error(f"Folder does not exist: {folder_path}")
-        return 0
+    excluded_names = excluded_names or []
 
-    if not folder_path.is_dir():
-        logger.error(f"Path is not a directory: {folder_path}")
-        return 0
-
-    # Find all hidden folders (starting with '.')
     hidden_folders = [
         item
-        for item in folder_path.iterdir()
-        if item.is_dir() and item.name.startswith(".")
+        for item in path.rglob("*")
+        if item.is_dir()
+        and item.name.startswith(".")
+        and item.name not in excluded_names
     ]
+    hidden_folders.sort(key=lambda x: len(x.parts), reverse=True)
 
-    logger.info(f"Found {len(hidden_folders)} hidden folders in {folder_path}")
-
-    deleted_count = 0
     for folder in hidden_folders:
-        try:
-            if not dry_run:
+        if dry_run:
+            logger.info(f"Would delete hidden folder: {folder}")
+        else:
+            try:
                 shutil.rmtree(folder)
                 logger.info(f"Deleted hidden folder: {folder}")
-                deleted_count += 1
-            else:
-                logger.info(f"Would delete hidden folder: {folder}")
-                deleted_count += 1
-        except Exception as e:
-            logger.error(f"Failed to delete {folder}: {e}")
-
-    logger.info(
-        f"{'Would delete' if dry_run else 'Deleted'} {deleted_count} hidden folders from {folder_path}"
-    )
-
-    return deleted_count
+            except Exception as e:
+                logger.error(f"Error deleting hidden folder {folder}: {e}")
