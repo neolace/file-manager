@@ -13,7 +13,7 @@ def copy_files_by_extension(
 ) -> None:
     """
     Copy all files with a specific extension from source folder to target folder.
-    
+
     Args:
         source_folder: Path to the source directory
         target_folder: Path to the target directory
