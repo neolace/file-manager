@@ -14,8 +14,9 @@ from config import (
     DEFAULT_DST_PATH,
     DEFAULT_LOG_PATH,
 )
-from helpers import drop_all_empty_folders
+from helpers.drop_all_empty_folders import drop_all_empty_folders
 from helpers.process_files import process_files
+from helpers.remove_folder_by_name import remove_folder_by_name
 from helpers.setup_logging import setup_logging
 
 
@@ -47,17 +48,26 @@ def main(
     logger.info(f"Source: {src}, Destination: {dst}")
     logger.info(f"Dry run mode: {'enabled' if dry_run else 'disabled'}")
 
-    # Process files
     process_files(
         src, dst, file_types=FILE_TYPES_TO_KEEP, dry_run=dry_run, logger=logger
     )
 
-    # Delete files and folders
-    # helpers.remove_folder_by_name.remove_folder_by_name(
-    #  src, dry_run=dry_run, logger=logger
-    # )
+    remove_folder_by_name(src, dry_run=dry_run, logger=logger)
 
     drop_all_empty_folders(src, dry_run=dry_run, logger=logger)
+
     logger.info("File Manager completed.")
 
     return 0
+
+
+import sys
+
+from parse_arguments import parse_arguments
+
+if __name__ == "__main__":
+    args = parse_arguments()
+    exit_code = main(
+        dry_run=args.dry_run, src_path=args.src, dst_path=args.dst, log_path=args.log
+    )
+    sys.exit(exit_code)
