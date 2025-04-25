@@ -35,7 +35,7 @@ def rename_files_by_extension(
                 file.rename(new_file_path)
                 renamed_count += 1
                 logger.info(f"Renamed {file} to {new_file_path}")
-            except Exception as e:
+            except OSError as e:
                 logger.error(f"Failed to rename {file}: {e}")
         else:
             logger.info(f"Would rename {file} to {new_file_path}")

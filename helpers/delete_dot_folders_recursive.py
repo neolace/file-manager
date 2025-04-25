@@ -43,7 +43,7 @@ def delete_dot_folders_recursive(
                 try:
                     shutil.rmtree(folder)
                     logger.info(f"Deleted dot folder: {folder}")
-                except Exception as e:
+                except OSError as e:
                     logger.error(f"Error deleting dot folder {folder}: {e}")
-    except Exception as e:
+    except OSError as e:
         logger.error(f"Error accessing {path}: {e}")

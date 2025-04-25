@@ -37,7 +37,7 @@ def delete_files_by_extension(
                     try:
                         item.unlink()
                         logger.info(f"Deleted file: {item}")
-                    except Exception as e:
+                    except OSError as e:
                         logger.error(f"Error deleting file {item}: {e}")
-    except Exception as e:
+    except OSError as e:
         logger.error(f"Error accessing {path}: {e}")

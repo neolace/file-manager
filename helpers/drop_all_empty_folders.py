@@ -41,5 +41,5 @@ def drop_all_empty_folders(
                         folder.rmdir()
                         logger.info(f"Deleted empty folder: {folder}")
                         folders_deleted = True
-            except Exception as e:
+            except OSError as e:
                 logger.error(f"Error processing folder {folder}: {e}")

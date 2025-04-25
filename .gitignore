@@ -122,7 +122,6 @@ dmypy.json
 *.iml
 *.iws
 *.ipr
-*.iws
 .idea_modules/
 
 # Project specific

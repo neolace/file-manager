@@ -46,5 +46,5 @@ def delete_all_hidden_folders(
             try:
                 shutil.rmtree(folder)
                 logger.info(f"Deleted hidden folder: {folder}")
-            except Exception as e:
+            except OSError as e:
                 logger.error(f"Error deleting hidden folder {folder}: {e}")

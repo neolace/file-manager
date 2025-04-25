@@ -4,6 +4,7 @@ from pathlib import Path
 from typing import List, Optional
 
 
+# noinspection Pylint
 def copy_files_by_extension(
     source_dir: Path,
     destination_dir: Path,
@@ -39,7 +40,7 @@ def copy_files_by_extension(
                     destination_path.parent.mkdir(parents=True, exist_ok=True)
                     shutil.copy2(file_path, destination_path)
                     logger.info(f"Copied {file_path} to {destination_path}")
-                except Exception as e:
+                except OSError as e:
                     logger.error(
                         f"Error copying {file_path} to {destination_path}: {e}"
                     )

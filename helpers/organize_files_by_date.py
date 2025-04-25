@@ -55,7 +55,7 @@ def organize_files_by_date(
                     shutil.copy2(file, target_path)
                     organized_count += 1
                     logger.info(f"Organized {file} to {target_path}")
-                except Exception as e:
+                except OSError as e:
                     logger.error(f"Failed to organize {file}: {e}")
             else:
                 logger.info(f"Would organize {file} to {date_folder_path / file.name}")
@@ -64,5 +64,5 @@ def organize_files_by_date(
             f"{'Would organize' if dry_run else 'Organized'} {organized_count} files"
         )
 
-    except Exception as e:
+    except OSError as e:
         logger.error(f"Error organizing files by date: {e}")
