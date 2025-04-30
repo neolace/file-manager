@@ -2,120 +2,164 @@ import argparse
 
 
 def parse_arguments():
-    """
-    Parse command line arguments for the file manager application.
+    """Parse command-line arguments."""
+    parser = argparse.ArgumentParser(
+        description="File Manager - Organize and manage files"
+    )
 
-    Returns:
-        argparse.Namespace: The parsed command line arguments
-    """
-    parser = argparse.ArgumentParser(description="File Management Utility")
+    # Create subparsers for different commands
     subparsers = parser.add_subparsers(dest="command", help="Command to execute")
 
-    # Move command
-    move_parser = subparsers.add_parser("move", help="Move files from source to target")
-    move_parser.add_argument("--source", required=True, help="Source directory")
-    move_parser.add_argument("--target", required=True, help="Target directory")
-    move_parser.add_argument("--type", required=True, help="File type to move")
+    # Move files command
+    move_parser = subparsers.add_parser("move", help="Move files of a specific type")
+    move_parser.add_argument(
+        "--source", "-s", type=str, required=True, help="Source folder path"
+    )
+    move_parser.add_argument(
+        "--target", "-t", type=str, required=True, help="Target folder path"
+    )
+    move_parser.add_argument(
+        "--type", type=str, required=True, help="File extension to move"
+    )
     move_parser.add_argument(
         "--dry-run", action="store_true", help="Simulate without making changes"
     )
-    move_parser.add_argument(
-        "--verbose", action="store_true", help="Show detailed output"
-    )
 
-    # Delete command
-    delete_parser = subparsers.add_parser(
-        "delete", help="Delete files matching criteria"
+    # Delete files command
+    delete_parser = subparsers.add_parser("delete", help="Delete files by extension")
+    delete_parser.add_argument(
+        "--path", "-p", type=str, required=True, help="Root path to search in"
     )
-    delete_parser.add_argument("--path", required=True, help="Directory to search in")
-    delete_parser.add_argument("--type", required=True, help="File type to delete")
+    delete_parser.add_argument(
+        "--type", type=str, required=True, help="File extension to delete"
+    )
     delete_parser.add_argument(
         "--dry-run", action="store_true", help="Simulate without making changes"
     )
-    delete_parser.add_argument(
-        "--verbose", action="store_true", help="Show detailed output"
-    )
 
-    # Remove command
-    remove_parser = subparsers.add_parser("remove", help="Remove files by name pattern")
-    remove_parser.add_argument("--path", required=True, help="Directory to search in")
-    remove_parser.add_argument("--name", required=True, help="Name pattern to match")
+    # Remove folder command
+    remove_parser = subparsers.add_parser("remove", help="Remove folders by name")
+    remove_parser.add_argument(
+        "--path", "-p", type=str, required=True, help="Root path to search in"
+    )
+    remove_parser.add_argument(
+        "--name", "-n", type=str, required=True, help="Folder name to remove"
+    )
     remove_parser.add_argument(
         "--dry-run", action="store_true", help="Simulate without making changes"
     )
-    remove_parser.add_argument(
-        "--verbose", action="store_true", help="Show detailed output"
-    )
 
-    # Clean command
-    clean_parser = subparsers.add_parser("clean", help="Clean directory of temp files")
-    clean_parser.add_argument("--path", required=True, help="Directory to clean")
+    # Clean folders command
+    clean_parser = subparsers.add_parser("clean", help="Clean empty folders")
     clean_parser.add_argument(
-        "--all", action="store_true", help="Remove all temporary files"
+        "--path", "-p", type=str, required=True, help="Root path to clean"
     )
     clean_parser.add_argument(
-        "--verbose", action="store_true", help="Show detailed output"
+        "--all", action="store_true", help="Remove all folders, not just empty ones"
     )
 
     # Extract command
-    extract_parser = subparsers.add_parser("extract", help="Extract archive files")
-    extract_parser.add_argument("--path", required=True, help="Directory with archives")
-    extract_parser.add_argument("--7zip", dest="_7zip", help="Path to 7zip executable")
+    extract_parser = subparsers.add_parser("extract", help="Extract 7z archives")
+    extract_parser.add_argument(
+        "--path", "-p", type=str, required=True, help="Folder with 7z archives"
+    )
+    extract_parser.add_argument(
+        "--7zip",
+        type=str,
+        default="C:/Program Files/7-Zip/7z.exe",
+        help="Path to 7zip executable",
+    )
 
-    # Copy command
-    copy_parser = subparsers.add_parser("copy", help="Copy files from source to target")
-    copy_parser.add_argument("--source", required=True, help="Source directory")
-    copy_parser.add_argument("--target", required=True, help="Target directory")
-    copy_parser.add_argument("--type", required=True, help="File type to copy")
+    # Copy files command
+    copy_parser = subparsers.add_parser("copy", help="Copy files of a specific type")
+    copy_parser.add_argument(
+        "--source", "-s", type=str, required=True, help="Source folder path"
+    )
+    copy_parser.add_argument(
+        "--target", "-t", type=str, required=True, help="Target folder path"
+    )
+    copy_parser.add_argument(
+        "--type", type=str, required=True, help="File extension to copy"
+    )
     copy_parser.add_argument(
         "--dry-run", action="store_true", help="Simulate without making changes"
     )
-    copy_parser.add_argument(
-        "--verbose", action="store_true", help="Show detailed output"
+
+    # Rename files command
+    rename_parser = subparsers.add_parser("rename", help="Rename files by extension")
+    rename_parser.add_argument(
+        "--path", "-p", type=str, required=True, help="Root path to search in"
+    )
+    rename_parser.add_argument(
+        "--type", type=str, required=True, help="File extension to rename"
+    )
+    rename_parser.add_argument(
+        "--name", "-n", type=str, required=True, help="New base name for files"
+    )
+    rename_parser.add_argument(
+        "--dry-run", action="store_true", help="Simulate without making changes"
     )
 
     # Find duplicates command
-    dupes_parser = subparsers.add_parser("find-dupes", help="Find duplicate files")
-    dupes_parser.add_argument(
-        "--path", required=True, help="Directory to search for duplicates"
+    dupe_parser = subparsers.add_parser("find-dupes", help="Find duplicate files")
+    dupe_parser.add_argument(
+        "--path", "-p", type=str, required=True, help="Root path to search in"
     )
 
     # Organize by date command
-    date_parser = subparsers.add_parser("organize-date", help="Organize files by date")
-    date_parser.add_argument("--source", required=True, help="Source directory")
-    date_parser.add_argument("--target", required=True, help="Target directory")
-    date_parser.add_argument(
-        "--format", default="%Y/%m/%d", help="Directory format (default: %%Y/%%m/%%d)"
+    organize_parser = subparsers.add_parser(
+        "organize-date", help="Organize files by date"
     )
-    date_parser.add_argument(
+    organize_parser.add_argument(
+        "--source", "-s", type=str, required=True, help="Source folder path"
+    )
+    organize_parser.add_argument(
+        "--target", "-t", type=str, required=True, help="Target folder path"
+    )
+    organize_parser.add_argument(
+        "--format",
+        type=str,
+        default="%Y-%m",
+        help="Date format for folders (default: YYYY-MM)",
+    )
+    organize_parser.add_argument(
         "--use-created",
         action="store_true",
-        help="Use created date instead of modified",
+        help="Use creation date instead of modified date",
     )
-
-    # Search command
-    search_parser = subparsers.add_parser("search", help="Search for text in files")
-    search_parser.add_argument("--path", required=True, help="Directory to search in")
-    search_parser.add_argument("--text", required=True, help="Text to search for")
-    search_parser.add_argument(
-        "--extensions", nargs="+", help="File extensions to search in"
-    )
-    search_parser.add_argument(
-        "--case-sensitive", action="store_true", help="Use case-sensitive search"
-    )
-
-    # Process extensions command
-    process_parser = subparsers.add_parser(
-        "process-extensions", help="Process files by extension"
-    )
-    process_parser.add_argument("--path", required=True, help="Directory to process")
-    process_parser.add_argument(
+    organize_parser.add_argument(
         "--dry-run", action="store_true", help="Simulate without making changes"
     )
 
+    # Search by content command
+    search_parser = subparsers.add_parser("search", help="Search files by content")
+    search_parser.add_argument(
+        "--path", "-p", type=str, required=True, help="Root path to search in"
+    )
+    search_parser.add_argument(
+        "--text", "-t", type=str, required=True, help="Text to search for"
+    )
+    search_parser.add_argument(
+        "--extensions", "-e", type=str, nargs="+", help="File extensions to search in"
+    )
+    search_parser.add_argument(
+        "--case-sensitive", action="store_true", help="Make search case-sensitive"
+    )
+
+    # Process extensions command
+    process_ext_parser = subparsers.add_parser(
+        "process-extensions", help="Process files with multiple extensions"
+    )
+    process_ext_parser.add_argument(
+        "--path", "-p", type=str, required=True, help="Root path to process"
+    )
+    process_ext_parser.add_argument(
+        "--dry-run", action="store_true", help="Simulate without making changes"
+    )
+
+    # Verbosity
+    parser.add_argument(
+        "--verbose", "-v", action="store_true", help="Enable verbose output"
+    )
+
     return parser.parse_args()
-
-
-if __name__ == "__main__":
-    args = parse_arguments()
-    print(args)

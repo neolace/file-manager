@@ -3,66 +3,17 @@
 # It is recommended to keep this file in the same directory as the main application script.
 
 # Constants
-FILE_TYPES_TO_KEEP = [
-    "jpg",
-    "jpeg",
-    "png",
-    "gif",
-    "tif",
-    "tiff",
-    "bmp",
-    "webp",
-    "webm",
-    "svg",
-    "dng",
-    "pdf",
-    "mp4",
-    "mov",
-    "mp3",
-    "sql",
-    "txt",
-    "pptx",
-    "xlsx",
-    "docx",
-    "xls",
-    "rtf",
-    "zip",
-    "iso",
-    "csv",
-    "log",
-    "rar",
-    "md",
-    "tar",
-    "ai",
-    "ics",
-    "db",
-    "json",
-    "xml",
-    "html",
-    "htm",
-    "py",
-    "js",
-    "ts",
-    "java",
-    "c",
-    "xcf",
-    "cpp",
-    "cs",
-    "go",
-    "rb",
-    "php",
-    "sh",
-    "bat",
-    "ps1",
-    "yaml",
-    "yml",
-    "ini",
-    "cfg",
-    "conf",
-    "xmind",
-    "vcf",
-]
-FOLDERS_TO_REMOVE = ["pip", "node_modules"]
-DEFAULT_SRC_PATH = "C:/Users/terti/OneDrive/bck"
-DEFAULT_DST_PATH = "C:/Users/terti/OneDrive"
-DEFAULT_LOG_PATH = "C:/tmp/file_manager.log"
+def FILE_TYPES_TO_KEEP():
+    return []
+
+def FOLDERS_TO_REMOVE():
+    return ["pip", "node_modules"]
+
+def DEFAULT_SRC_PATH():
+    return "C:/Users/terti/OneDrive/bck"
+
+def DEFAULT_DST_PATH():
+    return "C:/Users/terti/OneDrive"
+
+def DEFAULT_LOG_PATH():
+    return "C:/tmp/file_manager.log"

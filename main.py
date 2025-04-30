@@ -6,14 +6,16 @@ configurable rules and filters.
 """
 
 import pathlib
+import sys
 from typing import Optional
 
-from config import (
-    FILE_TYPES_TO_KEEP,
+from config.settings import (
     DEFAULT_SRC_PATH,
     DEFAULT_DST_PATH,
     DEFAULT_LOG_PATH,
-)
+    FILE_TYPES_TO_KEEP,
+    )
+from file_manager.parse_arguments import parse_arguments
 from helpers.drop_all_empty_folders import drop_all_empty_folders
 from helpers.process_files import process_files
 from helpers.remove_folder_by_name import remove_folder_by_name
@@ -61,11 +63,11 @@ def main(
     return 0
 
 
-import sys
-
-from parse_arguments import parse_arguments
+from pyfiglet import Figlet
 
 if __name__ == "__main__":
+    figlet = Figlet(font="slant")
+    print(figlet.renderText("OVOTRON--FILE-MANAGER "))
     args = parse_arguments()
     exit_code = main(
         dry_run=args.dry_run, src_path=args.src, dst_path=args.dst, log_path=args.log
