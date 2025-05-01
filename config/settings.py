@@ -1,19 +1,10 @@
-# Configuration settings for the file manager application.
-# This file contains constants and default values used throughout the application.
-# It is recommended to keep this file in the same directory as the main application script.
+# Configuration settings for the file manager application
+FILE_TYPES_TO_KEEP = []
 
-# Constants
-def FILE_TYPES_TO_KEEP():
-    return []
+FOLDERS_TO_REMOVE = ["node_modules"]
 
-def FOLDERS_TO_REMOVE():
-    return ["pip", "node_modules"]
+DEFAULT_SRC_PATH = "C:/Users/terti/OneDrive/bck"
 
-def DEFAULT_SRC_PATH():
-    return "C:/Users/terti/OneDrive/bck"
+DEFAULT_DST_PATH = "C:/Users/terti/OneDrive"
 
-def DEFAULT_DST_PATH():
-    return "C:/Users/terti/OneDrive"
-
-def DEFAULT_LOG_PATH():
-    return "C:/tmp/file_manager.log"
+DEFAULT_LOG_PATH = "C:/tmp/file_manager.log"

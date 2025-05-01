@@ -11,4 +11,4 @@ def find_first_char(s: str) -> str:
     if s:
         return s[0]
     else:
-        return None
+        return ""
