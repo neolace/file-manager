@@ -3,6 +3,8 @@ import re
 from pathlib import Path
 from typing import List
 
+from dill import settings
+
 
 def search_files_by_content(
     root_path: Path,
@@ -17,36 +19,7 @@ def search_files_by_content(
     root_path = Path(root_path)
     matched_files = []
 
-    default_text_extensions = [
-        "txt",
-        "log",
-        "md",
-        "csv",
-        "json",
-        "xml",
-        "html",
-        "htm",
-        "py",
-        "js",
-        "ts",
-        "java",
-        "c",
-        "cpp",
-        "cs",
-        "go",
-        "rb",
-        "php",
-        "sh",
-        "bat",
-        "ps1",
-        "yaml",
-        "yml",
-        "ini",
-        "cfg",
-        "conf",
-    ]
-
-    extensions = file_types if file_types else default_text_extensions
+    extensions = file_types if file_types else settings.FILE_TYPES_TO_KEEP
 
     try:
         files = []

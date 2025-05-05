@@ -1,9 +1,9 @@
 from logging import Logger
 from pathlib import Path
 
-from helpers.delete_all_files_folders_within_folder import (
+from functions.delete_all_files_folders_within_folder import (
     delete_all_files_folders_within_folder,
-    )
+)
 
 
 def remove_folder_by_name(root_path: Path, dry_run: bool = False, logger=None) -> None:
@@ -15,7 +15,9 @@ def remove_folder_by_name(root_path: Path, dry_run: bool = False, logger=None) -
         folder_name: Name of folders to remove
         dry_run: If True, only show what would be deleted without actually deleting
         logger: Logger instance for output
-        :param folders:
+        :param logger:
+        :param dry_run:
+        :param root_path:
     """
     if logger is None:
         logger: Logger = logger.setup_logging(log_file=Path("C:/tmp/file_manager.log"))

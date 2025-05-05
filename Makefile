@@ -1,4 +1,4 @@
-.PHONY: install test lint clean build publish
+.PHONY: install test lint clean build publish venv
 
 # Variables
 PYTHON := python
@@ -9,6 +9,13 @@ SOURCE_DIR := file_manager
 
 # Default target
 all: install lint test
+
+# Create virtual environment
+venv:
+	$(PYTHON) -m venv venv
+	@echo "Virtual environment created. Activate with:"
+	@echo "  source venv/bin/activate (Linux/Mac)"
+	@echo "  venv\\Scripts\\activate (Windows)"
 
 # Install dependencies
 install:
@@ -55,4 +62,5 @@ help:
 	@echo "  build      : Build distribution packages"
 	@echo "  publish    : Publish package to PyPI"
 	@echo "  run        : Run the application (use ARGS='arguments')"
+	@echo "  venv       : Create a virtual environment"
 	@echo "  help       : Show this help message"

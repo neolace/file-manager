@@ -1,6 +1,6 @@
 import sys
 
-from file_manager.parse_arguments import parse_arguments
+from functions.parse_arguments import parse_arguments
 
 
 def test_move_command_with_required_args():
