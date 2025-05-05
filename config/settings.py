@@ -1,74 +1,10 @@
-# Configuration settings for the file manager application.
-# This file contains constants and default values used throughout the application.
-# It is recommended to keep this file in the same directory as the main application script.
+import os
 
-# Constants
-FILE_TYPES_TO_KEEP = [
-    "jpg",
-    "jpeg",
-    "png",
-    "gif",
-    "tif",
-    "tiff",
-    "bmp",
-    "webp",
-    "webm",
-    "svg",
-    "dng",
-    "pdf",
-    "mp4",
-    "mov",
-    "mp3",
-    "sql",
-    "txt",
-    "pptx",
-    "xlsx",
-    "docx",
-    "xls",
-    "rtf",
-    "zip",
-    "iso",
-    "csv",
-    "log",
-    "rar",
-    "md",
-    "tar",
-    "ai",
-    "ics",
-    "db",
-    "json",
-    "xml",
-    "html",
-    "htm",
-    "py",
-    "js",
-    "ts",
-    "java",
-    "c",
-    "xcf",
-    "cpp",
-    "cs",
-    "go",
-    "rb",
-    "php",
-    "sh",
-    "bat",
-    "ps1",
-    "yaml",
-    "yml",
-    "ini",
-    "cfg",
-    "conf",
-    "xmind",
-    "vcf",
-]
-
+FILE_TYPES_TO_KEEP = ["jpg", "jpeg", "png", "gif", "pdf", "doc", "docx", "xls", "xlsx", "txt"]
 FOLDERS_TO_REMOVE = ["node_modules"]
 
-DEFAULT_SRC_PATH = "bck"
-
-DEFAULT_DST_PATH = "OneDrive"
-
-DEFAULT_LOG_PATH = "file_manager.log"
+DEFAULT_SRC_PATH = os.getenv("DEFAULT_SRC_PATH", "C:/Users/terti/Downloads/test")
+DEFAULT_DST_PATH = os.getenv("DEFAULT_DST_PATH", "")
+DEFAULT_LOG_PATH = os.getenv("DEFAULT_LOG_PATH", "file_manager.log")
 
 DEFAULT_FONT = "slant"
