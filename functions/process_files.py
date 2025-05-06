@@ -5,8 +5,8 @@ from typing import List, Optional
 
 
 def process_files(
-    src_dir: Path,
-    dst_dir: Path,
+    src_dir: str,
+    dst_dir: str,
     file_types: List[str],
     dry_run: bool = False,
     logger: Optional[Logger] = None,
@@ -21,6 +21,9 @@ def process_files(
         dry_run: If True, only log actions without moving files
         logger: Logger instance for output
     """
+    src_dir = Path(src_dir)
+    dst_dir = Path(dst_dir)
+
     if logger is None:
         import logging
 
@@ -48,7 +51,7 @@ def process_files(
                         try:
                             shutil.copy2(file_path, target_file)
                             logger.info(f"Copied {file_path} to {target_file}")
-                        except Exception as e:
+                        except OSError as e:
                             logger.error(f"Error copying {file_path}: {e}")
-    except Exception as e:
+    except OSError as e:
         logger.error(f"Error processing files: {e}")

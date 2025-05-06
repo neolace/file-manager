@@ -1,51 +1,65 @@
-import argparse
-import logging
 from pathlib import Path
 
 from config import settings
 from functions.deduplicate import deduplicate
+from functions.process_files import process_files
+from utils.parse_arguments import parse_arguments
+from utils.setup_logging import setup_logging
 
-
-def setup_logging(log_file: Path) -> logging.Logger:
-    logging.basicConfig(
-        filename=log_file,
-        level=logging.INFO,
-        format="%(asctime)s - %(levelname)s - %(message)s",
-    )
-    return logging.getLogger("file_manager")
-
-def get_path(arg_path, default_path):
-    return Path(arg_path) if arg_path else Path(default_path)
-
-def parse_arguments():
-    parser = argparse.ArgumentParser(description="File Manager Tool")
-    parser.add_argument("--src", help="Source directory path")
-    parser.add_argument("--dst", help="Destination directory path")
-    parser.add_argument("--log", help="Log file path")
-    parser.add_argument("--dry-run", action="store_true", help="Run without making changes")
-    
-    subparsers = parser.add_subparsers(dest="command", help="Commands")
-    
-    # Deduplicate command
-    dedup_parser = subparsers.add_parser("deduplicate", help="Remove duplicate files")
-    dedup_parser.add_argument("path", help="Directory path to deduplicate")
-    
-    return parser.parse_args()
 
 def main() -> int:
+    """
+    Main function to handle command line arguments and execute the appropriate function.
+
+    :return:
+    """
     args = parse_arguments()
-    src = get_path(args.src, settings.DEFAULT_SRC_PATH)
-    dst = get_path(args.dst, settings.DEFAULT_DST_PATH)
-    log_file = get_path(args.log, settings.DEFAULT_LOG_PATH)
+    log_file = Path(args.log or getattr(settings, "DEFAULT_LOG_PATH", "default.log"))
+    logger = setup_logging(log_file)
+    try:
 
-    logger = setup_logging(log_file=log_file)
-    logger.info(f"Source: {src}, Destination: {dst}, Dry run mode: {'enabled' if args.dry_run else 'disabled'}")
+        args.log = getattr(args, "log", None)
+        args.command = getattr(args, "command", None)
+        args.directory = getattr(args, "directory", None)
+        args.src = getattr(args, "src", None)
+        args.dst = getattr(args, "dst", None)
+        args.file_types = getattr(args, "file_types", [])
+        args.dry_run = getattr(args, "dry_run", False)
 
-    if args.command == "deduplicate":
-        deduplicate(directory=args.path, dry_run=args.dry_run)
 
-    logger.info("File Manager completed.")
-    return 0
+        logger = setup_logging(log_file)
 
-if __name__ == "__main__":
-    exit(main())
+        if args.command == "deduplicate":
+            if not args.directory:
+                raise ValueError("The 'directory' argument is required for the 'deduplicate' command.")
+            deduplicate(
+                directory=args.directory,
+                logger=logger,
+                dry_run=args.dry_run
+            )
+        elif args.command == "move":
+            if not args.src or not args.dst:
+                raise ValueError("Both 'src' and 'dst' arguments are required for the 'move' command.")
+            process_files(
+                src_dir=args.src,
+                dst_dir=args.dst,
+                file_types=args.file_types,
+                dry_run=args.dry_run,
+                logger=logger
+            )
+        else:
+            logger.error(f"Unsupported command: {args.command}")
+            return 1
+
+        logger.info("File Manager completed.")
+        return 0
+
+    except ValueError as ve:
+        logger.error(f"ValueError: {ve}")
+        return 1
+    except FileNotFoundError as fnfe:
+        logger.error(f"FileNotFoundError: {fnfe}")
+        return 1
+    except Exception as e:
+        logger.error(f"An unexpected error occurred: {e}")
+        return 1
