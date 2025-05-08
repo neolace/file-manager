@@ -1,5 +1,6 @@
 from pathlib import Path
-
+import logging
+from typing import Dict, Callable, Any, Optional, List
 from config import settings
 from functions.deduplicate import deduplicate
 from functions.process_files import process_files
@@ -7,50 +8,44 @@ from utils.parse_arguments import parse_arguments
 from utils.setup_logging import setup_logging
 
 
+def validate_deduplicate_args(directory: Optional[str]) -> None:
+    """Validate arguments for the deduplicate command."""
+    if not directory:
+        raise ValueError("The 'directory' argument is required for the 'deduplicate' command.")
+
+
+def validate_move_args(src: Optional[str], dst: Optional[str]) -> None:
+    """Validate arguments for the move command."""
+    if not src or not dst:
+        raise ValueError("Both 'src' and 'dst' arguments are required for the 'move' command.")
+
+
 def main() -> int:
     """
     Main function to handle command line arguments and execute the appropriate function.
-
-    :return:
+    :return: 0 if successful, 1 if there was an error
+    :rtype: int
     """
     args = parse_arguments()
     log_file = Path(args.log or getattr(settings, "DEFAULT_LOG_PATH", "default.log"))
     logger = setup_logging(log_file)
+
+    # Define command handlers
+    command_handlers: Dict[str, Callable] = {
+        "deduplicate": lambda: handle_deduplicate(args, logger),
+        "move": lambda: handle_move(args, logger)
+    }
+
     try:
-
-        args.log = getattr(args, "log", None)
-        args.command = getattr(args, "command", None)
-        args.directory = getattr(args, "directory", None)
-        args.src = getattr(args, "src", None)
-        args.dst = getattr(args, "dst", None)
-        args.file_types = getattr(args, "file_types", [])
-        args.dry_run = getattr(args, "dry_run", False)
-
-
-        logger = setup_logging(log_file)
-
-        if args.command == "deduplicate":
-            if not args.directory:
-                raise ValueError("The 'directory' argument is required for the 'deduplicate' command.")
-            deduplicate(
-                directory=args.directory,
-                logger=logger,
-                dry_run=args.dry_run
-            )
-        elif args.command == "move":
-            if not args.src or not args.dst:
-                raise ValueError("Both 'src' and 'dst' arguments are required for the 'move' command.")
-            process_files(
-                src_dir=args.src,
-                dst_dir=args.dst,
-                file_types=args.file_types,
-                dry_run=args.dry_run,
-                logger=logger
-            )
-        else:
-            logger.error(f"Unsupported command: {args.command}")
+        # Check if the command is supported
+        command = getattr(args, "command", None)
+        if command not in command_handlers:
+            logger.error(f"Unsupported command: {command}")
             return 1
 
+        # Dispatch to the appropriate command handler
+        command_handlers[command]()
+        
         logger.info("File Manager completed.")
         return 0
 
@@ -63,3 +58,35 @@ def main() -> int:
     except Exception as e:
         logger.error(f"An unexpected error occurred: {e}")
         return 1
+
+
+def handle_deduplicate(args: Any, logger: logging.Logger) -> None:
+    """Handle the deduplicate command."""
+    directory = getattr(args, "directory", None)
+    dry_run = getattr(args, "dry_run", False)
+    
+    validate_deduplicate_args(directory)
+    
+    deduplicate(
+        directory=directory,
+        logger=logger,
+        dry_run=dry_run
+    )
+
+
+def handle_move(args: Any, logger: logging.Logger) -> None:
+    """Handle the move command."""
+    src = getattr(args, "src", None)
+    dst = getattr(args, "dst", None)
+    file_types = getattr(args, "file_types", [])
+    dry_run = getattr(args, "dry_run", False)
+    
+    validate_move_args(src, dst)
+    
+    process_files(
+        src_dir=src,
+        dst_dir=dst,
+        file_types=file_types,
+        dry_run=dry_run,
+        logger=logger
+    )
