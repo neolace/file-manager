@@ -2,71 +2,76 @@ import hashlib
 from concurrent.futures import ThreadPoolExecutor
 from logging import Logger
 from pathlib import Path
-from typing import Optional
+from typing import Optional, Iterator, Dict, List, Tuple
 
+# Constants
+DEFAULT_BUFFER_SIZE = 65536
+DEFAULT_MAX_WORKERS = 1
 
-def calculate_file_hash(file: Path,
-                        buffer_size: int = 65536) -> tuple:
-    """
-    Calculate the hash of a file using a buffered approach.
+# Type aliases
+FileHashResult = Tuple[Path, str]
 
-    Args:
-        file (Path): The file to hash.
-        buffer_size (int): Size of the buffer for reading the file.
+class FileDeduplicator:
+    def __init__(self,
+                 directory: str,
+                 max_workers: int = DEFAULT_MAX_WORKERS,
+                 logger: Optional[Logger] = None,
+                 dry_run: bool = False) -> None:
+        self.directory_path = Path(directory)
+        self.max_workers = max_workers
+        self.logger = self._setup_logger(logger)
+        self.dry_run = dry_run
+        self.file_hashes: Dict[str, Path] = {}
+        self.duplicates: List[Path] = []
 
-    Returns:
-        tuple: A tuple containing the file path and its hash.
-        :param file:
-        :param buffer_size:
-    """
-    hasher = hashlib.md5()
-    with file.open("rb") as f:
-        while chunk := f.read(buffer_size):
-            hasher.update(chunk)
-    return file, hasher.hexdigest()
+    @staticmethod
+    def _setup_logger(logger: Optional[Logger]) -> Logger:
+        if logger is None:
+            import logging
+            return logging.getLogger(__name__)
+        return logger
 
+    def _calculate_file_hash(self, file: Path) -> FileHashResult:
+        """Calculate the hash of a file using a buffered approach.
 
-def deduplicate(directory: str,
-                max_workers: int = 1,
-                logger: Optional[Logger] = None,
-                dry_run: bool = False):
-    """
-    Deduplicate files in a directory by removing duplicates based on their hash.
+        Args:
+            file: The file to hash.
 
-    Args:
-        directory (str): The directory to search for duplicates.
-        max_workers (int): Number of threads to use for hashing files.
-        logger (Logger, optional): Logger instance for output.
-        dry_run (bool): If True, only log actions without deleting anything.
-    """
+        Returns:
+            A tuple containing the file path and its MD5 hash.
+        """
+        hasher = hashlib.md5()
+        with file.open("rb") as f:
+            while chunk := f.read(DEFAULT_BUFFER_SIZE):
+                hasher.update(chunk)
+        return file, hasher.hexdigest()
 
-    if logger is None:
-        import logging
+    def _get_files(self) -> Iterator[Path]:
+        """Get all files in the directory recursively."""
+        if not self.directory_path.is_dir():
+            raise ValueError(f"{self.directory_path} is not a valid directory.")
+        return (file for file in self.directory_path.rglob("*") if file.is_file())
 
-        logger = logging.getLogger(__name__)
-
-    file_hashes = {}
-    duplicates = []
-
-    directory_path = Path(directory)
-    if not directory_path.is_dir():
-        raise ValueError(f"{directory} is not a valid directory.")
-
-    files = (file for file in directory_path.rglob("*") if file.is_file())
-
-    with ThreadPoolExecutor(max_workers=max_workers) as executor:
-        for file, file_hash in executor.map(calculate_file_hash, files):
-            if file_hash in file_hashes:
-                duplicates.append(file)
-            else:
-                file_hashes[file_hash] = file
-
-        for duplicate in duplicates:
-            try:
+    def _remove_duplicate(self, duplicate: Path) -> None:
+        """Remove a duplicate file and log the action."""
+        try:
+            if not self.dry_run:
                 duplicate.unlink()
-                logger.info(f"Removed duplicate: {duplicate}")
-            except OSError as e:
-                logger.error(f"Error removing {duplicate}: {e}")
+            self.logger.info(f"{'Dry run: Would remove' if self.dry_run else 'Removed'} duplicate: {duplicate}")
+        except OSError as e:
+            self.logger.error(f"Error removing {duplicate}: {e}")
 
-        if dry_run:
-            logger.info(f"Dry run: {len(duplicates)} duplicates found.")
+    def deduplicate(self) -> None:
+        """Remove duplicate files in the directory based on their hash."""
+        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
+            for file, file_hash in executor.map(self._calculate_file_hash, self._get_files()):
+                if file_hash in self.file_hashes:
+                    self.duplicates.append(file)
+                else:
+                    self.file_hashes[file_hash] = file
+
+            for duplicate in self.duplicates:
+                self._remove_duplicate(duplicate)
+
+        if self.dry_run:
+            self.logger.info(f"Dry run: {len(self.duplicates)} duplicates found.")

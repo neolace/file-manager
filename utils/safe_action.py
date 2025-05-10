@@ -1,20 +1,30 @@
-from typing import Callable
+import logging
+from typing import Callable, TypeVar, Optional, Any
 
+T = TypeVar('T')
+ERROR_MESSAGE_FORMAT = "Error executing {}: {}"
 
-def safe_action(action: Callable, *args, logger=None, **kwargs):
+def safe_action(
+    func: Callable[..., T],
+    *args: Any,
+    logger: logging.Logger = logging.getLogger(__name__),
+    **kwargs: Any
+) -> Optional[T]:
     """
-    Safely execute an action with error handling.
+    Safely execute a function with error handling.
 
     Args:
-        action: The function to execute.
-        logger: Logger instance for output.
-        *args, **kwargs: Arguments for the action.
-    """
-    if logger is None:
-        import logging
-        logger = logging.getLogger(__name__)
+        func: The function to execute
+        *args: Positional arguments for the function
+        logger: Logger instance for output
+        **kwargs: Keyword arguments for the function
 
+    Returns:
+        The result of the function if successful, None if an error occurred
+    """
     try:
-        action(*args, **kwargs)
+        result = func(*args, **kwargs)
+        return result
     except Exception as e:
-        logger.error(f"Error executing {action.__name__}: {e}")
+        logger.error(ERROR_MESSAGE_FORMAT.format(func.__name__, e))
+        return None

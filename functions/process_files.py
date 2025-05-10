@@ -1,16 +1,11 @@
+import logging
 import shutil
-from logging import Logger
 from pathlib import Path
-from typing import List, Optional
 
+_logger = logging.getLogger(__name__)
 
-def process_files(
-    src_dir: str,
-    dst_dir: str,
-    file_types: List[str],
-    dry_run: bool = False,
-    logger: Optional[Logger] = None,
-) -> None:
+def process_files(src_dir: str, dst_dir: str, file_types: list, dry_run: bool, logger: _logger) -> None:
+
     """
     Process files from source directory to destination directory based on file types.
 
@@ -21,13 +16,10 @@ def process_files(
         dry_run: If True, only log actions without moving files
         logger: Logger instance for output
     """
+    logger.info(f"Processing files from {src_dir} to {dst_dir}")
+
     src_dir = Path(src_dir)
     dst_dir = Path(dst_dir)
-
-    if logger is None:
-        import logging
-
-        logger = logging.getLogger(__name__)
 
     normalized_file_types = [ft.lower().lstrip(".") for ft in file_types]
 
@@ -55,3 +47,5 @@ def process_files(
                             logger.error(f"Error copying {file_path}: {e}")
     except OSError as e:
         logger.error(f"Error processing files: {e}")
+
+    logger.info("File processing completed.")

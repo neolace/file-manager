@@ -1,10 +1,74 @@
 import os
+from enum import Enum
+from typing import List
 
-FILE_TYPES_TO_KEEP = ["jpg", "jpeg", "png", "gif", "pdf", "doc", "docx", "xls", "xlsx", "txt"]
-FOLDERS_TO_REMOVE = ["node_modules"]
 
-DEFAULT_SRC_PATH = os.getenv("DEFAULT_SRC_PATH", "C:/default/source")
-DEFAULT_DST_PATH = os.getenv("DEFAULT_DST_PATH", "C:/default/destination")
-DEFAULT_LOG_PATH = os.getenv("DEFAULT_LOG_PATH", "file_manager.log")
+class FileType(Enum):
+    """Supported file types for processing."""
+    # Images
+    JPG = "jpg"
+    JPEG = "jpeg"
+    PNG = "png"
+    GIF = "gif"
+    BMP = "bmp"
+    TIFF = "tiff"
+    SVG = "svg"
+    WEBP = "webp"
+    ICO = "ico"
+    
+    # Documents
+    PDF = "pdf"
+    DOC = "doc"
+    DOCX = "docx"
+    XLS = "xls"
+    XLSX = "xlsx"
+    TXT = "txt"
+    
+    # Archives
+    ZIP = "zip"
+    RAR = "rar"
+    
+    # Media
+    MP4 = "mp4"
+    MP3 = "mp3"
+    WAV = "wav"
+    AVI = "avi"
+    MKV = "mkv"
+    MOV = "mov"
+    FLV = "flv"
+    WMV = "wmv"
+    M4A = "m4a"
+    AAC = "aac"
+    OGG = "ogg"
+    OPUS = "opus"
+    FLAC = "flac"
+    
+    # Web
+    JSON = "json"
+    XML = "xml"
+    HTML = "html"
+    CSS = "css"
+    JS = "js"
 
-DEFAULT_FONT = "slant"
+class Config:
+    """Application configuration settings."""
+    EXCLUDED_FOLDERS: List[str] = ["node_modules"]
+    DEFAULT_FONT: str = "slant"
+    
+    # Environment-dependent paths with defaults
+    DEFAULT_SRC_PATH: str = os.getenv("DEFAULT_SRC_PATH", "")
+    DEFAULT_DST_PATH: str = os.getenv("DEFAULT_DST_PATH", "")
+    DEFAULT_LOG_PATH: str = os.getenv("DEFAULT_LOG_PATH", "")
+    
+    @classmethod
+    def get_supported_extensions(cls) -> List[str]:
+        """Returns a list of all supported file extensions."""
+        return [ft.value for ft in FileType]
+
+# For backward compatibility
+FILE_TYPES_TO_KEEP = Config.get_supported_extensions()
+FOLDERS_TO_REMOVE = Config.EXCLUDED_FOLDERS
+DEFAULT_SRC_PATH = Config.DEFAULT_SRC_PATH
+DEFAULT_DST_PATH = Config.DEFAULT_DST_PATH
+DEFAULT_LOG_PATH = Config.DEFAULT_LOG_PATH
+DEFAULT_FONT = Config.DEFAULT_FONT
