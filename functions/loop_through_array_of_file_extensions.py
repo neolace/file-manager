@@ -60,7 +60,7 @@ def rename_all_files_by_extensions(
     if not validate_inputs(root_path, extensions, logger):
         return
 
-    # Log operation details once
+    # Log operation details at once
     logger.info(
         f"Starting rename operation:\n"
         f"- Directory: {root_path}\n"

@@ -48,9 +48,7 @@ class FileType(Enum):
     WMV = "wmv"
     M4A = "m4a"
     AAC = "aac"
-    OGG = "ogg"
     OPUS = "opus"
-    FLAC = "flac"
 
     # Web
     JSON = "json"

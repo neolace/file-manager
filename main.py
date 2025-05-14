@@ -1,6 +1,7 @@
 import logging
 from abc import ABC, abstractmethod
 from argparse import Namespace
+from dataclasses import dataclass
 from enum import Enum, auto
 from pathlib import Path
 from typing import Dict, Type
@@ -52,8 +53,36 @@ class DeduplicateCommand(CommandInterface):
                 "The 'directory' argument is required for the 'deduplicate' command."
             )
 
+
+from argparse import Namespace
+import logging
+from typing import Optional
+
+
+@dataclass
+class DeduplicationConfig:
+    directory: str
+    max_workers: int
+    dry_run: bool
+    logger: Optional[logging.Logger]
+
+
+class DeduplicateCommand(CommandInterface):
     def execute(self, args: Namespace, logger: logging.Logger) -> None:
-        FileDeduplicator.deduplicate(directory=args.directory, dry_run=args.dry_run)
+        config = DeduplicationConfig(
+            directory=args.directory,
+            max_workers=args.max_workers,
+            logger=logger,
+            dry_run=args.dry_run,
+        )
+
+        deduplicator = FileDeduplicator(
+            directory=config.directory,
+            max_workers=config.max_workers,
+            logger=config.logger,
+            dry_run=config.dry_run,
+        )
+        deduplicator.deduplicate()
 
 
 class MoveCommand(CommandInterface):

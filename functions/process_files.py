@@ -64,9 +64,7 @@ class FileOperationManager:
     def _handle_delete_by_extension(
         self,
         extensions: Optional[ExtensionList],
-        excluded_names: Optional[ExcludedNames],
         dry_run: bool,
-        recursive: bool,
     ) -> None:
         delete_files_by_extension(
             path=self.path, extensions=extensions, dry_run=dry_run, logger=self.logger
@@ -75,10 +73,8 @@ class FileOperationManager:
 
     def _handle_clean_folder(
         self,
-        extensions: Optional[ExtensionList],
         excluded_names: Optional[ExcludedNames],
         dry_run: bool,
-        recursive: bool,
     ) -> None:
         delete_all_files_folders_within_folder(
             directory_path=self.path,
@@ -90,8 +86,6 @@ class FileOperationManager:
 
     def _handle_delete_empty(
         self,
-        extensions: Optional[ExtensionList],
-        excluded_names: Optional[ExcludedNames],
         dry_run: bool,
         recursive: bool,
     ) -> int:
@@ -101,10 +95,8 @@ class FileOperationManager:
 
     def _handle_delete_hidden(
         self,
-        extensions: Optional[ExtensionList],
         excluded_names: Optional[ExcludedNames],
         dry_run: bool,
-        recursive: bool,
     ) -> None:
         delete_all_hidden_folders(
             path=self.path,

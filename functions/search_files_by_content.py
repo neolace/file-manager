@@ -85,7 +85,7 @@ def _collect_files(root_path: Path, file_types: List[str]) -> List[Path]:
 def _file_contains_pattern(
     file: Path, pattern: re.Pattern, logger: logging.Logger
 ) -> bool:
-    """Check if file contains the given pattern."""
+    """Check if a file contains the given pattern."""
     try:
         with open(file, "r", encoding=DEFAULT_ENCODING, errors="ignore") as f:
             return any(pattern.search(line) for line in f)
