@@ -14,6 +14,7 @@ from utils.setup_logging import setup_logging
 
 class CommandType(Enum):
     """Supported command types"""
+
     DEDUPLICATE = auto()
     MOVE = auto()
     DELETE_EMPTY = auto()
@@ -47,7 +48,9 @@ class DeduplicateCommand(CommandInterface):
 
     def validate(self, args: Namespace) -> None:
         if not args.directory:
-            raise ValueError("The 'directory' argument is required for the 'deduplicate' command.")
+            raise ValueError(
+                "The 'directory' argument is required for the 'deduplicate' command."
+            )
 
     def execute(self, args: Namespace, logger: logging.Logger) -> None:
         FileDeduplicator.deduplicate(directory=args.directory, dry_run=args.dry_run)
@@ -60,7 +63,9 @@ class MoveCommand(CommandInterface):
 
     def validate(self, args: Namespace) -> None:
         if not args.src or not args.dst:
-            raise ValueError("Both 'src' and 'dst' arguments are required for the 'move' command.")
+            raise ValueError(
+                "Both 'src' and 'dst' arguments are required for the 'move' command."
+            )
 
     def execute(self, args: Namespace, logger: logging.Logger) -> None:
         process_files(

@@ -2,7 +2,9 @@ from logging import Logger
 from pathlib import Path
 from typing import List, Optional, Union, TypeAlias, Dict, Callable
 
-from delete_all_files_folders_within_folder import delete_all_files_folders_within_folder
+from delete_all_files_folders_within_folder import (
+    delete_all_files_folders_within_folder,
+)
 from delete_all_hidden_folders import delete_all_hidden_folders
 from delete_empty_folders import delete_empty_folders
 from delete_files_by_extension import delete_files_by_extension
@@ -13,12 +15,13 @@ PathLike: TypeAlias = Union[str, Path]
 ExtensionList: TypeAlias = List[str]
 ExcludedNames: TypeAlias = List[str]
 
+
 class FileOperationManager:
     VALID_OPERATIONS = {
         "delete_by_extension",
         "clean_folder",
         "delete_empty",
-        "delete_hidden"
+        "delete_hidden",
     }
 
     def __init__(self, operation: str, path: PathLike, logger: Logger):
@@ -29,7 +32,7 @@ class FileOperationManager:
             "delete_by_extension": self._handle_delete_by_extension,
             "clean_folder": self._handle_clean_folder,
             "delete_empty": self._handle_delete_empty,
-            "delete_hidden": self._handle_delete_hidden
+            "delete_hidden": self._handle_delete_hidden,
         }
 
     def validate_operation(self) -> None:
@@ -40,14 +43,16 @@ class FileOperationManager:
 
     def validate_extensions(self, extensions: Optional[ExtensionList]) -> None:
         if self.operation == "delete_by_extension" and not extensions:
-            raise ValueError("extensions parameter is required for delete_by_extension operation")
+            raise ValueError(
+                "extensions parameter is required for delete_by_extension operation"
+            )
 
     def execute(
         self,
         extensions: Optional[ExtensionList] = None,
         excluded_names: Optional[ExcludedNames] = None,
         dry_run: bool = False,
-        recursive: bool = True
+        recursive: bool = True,
     ) -> Optional[int]:
         try:
             handler = self._operation_handlers[self.operation]
@@ -57,59 +62,58 @@ class FileOperationManager:
             raise
 
     def _handle_delete_by_extension(
-        self, extensions: Optional[ExtensionList],
+        self,
+        extensions: Optional[ExtensionList],
         excluded_names: Optional[ExcludedNames],
         dry_run: bool,
-        recursive: bool
+        recursive: bool,
     ) -> None:
         delete_files_by_extension(
-            path=self.path,
-            extensions=extensions,
-            dry_run=dry_run,
-            logger=self.logger
+            path=self.path, extensions=extensions, dry_run=dry_run, logger=self.logger
         )
         return None
 
     def _handle_clean_folder(
-        self, extensions: Optional[ExtensionList],
+        self,
+        extensions: Optional[ExtensionList],
         excluded_names: Optional[ExcludedNames],
         dry_run: bool,
-        recursive: bool
+        recursive: bool,
     ) -> None:
         delete_all_files_folders_within_folder(
             directory_path=self.path,
             excluded_names=excluded_names,
             dry_run=dry_run,
-            logger=self.logger
+            logger=self.logger,
         )
         return None
 
     def _handle_delete_empty(
-        self, extensions: Optional[ExtensionList],
+        self,
+        extensions: Optional[ExtensionList],
         excluded_names: Optional[ExcludedNames],
         dry_run: bool,
-        recursive: bool
+        recursive: bool,
     ) -> int:
         return delete_empty_folders(
-            path=self.path,
-            dry_run=dry_run,
-            recursive=recursive,
-            logger=self.logger
+            path=self.path, dry_run=dry_run, recursive=recursive, logger=self.logger
         )
 
     def _handle_delete_hidden(
-        self, extensions: Optional[ExtensionList],
+        self,
+        extensions: Optional[ExtensionList],
         excluded_names: Optional[ExcludedNames],
         dry_run: bool,
-        recursive: bool
+        recursive: bool,
     ) -> None:
         delete_all_hidden_folders(
             path=self.path,
             excluded_names=excluded_names,
             dry_run=dry_run,
-            logger=self.logger
+            logger=self.logger,
         )
         return None
+
 
 def process_files(
     operation: str,
@@ -131,5 +135,5 @@ def process_files(
         extensions=extensions,
         excluded_names=excluded_names,
         dry_run=dry_run,
-        recursive=recursive
+        recursive=recursive,
     )
