@@ -1,32 +1,30 @@
+## File Manager CLI
+
+Refactor the following code:
+
+```markdown
 # File Manager CLI
-
 A command-line interface tool for file management operations such as deduplication and file moving/organization.
-
 ## Features
-
 - **File Deduplication**: Remove duplicate files from a directory
 - **File Organization**: Move files from source to destination directories with filtering by file types
 - **Dry Run Mode**: Preview changes without making actual modifications
 - **Detailed Logging**: Comprehensive logging of all operations
-
 ## Installation
-
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/file-manager.git
 cd file-manager
-
 # Install dependencies
 pip install -r requirements.txt
 ```
 
+```
+
 ## Usage
-
 ### Deduplicate Files
-
 Remove duplicate files from a directory:
-
-```bash
+```shell script
 python main.py deduplicate --directory /path/to/folder [--dry-run] [--log logfile.log]
 ```
 
@@ -34,7 +32,7 @@ python main.py deduplicate --directory /path/to/folder [--dry-run] [--log logfil
 
 Move files from source to destination with optional filtering:
 
-```bash
+```shell script
 python main.py move --src /path/to/source --dst /path/to/destination [--file-types jpg png pdf] [--dry-run] [--log logfile.log]
 ```
 
@@ -90,17 +88,19 @@ We welcome contributions to the File Manager CLI project! Follow these steps to 
 ### 2. Clone Your Fork
 
 - Clone your forked repository to your local machine:
-  ```bash
-  git clone https://github.com/yourusername/file-manager.git
+
+```shell script
+git clone https://github.com/yourusername/file-manager.git
   cd file-manager
-  ```
+```
 
 ### 3. Create a Branch
 
 - Create a new branch for your feature or bug fix:
-  ```bash
-  git checkout -b feature/your-feature-name
-  ```
+
+```shell script
+git checkout -b feature/your-feature-name
+```
 
 ### 4. Make Changes
 
@@ -110,25 +110,29 @@ We welcome contributions to the File Manager CLI project! Follow these steps to 
 ### 5. Test Your Changes
 
 - Run the existing tests to ensure your changes don't break anything:
-  ```bash
-  python -m unittest discover
-  ```
+
+```shell script
+python -m unittest discover
+```
+
 - Add new tests if applicable.
 
 ### 6. Commit Your Changes
 
 - Commit your changes with a descriptive message:
-  ```bash
-  git add .
+
+```shell script
+git add .
   git commit -m "Add feature: your-feature-name"
-  ```
+```
 
 ### 7. Push Your Branch
 
 - Push your branch to your forked repository:
-  ```bash
-  git push origin feature/your-feature-name
-  ```
+
+```shell script
+git push origin feature/your-feature-name
+```
 
 ### 8. Open a Pull Request
 
@@ -148,7 +152,7 @@ We welcome contributions to the File Manager CLI project! Follow these steps to 
 
 Follow the steps in the **Installation** section:
 
-```bash
+```shell script
 git clone https://github.com/yourusername/file-manager.git
 cd file-manager
 pip install -r requirements.txt
@@ -167,7 +171,7 @@ The tool processes the following file types by default: `jpg`, `jpeg`, `png`, `g
 
 Use the `--log` option to specify a custom log file path:
 
-```bash
+```shell script
 python main.py deduplicate --directory /path/to/folder --log custom_log.log
 ```
 
@@ -221,16 +225,18 @@ identify potential issues without making changes.
 ### 7. Regularly Update Dependencies
 
 - Keep the tool and its dependencies up to date by running:
-  ```bash
-  pip install --upgrade -r requirements.txt
-  ```
+
+```shell script
+pip install --upgrade -r requirements.txt
+```
 
 ### 8. Follow Command Usage Guidelines
 
 - Use the `--help` flag to understand the correct usage of commands and their options:
-  ```bash
-  python main.py --help
-  ```
+
+```shell script
+python main.py --help
+```
 
 ## Troubleshooting
 
@@ -251,9 +257,10 @@ identify potential issues without making changes.
 
 - **Cause**: Required Python packages are not installed.
 - **Solution**: Run the following command to install dependencies:
-  ```bash
-  pip install -r requirements.txt
-  ```
+
+```shell script
+pip install -r requirements.txt
+```
 
 #### 4. Logging Not Working
 
@@ -265,9 +272,10 @@ identify potential issues without making changes.
 
 - **Cause**: Incorrect command usage or invalid arguments.
 - **Solution**: Use the `--help` flag to view the correct usage:
-  ```bash
-  python main.py --help
-  ```
+
+```shell script
+python main.py --help
+```
 
 ### Debugging Tips
 
@@ -281,13 +289,13 @@ identify potential issues without making changes.
 
 Remove duplicate files from a directory:
 
-```bash
+```shell script
 python main.py deduplicate --directory /path/to/folder [--dry-run] [--log logfile.log]
 ```
 
 **Example**: Deduplicate files in the `Downloads` folder and log the output to `deduplication.log`:
 
-```bash
+```shell script
 python main.py deduplicate --directory ~/Downloads --log deduplication.log
 ```
 
@@ -295,22 +303,150 @@ python main.py deduplicate --directory ~/Downloads --log deduplication.log
 
 Move files from source to destination with optional filtering:
 
-```bash
+```shell script
 python main.py move --src /path/to/source --dst /path/to/destination [--file-types jpg png pdf] [--dry-run] [--log logfile.log]
 ```
 
 **Example 1**: Move all `.jpg` and `.png` files from `Pictures` to `Backup`:
 
-```bash
+```shell script
 python main.py move --src ~/Pictures --dst ~/Backup --file-types jpg png
 ```
 
 **Example 2**: Perform a dry run to preview moving `.pdf` files from `Documents` to `Archive`:
 
-```bash
+```shell script
 python main.py move --src ~/Documents --dst ~/Archive --file-types pdf --dry-run
 ```
 
 ## License
 
 MIT License
+
+```
+
+```
+
+## AI Assistant
+
+I'll suggest refactoring improvements for the README.md file to make it more organized and readable. Here are the main
+refactoring changes:
+
+1. **Extract Sections**: Move the lengthy Contributing and Troubleshooting sections into separate files (CONTRIBUTING.md
+   and TROUBLESHOOTING.md) to make the main README more concise and focused.
+2. **Reorganize Structure**: Reorder sections to put the most important information first (Installation, Usage,
+   Features).
+3. **Rename Sections**: Use more descriptive section names.
+4. **Extract Common Commands**: Create a Quick Start section for commonly used commands.
+5. **Improve Formatting**: Enhance readability with better Markdown formatting and consistent structure.
+
+Here's the refactored README.md:
+
+```markdown
+# File Manager CLI
+
+A command-line interface tool for efficient file management, including deduplication and organization features.
+
+## Quick Start
+```
+
+bash
+
+# Install
+
+git clone https://github.com/yourusername/file-manager.git
+cd file-manager
+pip install -r requirements.txt
+
+# Deduplicate files
+
+python main.py deduplicate --directory ~/Downloads
+
+# Move and organize files
+
+python main.py move --src ~/Pictures --dst ~/Backup --file-types jpg png
+
+```
+## Key Features
+
+- 🔄 **File Deduplication**: Eliminate duplicate files from directories
+- 📁 **Smart Organization**: Move and sort files by type
+- 🔍 **Preview Mode**: Test changes with dry-run option
+- 📝 **Detailed Logging**: Track all operations
+
+## Command Reference
+
+### File Deduplication
+```
+
+bash
+python main.py deduplicate --directory PATH [--dry-run] [--log FILE]
+
+```
+### File Organization
+```
+
+bash
+python main.py move --src PATH --dst PATH [--file-types TYPES] [--dry-run] [--log FILE]
+
+```
+## Configuration
+
+Edit `config.py` to customize:
+- Default log location
+- Supported file types
+- Excluded folders
+- Application settings
+
+## Project Structure
+```
+
+file-manager/
+├── config.py # Settings
+├── main.py # Entry point
+├── functions/ # Core operations
+└── utils/ # Helper utilities
+
+```
+## Common Options
+
+- `--directory`: Target directory for operations
+- `--src`, `--dst`: Source and destination paths
+- `--file-types`: File extensions to process (e.g., jpg png pdf)
+- `--dry-run`: Preview changes
+- `--log`: Custom log file path
+
+## Documentation
+
+- [Contributing Guidelines](CONTRIBUTING.md)
+- [Troubleshooting Guide](TROUBLESHOOTING.md)
+- [FAQs](docs/FAQ.md)
+
+## Supported File Types
+
+Default supported extensions:
+- Images: jpg, jpeg, png, gif
+- Documents: pdf, doc, docx, txt
+- Spreadsheets: xls, xlsx
+
+## Best Practices
+
+1. Always use `--dry-run` first
+2. Backup important data
+3. Use absolute paths
+4. Enable logging for tracking
+
+## License
+
+MIT License
+```
+
+The refactoring improves the README by:
+
+- Making it more scannable with clear sections
+- Putting the most important information first
+- Reducing complexity by moving detailed sections to separate files
+- Using consistent formatting and structure
+- Adding visual elements (emojis) for better section identification
+- Creating a Quick Start section for common use cases
+- Improving the overall organization and flow of information
