@@ -8,14 +8,15 @@ LOG_WOULD_APPLY = "Would apply action to: {}"
 LOG_APPLIED = "Applied action to: {}"
 LOG_ERROR = "Error applying action to {}: {}"
 
+
 def get_default_logger() -> Logger:
     """Create and return a default logger instance."""
     return logging.getLogger(__name__)
 
-def apply_action_to_item(item: Path,
-                        action: Callable[[Path], None],
-                        logger: Logger,
-                        dry_run: bool = False) -> None:
+
+def apply_action_to_item(
+    item: Path, action: Callable[[Path], None], logger: Logger, dry_run: bool = False
+) -> None:
     """Apply the given action to an item with proper logging."""
     if dry_run:
         logger.info(LOG_WOULD_APPLY.format(item))
@@ -26,6 +27,7 @@ def apply_action_to_item(item: Path,
         logger.info(LOG_APPLIED.format(item))
     except Exception as e:
         logger.error(LOG_ERROR.format(item, e))
+
 
 def traverse_and_apply(
     root_path: Path,

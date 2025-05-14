@@ -2,6 +2,7 @@
 import logging
 from pathlib import Path
 
+
 def setup_logging(log_file: Path) -> logging.Logger:
     """
     Sets up the logging configuration with error handling.

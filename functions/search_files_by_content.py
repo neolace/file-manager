@@ -7,6 +7,7 @@ from dill import settings
 
 DEFAULT_ENCODING = "utf-8"
 
+
 def search_files_by_content(
     root_path: Path,
     search_text: str,
@@ -41,7 +42,7 @@ def search_files_by_content(
             search_text=search_text,
             file_types=file_types or settings.FILE_TYPES_TO_KEEP,
             case_sensitive=case_sensitive,
-            logger=logger
+            logger=logger,
         )
         logger.info(f"Found {len(matching_files)} files containing '{search_text}'")
         return matching_files
@@ -50,12 +51,13 @@ def search_files_by_content(
         logger.error(f"Error searching files by content: {e}")
         return []
 
+
 def _find_matching_files(
     root_path: Path,
     search_text: str,
     file_types: List[str],
     case_sensitive: bool,
-    logger: logging.Logger
+    logger: logging.Logger,
 ) -> List[Path]:
     """Find files containing the search text in the given directory."""
     files = _collect_files(root_path, file_types)
@@ -71,6 +73,7 @@ def _find_matching_files(
 
     return matching_files
 
+
 def _collect_files(root_path: Path, file_types: List[str]) -> List[Path]:
     """Collect all files with specified extensions."""
     files = []
@@ -78,7 +81,10 @@ def _collect_files(root_path: Path, file_types: List[str]) -> List[Path]:
         files.extend(list(root_path.rglob(f"*.{extension}")))
     return files
 
-def _file_contains_pattern(file: Path, pattern: re.Pattern, logger: logging.Logger) -> bool:
+
+def _file_contains_pattern(
+    file: Path, pattern: re.Pattern, logger: logging.Logger
+) -> bool:
     """Check if file contains the given pattern."""
     try:
         with open(file, "r", encoding=DEFAULT_ENCODING, errors="ignore") as f:

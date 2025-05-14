@@ -2,9 +2,11 @@ import logging
 from pathlib import Path
 from typing import List
 
+
 def _create_default_logger() -> logging.Logger:
     """Create and return a default logger instance."""
     return logging.getLogger(__name__)
+
 
 def _log_found_files(files: List[Path], extension: str, logger: logging.Logger) -> None:
     """Log information about found files."""
@@ -12,10 +14,9 @@ def _log_found_files(files: List[Path], extension: str, logger: logging.Logger) 
     for file in files:
         logger.info(f"Found file: {file}")
 
+
 def list_files_by_extension(
-    root_path: Path,
-    extension: str,
-    logger: logging.Logger | None = None
+    root_path: Path, extension: str, logger: logging.Logger | None = None
 ) -> List[Path]:
     """
     List all files with the specified extension in the directory.

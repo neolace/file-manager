@@ -11,12 +11,15 @@ DEFAULT_MAX_WORKERS = 1
 # Type aliases
 FileHashResult = Tuple[Path, str]
 
+
 class FileDeduplicator:
-    def __init__(self,
-                 directory: str,
-                 max_workers: int = DEFAULT_MAX_WORKERS,
-                 logger: Optional[Logger] = None,
-                 dry_run: bool = False) -> None:
+    def __init__(
+        self,
+        directory: str,
+        max_workers: int = DEFAULT_MAX_WORKERS,
+        logger: Optional[Logger] = None,
+        dry_run: bool = False,
+    ) -> None:
         self.directory_path = Path(directory)
         self.max_workers = max_workers
         self.logger = self._setup_logger(logger)
@@ -28,6 +31,7 @@ class FileDeduplicator:
     def _setup_logger(logger: Optional[Logger]) -> Logger:
         if logger is None:
             import logging
+
             return logging.getLogger(__name__)
         return logger
 
@@ -57,14 +61,18 @@ class FileDeduplicator:
         try:
             if not self.dry_run:
                 duplicate.unlink()
-            self.logger.info(f"{'Dry run: Would remove' if self.dry_run else 'Removed'} duplicate: {duplicate}")
+            self.logger.info(
+                f"{'Dry run: Would remove' if self.dry_run else 'Removed'} duplicate: {duplicate}"
+            )
         except OSError as e:
             self.logger.error(f"Error removing {duplicate}: {e}")
 
     def deduplicate(self) -> None:
         """Remove duplicate files in the directory based on their hash."""
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            for file, file_hash in executor.map(self._calculate_file_hash, self._get_files()):
+            for file, file_hash in executor.map(
+                self._calculate_file_hash, self._get_files()
+            ):
                 if file_hash in self.file_hashes:
                     self.duplicates.append(file)
                 else:

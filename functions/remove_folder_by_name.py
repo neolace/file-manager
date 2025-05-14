@@ -1,16 +1,14 @@
-
 from logging import Logger, getLogger
 from pathlib import Path
 from typing import Optional
 
-from functions.delete_all_files_folders_within_folder import delete_all_files_folders_within_folder
+from functions.delete_all_files_folders_within_folder import (
+    delete_all_files_folders_within_folder,
+)
 
 
 def remove_folder_by_name(
-    root: Path,
-    target_name: str,
-    dry_run: bool = False,
-    logger: Optional[Logger] = None
+    root: Path, target_name: str, dry_run: bool = False, logger: Optional[Logger] = None
 ) -> None:
     """
     Remove all folders with a specific name within a given root path.
@@ -31,12 +29,14 @@ def remove_folder_by_name(
         if folder.is_dir() and folder.name == target_name:
             _delete_folder(folder, dry_run, logger)
 
+
 def _validate_root_path(path: Path, logger: Logger) -> bool:
     """Validate that the root path exists."""
     if not path.exists():
         logger.error(f"Root path does not exist: {path}")
         return False
     return True
+
 
 def _delete_folder(folder: Path, dry_run: bool, logger: Logger) -> None:
     """Delete a folder or log the action in dry run mode."""

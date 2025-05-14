@@ -15,6 +15,7 @@ class OrganizerConfig:
     dry_run: bool = False
     logger: Optional[logging.Logger] = None
 
+
 class FileOrganizer:
     def __init__(self, config: OrganizerConfig):
         self.config = config
@@ -94,8 +95,9 @@ class FileOrganizer:
 
     def _log_summary(self) -> None:
         """Log organization summary."""
-        action = 'Would organize' if self.config.dry_run else 'Organized'
+        action = "Would organize" if self.config.dry_run else "Organized"
         self.logger.info(f"{action} {self.organized_count} files")
+
 
 def organize_files_by_date(
     root_path: Path,
@@ -111,7 +113,7 @@ def organize_files_by_date(
         date_format=date_format,
         use_modified_date=use_modified_date,
         dry_run=dry_run,
-        logger=logger
+        logger=logger,
     )
     organizer = FileOrganizer(config)
     organizer.organize_files()

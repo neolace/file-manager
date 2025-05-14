@@ -1,4 +1,3 @@
-
 import logging
 from enum import Enum
 from pathlib import Path
@@ -15,9 +14,11 @@ class LogLevel(str, Enum):
     ERROR = "ERROR"
     CRITICAL = "CRITICAL"
 
+
 DEFAULT_LOG_LEVEL: Final = LogLevel.INFO
 DEFAULT_LOG_FILENAME: Final = Path("default.log")
 _logger: Optional[logging.Logger] = None
+
 
 def _validate_log_level(log_level: str) -> str:
     """
@@ -37,6 +38,7 @@ def _validate_log_level(log_level: str) -> str:
         return level
     except AttributeError:
         raise ValueError(f"Invalid log level: {log_level}")
+
 
 def get_logger(log_level: str = DEFAULT_LOG_LEVEL) -> logging.Logger:
     """

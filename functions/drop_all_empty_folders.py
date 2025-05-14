@@ -3,6 +3,7 @@ from logging import Logger, getLogger
 from pathlib import Path
 from typing import Optional, List
 
+
 @dataclass
 class FolderCleanupConfig:
     path: Path
@@ -12,6 +13,7 @@ class FolderCleanupConfig:
     def __post_init__(self):
         if self.logger is None:
             self.logger = getLogger(__name__)
+
 
 def drop_all_empty_folders(
     path: Path,
@@ -34,6 +36,7 @@ def drop_all_empty_folders(
     while _process_empty_folders(config):
         continue
 
+
 def _is_valid_directory(path: Path, logger: Logger) -> bool:
     """Check if the given path is a valid directory."""
     if path.exists() and path.is_dir():
@@ -41,10 +44,12 @@ def _is_valid_directory(path: Path, logger: Logger) -> bool:
     logger.warning(f"Path does not exist or is not a directory: {path}")
     return False
 
+
 def _get_sorted_directories(base_path: Path) -> List[Path]:
     """Get all directories sorted by depth (deepest first)."""
     directories = [d for d in base_path.rglob("*") if d.is_dir()]
     return sorted(directories, key=lambda x: len(x.parts), reverse=True)
+
 
 def _process_empty_folders(config: FolderCleanupConfig) -> bool:
     """Process and delete empty folders. Returns True if any folder was deleted."""
@@ -57,12 +62,14 @@ def _process_empty_folders(config: FolderCleanupConfig) -> bool:
 
     return any_folder_deleted
 
+
 def _is_empty_folder(folder: Path) -> bool:
     """Check if the folder is empty."""
     try:
         return not any(folder.iterdir())
     except OSError:
         return False
+
 
 def _delete_folder(folder: Path, config: FolderCleanupConfig) -> bool:
     """Delete folder if not in dry run mode. Returns True if folder was deleted."""

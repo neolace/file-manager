@@ -9,10 +9,12 @@ GITHUB_URL = "https://github.com/neolace/file-manager"
 MIN_PYTHON_VERSION = ">=3.6"
 README_PATH = "README.md"
 
+
 def read_long_description(file_path: str) -> str:
     """Read and return the content of the long description file."""
     with open(file_path, "r", encoding="utf-8") as f:
         return f.read()
+
 
 # Package configuration groups
 package_metadata = {

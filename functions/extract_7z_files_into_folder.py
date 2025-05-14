@@ -8,7 +8,10 @@ SEVEN_ZIP_ARCHIVE_EXT = "*.7z"
 EXTRACT_CMD = "x"
 FORCE_YES_FLAG = "-y"
 
-def validate_paths(source_folder: Path, seven_zip_path: Path, logger: logging.Logger) -> bool:
+
+def validate_paths(
+    source_folder: Path, seven_zip_path: Path, logger: logging.Logger
+) -> bool:
     """Validate that required paths exist."""
     if not seven_zip_path.exists():
         logger.error(f"7-Zip executable not found: {seven_zip_path}")
@@ -18,11 +21,9 @@ def validate_paths(source_folder: Path, seven_zip_path: Path, logger: logging.Lo
         return False
     return True
 
+
 def extract_single_archive(
-    archive: Path,
-    output_folder: Path,
-    seven_zip_path: Path,
-    logger: logging.Logger
+    archive: Path, output_folder: Path, seven_zip_path: Path, logger: logging.Logger
 ) -> None:
     """Extract a single 7z archive to the specified output folder."""
     try:
@@ -32,7 +33,7 @@ def extract_single_archive(
                 EXTRACT_CMD,
                 str(archive),
                 f"-o{output_folder}",
-                FORCE_YES_FLAG
+                FORCE_YES_FLAG,
             ],
             check=True,
             capture_output=True,
@@ -41,10 +42,9 @@ def extract_single_archive(
     except subprocess.SubprocessError as e:
         logger.error(f"Failed to extract {archive}: {e}")
 
+
 def extract_7z_files_into_folder(
-    source_folder: Path,
-    seven_zip_path: Path,
-    logger: Optional[logging.Logger] = None
+    source_folder: Path, seven_zip_path: Path, logger: Optional[logging.Logger] = None
 ) -> None:
     """
     Extract all 7z archives from source folder into separate subfolders.

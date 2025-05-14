@@ -2,23 +2,23 @@ import logging
 from pathlib import Path
 from typing import List, Optional, Protocol
 
+
 class LoggerProtocol(Protocol):
     def info(self, msg: str) -> None: ...
     def error(self, msg: str) -> None: ...
+
 
 def find_files_by_extension(directory: Path, extension: str) -> List[Path]:
     """Find all files with given extension in directory and subdirectories."""
     return list(directory.rglob(f"*.{extension}"))
 
-def generate_new_filename(
-    original_file: Path, base_name: str, index: int
-) -> Path:
+
+def generate_new_filename(original_file: Path, base_name: str, index: int) -> Path:
     """Generate new file path with indexed name."""
     return original_file.parent / f"{base_name}_{index}{original_file.suffix}"
 
-def rename_single_file(
-    file: Path, new_path: Path, logger: LoggerProtocol
-) -> bool:
+
+def rename_single_file(file: Path, new_path: Path, logger: LoggerProtocol) -> bool:
     """Rename single file and handle errors. Returns True if successful."""
     try:
         file.rename(new_path)
@@ -27,6 +27,7 @@ def rename_single_file(
     except OSError as e:
         logger.error(f"Failed to rename {file}: {e}")
         return False
+
 
 def rename_files_by_extension(
     directory: Path,
@@ -63,5 +64,5 @@ def rename_files_by_extension(
         if rename_single_file(file, new_file_path, logger):
             renamed_count += 1
 
-    action = 'Would rename' if dry_run else 'Renamed'
+    action = "Would rename" if dry_run else "Renamed"
     logger.info(f"{action} {renamed_count} .{extension} files")

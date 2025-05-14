@@ -5,6 +5,7 @@ from typing import List
 
 class FileType(Enum):
     """Supported file types for processing."""
+
     # Images
     JPG = "jpg"
     JPEG = "jpeg"
@@ -15,7 +16,7 @@ class FileType(Enum):
     SVG = "svg"
     WEBP = "webp"
     ICO = "ico"
-    
+
     # Documents
     PDF = "pdf"
     DOC = "doc"
@@ -23,15 +24,23 @@ class FileType(Enum):
     XLS = "xls"
     XLSX = "xlsx"
     TXT = "txt"
-    
+
     # Archives
     ZIP = "zip"
     RAR = "rar"
-    
-    # Media
-    MP4 = "mp4"
+    TAR = "tar"
+    GZ = "gz"
+    BZ2 = "bz2"
+    SZ = "7z"
+
+    # Audio
     MP3 = "mp3"
     WAV = "wav"
+    OGG = "ogg"
+    FLAC = "flac"
+
+    # Media
+    MP4 = "mp4"
     AVI = "avi"
     MKV = "mkv"
     MOV = "mov"
@@ -42,7 +51,7 @@ class FileType(Enum):
     OGG = "ogg"
     OPUS = "opus"
     FLAC = "flac"
-    
+
     # Web
     JSON = "json"
     XML = "xml"
@@ -50,25 +59,19 @@ class FileType(Enum):
     CSS = "css"
     JS = "js"
 
+
 class Config:
     """Application configuration settings."""
+
     EXCLUDED_FOLDERS: List[str] = ["node_modules"]
     DEFAULT_FONT: str = "slant"
-    
+
     # Environment-dependent paths with defaults
     DEFAULT_SRC_PATH: str = os.getenv("DEFAULT_SRC_PATH", "")
     DEFAULT_DST_PATH: str = os.getenv("DEFAULT_DST_PATH", "")
     DEFAULT_LOG_PATH: str = os.getenv("DEFAULT_LOG_PATH", "")
-    
+
     @classmethod
     def get_supported_extensions(cls) -> List[str]:
         """Returns a list of all supported file extensions."""
         return [ft.value for ft in FileType]
-
-# For backward compatibility
-FILE_TYPES_TO_KEEP = Config.get_supported_extensions()
-FOLDERS_TO_REMOVE = Config.EXCLUDED_FOLDERS
-DEFAULT_SRC_PATH = Config.DEFAULT_SRC_PATH
-DEFAULT_DST_PATH = Config.DEFAULT_DST_PATH
-DEFAULT_LOG_PATH = Config.DEFAULT_LOG_PATH
-DEFAULT_FONT = Config.DEFAULT_FONT

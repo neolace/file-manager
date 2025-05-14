@@ -7,17 +7,20 @@ from typing import List, Optional, Sequence
 PathSequence = Sequence[Path]
 ExtensionList = List[str]
 
+
 @dataclass
 class DeletionConfig:
     """Configuration for file deletion process"""
+
     path: Path
     extensions: ExtensionList
     dry_run: bool = False
     logger: Optional[Logger] = None
 
+
 class FileDeleter:
     """Handles deletion of files with specified extensions"""
-    
+
     def __init__(self, config: DeletionConfig):
         self.config = config
         self.logger = self._setup_logger()
@@ -27,6 +30,7 @@ class FileDeleter:
         """Initialize or use provided logger"""
         if self.config.logger is None:
             import logging
+
             return logging.getLogger(__name__)
         return self.config.logger
 
@@ -36,8 +40,10 @@ class FileDeleter:
 
     def _should_delete_file(self, file_path: Path) -> bool:
         """Check if file should be deleted based on its extension"""
-        return (file_path.is_file() and 
-                file_path.suffix.lower().lstrip(".") in self.normalized_extensions)
+        return (
+            file_path.is_file()
+            and file_path.suffix.lower().lstrip(".") in self.normalized_extensions
+        )
 
     def _delete_file(self, file_path: Path) -> None:
         """Delete a single file with error handling"""
@@ -59,6 +65,7 @@ class FileDeleter:
         except OSError as e:
             self.logger.error(f"Error accessing {self.config.path}: {e}")
 
+
 def delete_files_by_extension(
     path: Path,
     extensions: ExtensionList,
@@ -67,7 +74,7 @@ def delete_files_by_extension(
 ) -> None:
     """
     Delete all files with the specified extensions in the given path.
-    
+
     Args:
         path: The directory path to search for files
         extensions: List of file extensions to delete (without dots)
@@ -75,11 +82,8 @@ def delete_files_by_extension(
         logger: Logger instance for output
     """
     config = DeletionConfig(
-        path=path,
-        extensions=extensions,
-        dry_run=dry_run,
-        logger=logger
+        path=path, extensions=extensions, dry_run=dry_run, logger=logger
     )
-    
+
     deleter = FileDeleter(config)
     deleter.process_files()

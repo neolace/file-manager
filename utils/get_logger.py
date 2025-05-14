@@ -5,7 +5,8 @@ from typing import Optional
 from utils.setup_logging import setup_logging
 
 # Default log file path if none is provided
-DEFAULT_LOG_PATH = Path('app.log')
+DEFAULT_LOG_PATH = Path("app.log")
+
 
 def configure_logger(log_file: Optional[Path] = DEFAULT_LOG_PATH) -> Logger:
     """

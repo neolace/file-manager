@@ -1,8 +1,9 @@
 import logging
 from typing import Callable, TypeVar, Optional, Any
 
-T = TypeVar('T')
+T = TypeVar("T")
 ERROR_MESSAGE_FORMAT = "Error executing {}: {}"
+
 
 def safe_action(
     func: Callable[..., T],

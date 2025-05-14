@@ -1,5 +1,6 @@
 EMPTY_RESULT = ""
 
+
 def find_first_non_whitespace(text: str | None) -> str:
     """
     Find the first non-whitespace character in a string.
@@ -12,12 +13,12 @@ def find_first_non_whitespace(text: str | None) -> str:
     """
     if text is None:
         raise TypeError("Input string cannot be None")
-        
+
     if not text:
         return EMPTY_RESULT
-        
+
     for character in text:
         if not character.isspace():
             return character
-            
+
     return EMPTY_RESULT

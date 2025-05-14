@@ -9,13 +9,14 @@ ExcludedItems = List[str]
 
 # Constants for log messages
 LOG_MESSAGES = {
-    'INVALID_DIR': "Directory does not exist or is not a directory: {}",
-    'SKIP_EXCLUDED': "Skipping excluded item: {}",
-    'WOULD_DELETE': "Would delete: {}",
-    'DELETED_FILE': "Deleted file: {}",
-    'DELETED_DIR': "Deleted directory: {}",
-    'DELETE_ERROR': "Error deleting {}: {}"
+    "INVALID_DIR": "Directory does not exist or is not a directory: {}",
+    "SKIP_EXCLUDED": "Skipping excluded item: {}",
+    "WOULD_DELETE": "Would delete: {}",
+    "DELETED_FILE": "Deleted file: {}",
+    "DELETED_DIR": "Deleted directory: {}",
+    "DELETE_ERROR": "Error deleting {}: {}",
 }
+
 
 def delete_all_files_folders_within_folder(
     directory_path: Path,
@@ -35,7 +36,7 @@ def delete_all_files_folders_within_folder(
     logger = logger or _get_default_logger()
 
     if not _is_valid_directory(directory_path):
-        logger.warning(LOG_MESSAGES['INVALID_DIR'].format(directory_path))
+        logger.warning(LOG_MESSAGES["INVALID_DIR"].format(directory_path))
         return
 
     excluded_names = excluded_names or []
@@ -43,35 +44,42 @@ def delete_all_files_folders_within_folder(
     for item in directory_path.iterdir():
         _process_item(item, excluded_names, dry_run, logger)
 
+
 def _get_default_logger() -> Logger:
     """Create and return a default logger."""
     import logging
+
     return logging.getLogger(__name__)
+
 
 def _is_valid_directory(path: Path) -> bool:
     """Check if the given path is a valid directory."""
     return path.exists() and path.is_dir()
 
-def _process_item(item: Path, excluded_names: ExcludedItems, dry_run: bool, logger: Logger) -> None:
+
+def _process_item(
+    item: Path, excluded_names: ExcludedItems, dry_run: bool, logger: Logger
+) -> None:
     """Process a single file system item for deletion."""
     if item.name in excluded_names:
-        logger.info(LOG_MESSAGES['SKIP_EXCLUDED'].format(item))
+        logger.info(LOG_MESSAGES["SKIP_EXCLUDED"].format(item))
         return
 
     if dry_run:
-        logger.info(LOG_MESSAGES['WOULD_DELETE'].format(item))
+        logger.info(LOG_MESSAGES["WOULD_DELETE"].format(item))
         return
 
     try:
         _delete_item(item, logger)
     except Exception as e:
-        logger.error(LOG_MESSAGES['DELETE_ERROR'].format(item, e))
+        logger.error(LOG_MESSAGES["DELETE_ERROR"].format(item, e))
+
 
 def _delete_item(item: Path, logger: Logger) -> None:
     """Delete a file system item and log the action."""
     if item.is_file() or item.is_symlink():
         item.unlink()
-        logger.info(LOG_MESSAGES['DELETED_FILE'].format(item))
+        logger.info(LOG_MESSAGES["DELETED_FILE"].format(item))
     elif item.is_dir():
         shutil.rmtree(item)
-        logger.info(LOG_MESSAGES['DELETED_DIR'].format(item))
+        logger.info(LOG_MESSAGES["DELETED_DIR"].format(item))

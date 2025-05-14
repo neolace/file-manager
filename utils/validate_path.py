@@ -1,17 +1,16 @@
-
 from logging import Logger, getLogger
 from pathlib import Path
 
 PATH_NOT_EXIST_ERROR = "Path does not exist: {}"
 
+
 def get_default_logger() -> Logger:
     """Create and return a default logger instance."""
     return getLogger(__name__)
 
+
 def validate_path(
-    path: Path,
-    require_existence: bool = True,
-    logger: Logger | None = None
+    path: Path, require_existence: bool = True, logger: Logger | None = None
 ) -> bool:
     """
     Validate a file or directory path.

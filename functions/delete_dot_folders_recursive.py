@@ -7,12 +7,15 @@ from typing import List, Optional, Sequence
 DOT_PREFIX = "."
 PathSequence = Sequence[Path]
 
+
 @dataclass
 class DeletionConfig:
     """Configuration for folder deletion process"""
+
     excluded_names: List[str]
     dry_run: bool
     logger: Logger
+
 
 def find_dot_folders(root_path: Path, excluded_names: List[str]) -> PathSequence:
     """
@@ -34,6 +37,7 @@ def find_dot_folders(root_path: Path, excluded_names: List[str]) -> PathSequence
     ]
     return sorted(dot_folders, key=lambda x: len(x.parts), reverse=True)
 
+
 def delete_folder(folder: Path, config: DeletionConfig) -> None:
     """
     Delete a single folder with logging.
@@ -52,6 +56,7 @@ def delete_folder(folder: Path, config: DeletionConfig) -> None:
     except OSError as e:
         config.logger.error(f"Error deleting dot folder {folder}: {e}")
 
+
 def delete_dot_folders_recursive(
     root_path: Path,
     excluded_names: Optional[List[str]] = None,
@@ -69,12 +74,11 @@ def delete_dot_folders_recursive(
     """
     if logger is None:
         import logging
+
         logger = logging.getLogger(__name__)
 
     config = DeletionConfig(
-        excluded_names=excluded_names or [],
-        dry_run=dry_run,
-        logger=logger
+        excluded_names=excluded_names or [], dry_run=dry_run, logger=logger
     )
 
     try:
