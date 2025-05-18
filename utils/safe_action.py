@@ -1,16 +1,15 @@
 import logging
-from typing import Callable, TypeVar, Optional, Any
+from typing import Callable, Optional, Any
 
-T = TypeVar("T")
-ERROR_MESSAGE_FORMAT = "Error executing {}: {}"
+from config.Config import Config
 
 
 def safe_action(
-    func: Callable[..., T],
+    func: Callable[..., Config.T],
     *args: Any,
     logger: logging.Logger = logging.getLogger(__name__),
     **kwargs: Any
-) -> Optional[T]:
+) -> Optional[Config.T]:
     """
     Safely execute a function with error handling.
 
@@ -27,5 +26,5 @@ def safe_action(
         result = func(*args, **kwargs)
         return result
     except Exception as e:
-        logger.error(ERROR_MESSAGE_FORMAT.format(func.__name__, e))
+        logger.error(Config.ERROR_MESSAGE_FORMAT.format(func.__name__, e))
         return None

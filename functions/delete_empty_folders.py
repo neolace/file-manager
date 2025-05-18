@@ -1,3 +1,4 @@
+import logging
 from logging import Logger
 from pathlib import Path
 from typing import Optional
@@ -25,8 +26,6 @@ def delete_empty_folders(
         ValueError: If the path doesn't exist or is not a directory
     """
     if logger is None:
-        import logging
-
         logger = logging.getLogger(__name__)
 
     if not path.exists() or not path.is_dir():
@@ -34,30 +33,26 @@ def delete_empty_folders(
 
     deleted_count = 0
 
-    def _delete_folder(folder: Path) -> bool:
+    def _delete_folder(source_folder: Path) -> bool:
         """Helper function to delete a single folder if empty."""
         try:
-            if not any(folder.iterdir()):
+            if not any(source_folder.iterdir()):
                 if dry_run:
-                    logger.info(f"Would delete empty folder: {folder}")
+                    logger.info(f"Would delete empty folder: {source_folder}")
                 else:
-                    folder.rmdir()
-                    logger.info(f"Deleted empty folder: {folder}")
+                    source_folder.rmdir()
+                    logger.info(f"Deleted empty folder: {source_folder}")
                 return True
         except PermissionError:
-            logger.error(f"Permission denied accessing folder: {folder}")
+            logger.error(f"Permission denied accessing folder: {source_folder}")
         except OSError as e:
-            logger.error(f"Error processing folder {folder}: {e}")
+            logger.error(f"Error processing folder {source_folder}: {e}")
         return False
 
     while True:
         folders_deleted = 0
-        # Sort by depth (deepest first) to handle nested empty folders efficiently
-        dirs = sorted(
-            [d for d in path.rglob("*") if d.is_dir()],
-            key=lambda x: len(x.parts),
-            reverse=True,
-        )
+        # Collect directories without sorting unnecessarily
+        dirs = [d for d in path.glob("**/*") if d.is_dir()]
 
         for folder in dirs:
             if _delete_folder(folder):

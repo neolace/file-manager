@@ -1,22 +1,10 @@
 import logging
-from enum import Enum
 from pathlib import Path
-from typing import Optional, Final
+from typing import Optional
 
-from config import settings
+from config.Config import Config
 from utils.setup_logging import setup_logging
 
-
-class LogLevel(str, Enum):
-    INFO = "INFO"
-    DEBUG = "DEBUG"
-    WARNING = "WARNING"
-    ERROR = "ERROR"
-    CRITICAL = "CRITICAL"
-
-
-DEFAULT_LOG_LEVEL: Final = LogLevel.INFO
-DEFAULT_LOG_FILENAME: Final = Path("default.log")
 _logger: Optional[logging.Logger] = None
 
 
@@ -40,7 +28,7 @@ def _validate_log_level(log_level: str) -> str:
         raise ValueError(f"Invalid log level: {log_level}")
 
 
-def get_logger(log_level: str = DEFAULT_LOG_LEVEL) -> logging.Logger:
+def get_logger(log_level: str = Config.DEFAULT_LOG_LEVEL) -> logging.Logger:
     """
     Returns a configured logger instance. Creates new logger if none exists.
 
@@ -56,7 +44,7 @@ def get_logger(log_level: str = DEFAULT_LOG_LEVEL) -> logging.Logger:
     logging_level = _validate_log_level(log_level)
 
     if _logger is None:
-        log_file = Path(getattr(settings, "DEFAULT_LOG_PATH", DEFAULT_LOG_FILENAME))
+        log_file = Path(Config.DEFAULT_LOG_FILENAME)
         _logger = setup_logging(log_file)
         _logger.setLevel(logging_level)
 

@@ -40,18 +40,18 @@ class FileOrganizer:
             self.logger.error(f"Error organizing files by date: {e}")
 
     def _validate_source_folder(self) -> bool:
-        """Check if source folder exists."""
+        """Check if the source folder exists."""
         if not self.config.root_path.exists():
             self.logger.error(f"Source folder does not exist: {self.config.root_path}")
             return False
         return True
 
     def _get_files(self) -> List[Path]:
-        """Get all files from source folder."""
+        """Get all files from the source folder."""
         return [f for f in self.config.root_path.rglob("*") if f.is_file()]
 
     def _ensure_target_folder(self) -> None:
-        """Create target folder if it doesn't exist and not in dry run mode."""
+        """Create a target folder if it doesn't exist and not in dry run mode."""
         if not self.config.dry_run and not self.config.target_folder.exists():
             self.config.target_folder.mkdir(parents=True, exist_ok=True)
             self.logger.info(f"Created target directory: {self.config.target_folder}")
@@ -63,7 +63,7 @@ class FileOrganizer:
         return datetime.datetime.fromtimestamp(timestamp)
 
     def _get_target_path(self, file: Path, date_folder: Path) -> Path:
-        """Generate unique target path for file."""
+        """Generate a unique target path for a file."""
         target_path = date_folder / file.name
         counter = 1
         while not self.config.dry_run and target_path.exists():

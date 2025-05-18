@@ -4,13 +4,14 @@ from logging import Logger
 from pathlib import Path
 from typing import List, Optional, Sequence
 
-DOT_PREFIX = "."
+from config.Config import Config
+
 PathSequence = Sequence[Path]
 
 
 @dataclass
 class DeletionConfig:
-    """Configuration for folder deletion process"""
+    """Configuration for a folder deletion process"""
 
     excluded_names: List[str]
     dry_run: bool
@@ -32,7 +33,7 @@ def find_dot_folders(root_path: Path, excluded_names: List[str]) -> PathSequence
         item
         for item in root_path.rglob("*")
         if item.is_dir()
-        and item.name.startswith(DOT_PREFIX)
+        and item.name.startswith(Config.HIDDEN_PREFIX)
         and item.name not in excluded_names
     ]
     return sorted(dot_folders, key=lambda x: len(x.parts), reverse=True)

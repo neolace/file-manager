@@ -1,14 +1,11 @@
 import logging
 from abc import ABC, abstractmethod
 from argparse import Namespace
-from dataclasses import dataclass
 from enum import Enum, auto
 from pathlib import Path
 from typing import Dict, Type
 
-from config import settings
-from functions.deduplicate import FileDeduplicator
-from functions.process_files import process_files
+from functions.FileDeduplicator import FileDeduplicator
 from utils.parse_arguments import parse_arguments
 from utils.setup_logging import setup_logging
 
@@ -22,7 +19,7 @@ class CommandType(Enum):
     REMOVE_FOLDER = auto()
 
 
-class CommandInterface(ABC):
+class CommandInterface:
     """Base interface for all commands"""
 
     @abstractmethod
@@ -42,45 +39,14 @@ class CommandInterface(ABC):
         pass
 
 
-class DeduplicateCommand(CommandInterface):
-    @property
-    def description(self) -> str:
-        return "Deduplicate files in directory"
-
-    def validate(self, args: Namespace) -> None:
-        if not args.directory:
-            raise ValueError(
-                "The 'directory' argument is required for the 'deduplicate' command."
-            )
-
-
-from argparse import Namespace
-import logging
-from typing import Optional
-
-
-@dataclass
-class DeduplicationConfig:
-    directory: str
-    max_workers: int
-    dry_run: bool
-    logger: Optional[logging.Logger]
-
-
-class DeduplicateCommand(CommandInterface):
+class DeduplicateCommand(CommandInterface, ABC):
     def execute(self, args: Namespace, logger: logging.Logger) -> None:
-        config = DeduplicationConfig(
-            directory=args.directory,
-            max_workers=args.max_workers,
-            logger=logger,
-            dry_run=args.dry_run,
-        )
 
         deduplicator = FileDeduplicator(
-            directory=config.directory,
-            max_workers=config.max_workers,
-            logger=config.logger,
-            dry_run=config.dry_run,
+            directory=args.directory,
+            max_workers=args.max_workers,
+            logger=args.logger,
+            dry_run=args.dry_run,
         )
         deduplicator.deduplicate()
 
@@ -91,19 +57,13 @@ class MoveCommand(CommandInterface):
         return "Move files between directories"
 
     def validate(self, args: Namespace) -> None:
-        if not args.src or not args.dst:
+        if not args.src_dir or not args.dst_dir:
             raise ValueError(
-                "Both 'src' and 'dst' arguments are required for the 'move' command."
+                "Both 'src_dir' and 'dst_dir' arguments are required for the 'move' command."
             )
 
     def execute(self, args: Namespace, logger: logging.Logger) -> None:
-        process_files(
-            src_dir=args.src,
-            dst_dir=args.dst,
-            file_types=args.file_types,
-            dry_run=args.dry_run,
-            logger=logger,
-        )
+        return
 
 
 class CommandRegistry:
@@ -145,7 +105,9 @@ class CommandHandler:
 
 def main() -> int:
     args = parse_arguments()
-    log_file = Path(args.log or getattr(settings, "DEFAULT_LOG_PATH", "default.log"))
+    log_file = Path(args.log)
+    print(f"log_file={log_file}")
     logger = setup_logging(log_file)
-    handler = CommandHandler(logger)
-    return handler.execute(args)
+    # handler = CommandHandler(logger)
+    # return handler.execute(args)
+    return 0

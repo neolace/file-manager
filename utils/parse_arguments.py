@@ -1,29 +1,25 @@
 from argparse import ArgumentParser, Namespace
 
-# Constants for commands and arguments
-COMMAND_DEDUPLICATE = "deduplicate"
-ARG_LOG = "--log"
-ARG_DRY_RUN = "--dry-run"
-ARG_PATH = "--path"
+from config.Config import Config
 
 
 def add_common_arguments(parser: ArgumentParser) -> None:
     """Add arguments that are common to all commands."""
-    parser.add_argument(ARG_LOG.lstrip("-"), help="Path to the log file.")
+    parser.add_argument(Config.ARG_LOG.lstrip("-"), help="Path to the log file.")
     parser.add_argument(
-        ARG_DRY_RUN.lstrip("-"),
+        Config.ARG_DRY_RUN.lstrip("-"),
         action="store_true",
         help="Simulate the command without making changes.",
     )
 
 
 def setup_deduplicate_command(subparsers) -> None:
-    """Setup the deduplicate command and its specific arguments."""
+    """Set up the deduplicate command and its specific arguments."""
     dedup_parser = subparsers.add_parser(
-        COMMAND_DEDUPLICATE, help="Remove duplicate files in a directory."
+        Config.COMMAND_DEDUPLICATE, help="Remove duplicate files in a directory."
     )
     dedup_parser.add_argument(
-        ARG_PATH.lstrip("-"),
+        Config.ARG_PATH.lstrip("-"),
         required=True,
         help="Path to the directory to deduplicate.",
     )

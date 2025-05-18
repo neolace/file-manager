@@ -2,13 +2,11 @@ from logging import Logger
 from pathlib import Path
 from typing import Optional
 
+from config.Config import Config
 from utils.setup_logging import setup_logging
 
-# Default log file path if none is provided
-DEFAULT_LOG_PATH = Path("app.log")
 
-
-def configure_logger(log_file: Optional[Path] = DEFAULT_LOG_PATH) -> Logger:
+def configure_logger(log_file: Optional[Path] = Config.DEFAULT_LOG_PATH) -> Logger:
     """
     Configure and return a centralized logger instance.
 

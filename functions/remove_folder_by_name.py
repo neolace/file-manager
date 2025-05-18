@@ -1,10 +1,7 @@
+import os
 from logging import Logger, getLogger
 from pathlib import Path
 from typing import Optional
-
-from functions.delete_all_files_folders_within_folder import (
-    delete_all_files_folders_within_folder,
-)
 
 
 def remove_folder_by_name(
@@ -44,7 +41,7 @@ def _delete_folder(folder: Path, dry_run: bool, logger: Logger) -> None:
         logger.info(f"Would delete: {folder}")
     else:
         try:
-            delete_all_files_folders_within_folder(folder)
+            os.rmdir(folder)
             logger.info(f"Deleted contents of: {folder}")
         except OSError as e:
             logger.error(f"Error deleting {folder}: {e}")

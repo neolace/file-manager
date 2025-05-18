@@ -3,10 +3,7 @@ from logging import Logger
 from pathlib import Path
 from typing import Callable, Optional
 
-# Constants for log messages
-LOG_WOULD_APPLY = "Would apply action to: {}"
-LOG_APPLIED = "Applied action to: {}"
-LOG_ERROR = "Error applying action to {}: {}"
+from config.Config import Config
 
 
 def get_default_logger() -> Logger:
@@ -19,14 +16,14 @@ def apply_action_to_item(
 ) -> None:
     """Apply the given action to an item with proper logging."""
     if dry_run:
-        logger.info(LOG_WOULD_APPLY.format(item))
+        logger.info(Config.LOG_WOULD_APPLY.format(item))
         return
 
     try:
         action(item)
-        logger.info(LOG_APPLIED.format(item))
+        logger.info(Config.LOG_APPLIED.format(item))
     except Exception as e:
-        logger.error(LOG_ERROR.format(item, e))
+        logger.error(Config.LOG_ERROR.format(item, e))
 
 
 def traverse_and_apply(

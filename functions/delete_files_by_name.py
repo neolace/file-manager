@@ -44,7 +44,7 @@ def process_directory(
     dry_run: bool,
     logger: Logger,
 ) -> None:
-    """Process all files in directory and its subdirectories."""
+    """Process all files in the directory and its subdirectories."""
     for item in path.rglob("*"):
         if item.is_file():
             handle_file(item, target_filenames, case_sensitive, dry_run, logger)

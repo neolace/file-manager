@@ -30,7 +30,7 @@ def list_files_by_extension(
         List of Path objects representing the files found
 
     Raises:
-        ValueError: If root_path doesn't exist or extension is empty
+        ValueError: If root_path doesn't exist or the extension is empty
     """
     if not extension:
         raise ValueError("Extension cannot be empty")

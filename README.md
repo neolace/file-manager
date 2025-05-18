@@ -4,13 +4,18 @@ Refactor the following code:
 
 ```markdown
 # File Manager CLI
+
 A command-line interface tool for file management operations such as deduplication and file moving/organization.
+
 ## Features
+
 - **File Deduplication**: Remove duplicate files from a directory
 - **File Organization**: Move files from source to destination directories with filtering by file types
 - **Dry Run Mode**: Preview changes without making actual modifications
 - **Detailed Logging**: Comprehensive logging of all operations
+
 ## Installation
+
 ```bash
 # Clone the repository
 git clone https://github.com/yourusername/file-manager.git
@@ -41,7 +46,7 @@ python main.py move --src /path/to/source --dst /path/to/destination [--file-typ
 - `--directory`: Directory to scan for duplicates
 - `--src`: Source directory for file operations
 - `--dst`: Destination directory for file operations
-- `--file-types`: List of file extensions to process (e.g., jpg png pdf)
+- `--file-types`: List of file extensions to process (e.g., JPG PNG PDF)
 - `--dry-run`: Preview changes without making actual modifications
 - `--log`: Custom log file path (default: uses value from config)
 
@@ -250,7 +255,7 @@ python main.py --help
 #### 2. `Permission Denied` Error
 
 - **Cause**: Insufficient permissions to access the specified directory or file.
-- **Solution**: Ensure you have the necessary permissions. You may need to run the command with elevated privileges (
+- **Solution**: Ensure you have the necessary permissions. You may need to run the command with elevated privileges(
   e.g., `sudo` on Linux/Mac or as an administrator on Windows).
 
 #### 3. Missing Dependencies

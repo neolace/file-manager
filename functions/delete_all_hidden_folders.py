@@ -3,8 +3,10 @@ from logging import Logger, getLogger
 from pathlib import Path
 from typing import Optional, List, Sequence
 
+from config.Config import Config
+
 # Constants
-HIDDEN_PREFIX = "."
+
 DEFAULT_LOGGER_NAME = __name__
 
 # Custom type hints
@@ -31,7 +33,7 @@ def find_hidden_folders(root_path: Path, excluded_names: List[str]) -> PathSeque
         item
         for item in root_path.rglob("*")
         if item.is_dir()
-        and item.name.startswith(HIDDEN_PREFIX)
+        and item.name.startswith(Config.HIDDEN_PREFIX)
         and item.name not in excluded_names
     ]
     return sorted(hidden_folders, key=lambda x: len(x.parts), reverse=True)

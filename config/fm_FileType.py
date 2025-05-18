@@ -1,9 +1,7 @@
-import os
 from enum import Enum
-from typing import List
 
 
-class FileType(Enum):
+class fm_FileType(Enum):
     """Supported file types for processing."""
 
     # Images
@@ -24,6 +22,7 @@ class FileType(Enum):
     XLS = "xls"
     XLSX = "xlsx"
     TXT = "txt"
+    MD = "md"
 
     # Archives
     ZIP = "zip"
@@ -56,20 +55,5 @@ class FileType(Enum):
     HTML = "html"
     CSS = "css"
     JS = "js"
-
-
-class Config:
-    """Application configuration settings."""
-
-    EXCLUDED_FOLDERS: List[str] = ["node_modules"]
-    DEFAULT_FONT: str = "slant"
-
-    # Environment-dependent paths with defaults
-    DEFAULT_SRC_PATH: str = os.getenv("DEFAULT_SRC_PATH", "")
-    DEFAULT_DST_PATH: str = os.getenv("DEFAULT_DST_PATH", "")
-    DEFAULT_LOG_PATH: str = os.getenv("DEFAULT_LOG_PATH", "")
-
-    @classmethod
-    def get_supported_extensions(cls) -> List[str]:
-        """Returns a list of all supported file extensions."""
-        return [ft.value for ft in FileType]
+    CS = "cs"
+    TS = "ts"

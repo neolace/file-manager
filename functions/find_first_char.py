@@ -1,4 +1,4 @@
-EMPTY_RESULT = ""
+from config.Config import Config
 
 
 def find_first_non_whitespace(text: str | None) -> str:
@@ -7,7 +7,7 @@ def find_first_non_whitespace(text: str | None) -> str:
     Args:
         text: The input string to search through
     Returns:
-        The first non-whitespace character, or an empty string if none found
+        The first non-whitespace character, or an empty string if none is found
     Raises:
         TypeError: If input is None
     """
@@ -15,10 +15,10 @@ def find_first_non_whitespace(text: str | None) -> str:
         raise TypeError("Input string cannot be None")
 
     if not text:
-        return EMPTY_RESULT
+        return Config.EMPTY_RESULT
 
     for character in text:
         if not character.isspace():
             return character
 
-    return EMPTY_RESULT
+    return Config.EMPTY_RESULT

@@ -11,14 +11,14 @@ def setup_logging(log_file: Path) -> logging.Logger:
     :return: Configured logger instance.
     """
     logger = logging.getLogger("file_manager")
-    logger.setLevel(logging.DEBUG)  # Set default logging level to DEBUG
+    logger.setLevel(logging.DEBUG)  # Set the default logging level to DEBUG
 
     try:
-        # Create file handler
+        # Create a file handler
         file_handler = logging.FileHandler(log_file)
         file_handler.setLevel(logging.DEBUG)
 
-        # Create console handler
+        # Create a console handler
         console_handler = logging.StreamHandler()
         console_handler.setLevel(logging.INFO)
 
@@ -29,7 +29,7 @@ def setup_logging(log_file: Path) -> logging.Logger:
         file_handler.setFormatter(formatter)
         console_handler.setFormatter(formatter)
 
-        # Add handlers to logger
+        # Add handlers to the logger
         logger.addHandler(file_handler)
         logger.addHandler(console_handler)
 

@@ -72,7 +72,7 @@ def _is_empty_folder(folder: Path) -> bool:
 
 
 def _delete_folder(folder: Path, config: FolderCleanupConfig) -> bool:
-    """Delete folder if not in dry run mode. Returns True if folder was deleted."""
+    """Delete the folder if not in dry run mode. Returns True if the folder was deleted."""
     try:
         if config.dry_run:
             config.logger.info(f"Would delete empty folder: {folder}")

@@ -1,16 +1,14 @@
 from dataclasses import dataclass
 from logging import Logger
 from pathlib import Path
-from typing import List, Optional, Sequence
+from typing import Optional
 
-# Type aliases for better clarity
-PathSequence = Sequence[Path]
-ExtensionList = List[str]
+from config.Config import ExtensionList
 
 
 @dataclass
 class DeletionConfig:
-    """Configuration for file deletion process"""
+    """Configuration for a file deletion process"""
 
     path: Path
     extensions: ExtensionList
@@ -39,7 +37,7 @@ class FileDeleter:
         return [ext.lower().lstrip(".") for ext in self.config.extensions]
 
     def _should_delete_file(self, file_path: Path) -> bool:
-        """Check if file should be deleted based on its extension"""
+        """Check if a file should be deleted based on its extension"""
         return (
             file_path.is_file()
             and file_path.suffix.lower().lstrip(".") in self.normalized_extensions

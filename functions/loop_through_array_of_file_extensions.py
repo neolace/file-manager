@@ -1,8 +1,8 @@
 import logging
 from pathlib import Path
-from typing import List, Optional
-from typing import Protocol
+from typing import List, Optional, Protocol
 
+from config.Config import Config
 from functions.rename_files_by_extension import rename_files_by_extension
 
 
@@ -14,26 +14,20 @@ class LoggerProtocol(Protocol):
         pass
 
 
-# Constants for error messages
-ERROR_NO_EXTENSIONS = "No file extensions provided."
-ERROR_PATH_NOT_EXISTS = "Root path does not exist: {}"
-ERROR_NOT_DIRECTORY = "Root path is not a directory: {}"
-
-
 def validate_inputs(
     root_path: Path, extensions: List[str], logger: LoggerProtocol
 ) -> bool:
     """Validate input parameters before processing."""
     if not extensions:
-        logger.error(ERROR_NO_EXTENSIONS)
+        logger.error(Config.ERROR_NO_EXTENSIONS)
         return False
 
     if not root_path.exists():
-        logger.error(ERROR_PATH_NOT_EXISTS.format(root_path))
+        logger.error(Config.ERROR_PATH_NOT_EXISTS.format(root_path))
         return False
 
     if not root_path.is_dir():
-        logger.error(ERROR_NOT_DIRECTORY.format(root_path))
+        logger.error(Config.ERROR_NOT_DIRECTORY.format(root_path))
         return False
 
     return True

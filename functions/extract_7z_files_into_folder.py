@@ -3,10 +3,7 @@ import subprocess
 from pathlib import Path
 from typing import Optional
 
-# Constants
-SEVEN_ZIP_ARCHIVE_EXT = "*.7z"
-EXTRACT_CMD = "x"
-FORCE_YES_FLAG = "-y"
+from config.Config import Config
 
 
 def validate_paths(
@@ -30,10 +27,10 @@ def extract_single_archive(
         subprocess.run(
             [
                 str(seven_zip_path),
-                EXTRACT_CMD,
+                Config.EXTRACT_CMD,
                 str(archive),
                 f"-o{output_folder}",
-                FORCE_YES_FLAG,
+                Config.FORCE_YES_FLAG,
             ],
             check=True,
             capture_output=True,
@@ -47,7 +44,7 @@ def extract_7z_files_into_folder(
     source_folder: Path, seven_zip_path: Path, logger: Optional[logging.Logger] = None
 ) -> None:
     """
-    Extract all 7z archives from source folder into separate subfolders.
+    Extract all 7z archives from the source folder into separate subfolders.
 
     Args:
         source_folder: Path to folder containing 7z archives
@@ -61,7 +58,7 @@ def extract_7z_files_into_folder(
     if not validate_paths(source_folder, seven_zip_path, logger):
         return
 
-    archives = list(source_folder.glob(SEVEN_ZIP_ARCHIVE_EXT))
+    archives = list(source_folder.glob(Config.SEVEN_ZIP_ARCHIVE_EXT))
     logger.info(f"Found {len(archives)} .7z archives to extract")
 
     for archive in archives:

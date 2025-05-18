@@ -1,7 +1,7 @@
 from logging import Logger, getLogger
 from pathlib import Path
 
-PATH_NOT_EXIST_ERROR = "Path does not exist: {}"
+from config.Config import Config
 
 
 def get_default_logger() -> Logger:
@@ -26,7 +26,7 @@ def validate_path(
     current_logger = logger or get_default_logger()
 
     if require_existence and not path.exists():
-        current_logger.error(PATH_NOT_EXIST_ERROR.format(path))
+        current_logger.error(Config.PATH_NOT_EXIST_ERROR.format(path))
         return False
 
     return True

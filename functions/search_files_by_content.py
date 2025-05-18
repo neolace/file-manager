@@ -5,7 +5,7 @@ from typing import List, Optional
 
 from dill import settings
 
-DEFAULT_ENCODING = "utf-8"
+from config.Config import Config
 
 
 def search_files_by_content(
@@ -87,7 +87,12 @@ def _file_contains_pattern(
 ) -> bool:
     """Check if a file contains the given pattern."""
     try:
-        with open(file, "r", encoding=DEFAULT_ENCODING, errors="ignore") as f:
+        with open(
+            file,
+            "r",
+            encoding=Config.DEFAULT_ENCODING,
+            errors="ignore",
+        ) as f:
             return any(pattern.search(line) for line in f)
     except IOError as e:
         logger.error(f"Error reading {file}: {e}")

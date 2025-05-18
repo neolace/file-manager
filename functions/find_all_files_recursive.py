@@ -9,7 +9,7 @@ def find_files(
     Find all files in a directory and its subdirectories with optional filtering.
 
     Args:
-        directory (Path): The root directory to search
+        directory (Path): The root directory to a search
         pattern (str): Glob pattern for file matching (default: "*")
         extensions (List[str], optional): List of file extensions to filter by (e.g. [".txt", ".py"])
 
@@ -17,7 +17,7 @@ def find_files(
         List[Path]: List of matching file paths
 
     Raises:
-        ValueError: If directory doesn't exist or is not a directory
+        ValueError: If a directory doesn't exist or is not a directory
     """
     if not directory.exists():
         raise ValueError(f"Directory does not exist: {directory}")

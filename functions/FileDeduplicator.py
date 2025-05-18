@@ -4,9 +4,7 @@ from logging import Logger
 from pathlib import Path
 from typing import Optional, Iterator, Dict, List, Tuple
 
-# Constants
-DEFAULT_BUFFER_SIZE = 65536
-DEFAULT_MAX_WORKERS = 1
+from config.Config import Config
 
 # Type aliases
 FileHashResult = Tuple[Path, str]
@@ -16,7 +14,7 @@ class FileDeduplicator:
     def __init__(
         self,
         directory: str,
-        max_workers: int = DEFAULT_MAX_WORKERS,
+        max_workers: int = Config.DEFAULT_MAX_WORKERS,
         logger: Optional[Logger] = None,
         dry_run: bool = False,
     ) -> None:
@@ -35,7 +33,8 @@ class FileDeduplicator:
             return logging.getLogger(__name__)
         return logger
 
-    def _calculate_file_hash(self, file: Path) -> FileHashResult:
+    @staticmethod
+    def _calculate_file_hash(file: Path) -> FileHashResult:
         """Calculate the hash of a file using a buffered approach.
 
         Args:
@@ -46,7 +45,7 @@ class FileDeduplicator:
         """
         hasher = hashlib.md5()
         with file.open("rb") as f:
-            while chunk := f.read(DEFAULT_BUFFER_SIZE):
+            while chunk := f.read(Config.DEFAULT_BUFFER_SIZE):
                 hasher.update(chunk)
         return file, hasher.hexdigest()
 

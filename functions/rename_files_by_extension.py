@@ -9,17 +9,17 @@ class LoggerProtocol(Protocol):
 
 
 def find_files_by_extension(directory: Path, extension: str) -> List[Path]:
-    """Find all files with given extension in directory and subdirectories."""
+    """Find all files with the given extension in directory and subdirectories."""
     return list(directory.rglob(f"*.{extension}"))
 
 
 def generate_new_filename(original_file: Path, base_name: str, index: int) -> Path:
-    """Generate new file path with indexed name."""
+    """Generate a new file path with an indexed name."""
     return original_file.parent / f"{base_name}_{index}{original_file.suffix}"
 
 
 def rename_single_file(file: Path, new_path: Path, logger: LoggerProtocol) -> bool:
-    """Rename single file and handle errors. Returns True if successful."""
+    """Rename a single file and handle errors. Returns True if successful."""
     try:
         file.rename(new_path)
         logger.info(f"Renamed {file} to {new_path}")
