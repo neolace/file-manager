@@ -2,9 +2,7 @@ import logging
 import re
 from pathlib import Path
 from typing import List, Optional
-
-from dill import settings
-
+from config import fm_FileType
 from config.Config import Config
 
 
@@ -40,7 +38,7 @@ def search_files_by_content(
         matching_files = _find_matching_files(
             root_path=root_path,
             search_text=search_text,
-            file_types=file_types or settings.FILE_TYPES_TO_KEEP,
+            file_types=file_types or fm_FileType.fm_fileTypeList,
             case_sensitive=case_sensitive,
             logger=logger,
         )

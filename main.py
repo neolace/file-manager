@@ -1,5 +1,5 @@
 import logging
-from abc import ABC, abstractmethod
+from abc import abstractmethod
 from argparse import Namespace
 from enum import Enum, auto
 from pathlib import Path
@@ -7,7 +7,6 @@ from typing import Dict, Type
 
 from functions.FileDeduplicator import FileDeduplicator
 from utils.parse_arguments import parse_arguments
-from utils.setup_logging import setup_logging
 
 
 class CommandType(Enum):
@@ -39,13 +38,22 @@ class CommandInterface:
         pass
 
 
-class DeduplicateCommand(CommandInterface, ABC):
-    def execute(self, args: Namespace, logger: logging.Logger) -> None:
+class DeduplicateCommand(CommandInterface):
+    @property
+    def description(self) -> str:
+        return "Deduplicate files in a directory"
 
+    def validate(self, args: Namespace) -> None:
+        if not args.directory:
+            raise ValueError(
+                "'directory' argument is required for the 'deduplicate' command."
+            )
+
+    def execute(self, args: Namespace, logger: logging.Logger) -> None:
         deduplicator = FileDeduplicator(
             directory=args.directory,
             max_workers=args.max_workers,
-            logger=args.logger,
+            logger=logger,
             dry_run=args.dry_run,
         )
         deduplicator.deduplicate()
@@ -106,8 +114,11 @@ class CommandHandler:
 def main() -> int:
     args = parse_arguments()
     log_file = Path(args.log)
-    print(f"log_file={log_file}")
+    from utils.setup_logging import setup_logging
     logger = setup_logging(log_file)
-    # handler = CommandHandler(logger)
-    # return handler.execute(args)
-    return 0
+    handler = CommandHandler(logger)
+    return handler.execute(args)
+
+if __name__ == "__main__":
+    exit_code = main()
+    exit(exit_code)

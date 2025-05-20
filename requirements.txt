@@ -1,4 +1,0 @@
-pathlib~=1.0.1
-typing~=3.7.4.3
-setuptools~=80.4.0
-dill~=0.3.8

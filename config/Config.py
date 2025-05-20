@@ -2,7 +2,7 @@ from enum import Enum
 from pathlib import Path
 from typing import Final, List, Optional, Union, TypeAlias, TypeVar, Callable, Sequence
 
-from config.fm_FileType import fm_FileType
+import config.fm_FileType
 
 PathLike: TypeAlias = Union[str, Path]
 ExtensionList: TypeAlias = List[str]
@@ -60,7 +60,7 @@ class Config:
     @classmethod
     def get_supported_extensions(cls) -> List[str]:
         """Returns a list of all supported file extensions."""
-        return [ft.value for ft in fm_FileType]
+        return [ft.value for ft in config.fm_fileTypeList]
 
     @classmethod
     def get_log_message(cls, key: str) -> str:

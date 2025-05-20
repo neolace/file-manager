@@ -24,8 +24,8 @@ def _validate_log_level(log_level: str) -> str:
         if not hasattr(logging, level):
             raise ValueError(f"Invalid log level: {log_level}")
         return level
-    except AttributeError:
-        raise ValueError(f"Invalid log level: {log_level}")
+    except AttributeError as exc:
+        raise ValueError(f"Invalid log level: {log_level}") from exc
 
 
 def get_logger(log_level: str = Config.DEFAULT_LOG_LEVEL) -> logging.Logger:
