@@ -6,11 +6,11 @@ DEFAULT_LOGGER = getLogger(__name__)
 
 
 def delete_files_by_name(
-    path: Path,
-    filenames: List[str],
-    case_sensitive: bool = False,
-    dry_run: bool = False,
-    logger: Optional[Logger] = None,
+        path: Path,
+        filenames: List[str],
+        case_sensitive: bool = False,
+        dry_run: bool = False,
+        logger: Optional[Logger] = None,
 ) -> None:
     """
     Delete all files with the specified names in the given path.
@@ -38,11 +38,11 @@ def prepare_filenames(filenames: List[str], case_sensitive: bool) -> List[str]:
 
 
 def process_directory(
-    path: Path,
-    target_filenames: List[str],
-    case_sensitive: bool,
-    dry_run: bool,
-    logger: Logger,
+        path: Path,
+        target_filenames: List[str],
+        case_sensitive: bool,
+        dry_run: bool,
+        logger: Logger,
 ) -> None:
     """Process all files in the directory and its subdirectories."""
     for item in path.rglob("*"):
@@ -51,11 +51,11 @@ def process_directory(
 
 
 def handle_file(
-    file_path: Path,
-    target_filenames: List[str],
-    case_sensitive: bool,
-    dry_run: bool,
-    logger: Logger,
+        file_path: Path,
+        target_filenames: List[str],
+        case_sensitive: bool,
+        dry_run: bool,
+        logger: Logger,
 ) -> None:
     """Handle individual file processing and deletion."""
     compare_name = file_path.name if case_sensitive else file_path.name.lower()

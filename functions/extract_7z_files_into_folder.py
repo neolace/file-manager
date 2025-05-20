@@ -7,7 +7,7 @@ from config.Config import Config
 
 
 def validate_paths(
-    source_folder: Path, seven_zip_path: Path, logger: logging.Logger
+        source_folder: Path, seven_zip_path: Path, logger: logging.Logger
 ) -> bool:
     """Validate that required paths exist."""
     if not seven_zip_path.exists():
@@ -20,7 +20,7 @@ def validate_paths(
 
 
 def extract_single_archive(
-    archive: Path, output_folder: Path, seven_zip_path: Path, logger: logging.Logger
+        archive: Path, output_folder: Path, seven_zip_path: Path, logger: logging.Logger
 ) -> None:
     """Extract a single 7z archive to the specified output folder."""
     try:
@@ -41,7 +41,7 @@ def extract_single_archive(
 
 
 def extract_7z_files_into_folder(
-    source_folder: Path, seven_zip_path: Path, logger: Optional[logging.Logger] = None
+        source_folder: Path, seven_zip_path: Path, logger: Optional[logging.Logger] = None
 ) -> None:
     """
     Extract all 7z archives from the source folder into separate subfolders.

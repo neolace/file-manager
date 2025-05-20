@@ -16,7 +16,7 @@ def _log_found_files(files: List[Path], extension: str, logger: logging.Logger) 
 
 
 def list_files_by_extension(
-    root_path: Path, extension: str, logger: logging.Logger | None = None
+        root_path: Path, extension: str, logger: logging.Logger | None = None
 ) -> List[Path]:
     """
     List all files with the specified extension in the directory.

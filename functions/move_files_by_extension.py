@@ -39,11 +39,11 @@ def move_file(source_file: Path, target_path: Path, logger: logging.Logger) -> b
 
 
 def move_files_by_extension(
-    source_folder: Path,
-    target_folder: Path,
-    file_extension: str,
-    dry_run: bool = False,
-    logger: Optional[logging.Logger] = None,
+        source_folder: Path,
+        target_folder: Path,
+        file_extension: str,
+        dry_run: bool = False,
+        logger: Optional[logging.Logger] = None,
 ) -> None:
     """Move all files with specified extension from source to target folder."""
     logger = logger or logging.getLogger(__name__)

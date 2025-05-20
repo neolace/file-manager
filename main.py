@@ -119,6 +119,13 @@ def main() -> int:
     handler = CommandHandler(logger)
     return handler.execute(args)
 
+
 if __name__ == "__main__":
     exit_code = main()
     exit(exit_code)
+
+
+
+
+#  python main.py --command "deduplicate" --directory "C:\Users\terti\Downloads\jpeg" --log "app.log" --dry-run
+#  python main.py --command "move" --directory "C:\Users\terti\Downloads\jpeg" --log "app.log" --dry-run

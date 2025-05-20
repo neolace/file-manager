@@ -33,8 +33,8 @@ def find_hidden_folders(root_path: Path, excluded_names: List[str]) -> PathSeque
         item
         for item in root_path.rglob("*")
         if item.is_dir()
-        and item.name.startswith(Config.HIDDEN_PREFIX)
-        and item.name not in excluded_names
+           and item.name.startswith(Config.HIDDEN_PREFIX)
+           and item.name not in excluded_names
     ]
     return sorted(hidden_folders, key=lambda x: len(x.parts), reverse=True)
 
@@ -55,10 +55,10 @@ def delete_folder(folder_path: Path, logger: Logger) -> None:
 
 
 def delete_all_hidden_folders(
-    path: Path,
-    excluded_names: Optional[List[str]] = None,
-    dry_run: bool = False,
-    logger: Optional[Logger] = None,
+        path: Path,
+        excluded_names: Optional[List[str]] = None,
+        dry_run: bool = False,
+        logger: Optional[Logger] = None,
 ) -> None:
     """
     Delete all hidden folders (starting with '.') within the specified path.

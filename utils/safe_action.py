@@ -5,10 +5,10 @@ from config.Config import Config
 
 
 def safe_action(
-    func: Callable[..., Config.T],
-    *args: Any,
-    logger: logging.Logger = logging.getLogger(__name__),
-    **kwargs: Any
+        func: Callable[..., Config.T],
+        *args: Any,
+        logger: logging.Logger = logging.getLogger(__name__),
+        **kwargs: Any
 ) -> Optional[Config.T]:
     """
     Safely execute a function with error handling.

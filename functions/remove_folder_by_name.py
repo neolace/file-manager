@@ -5,7 +5,7 @@ from typing import Optional
 
 
 def remove_folder_by_name(
-    root: Path, target_name: str, dry_run: bool = False, logger: Optional[Logger] = None
+        root: Path, target_name: str, dry_run: bool = False, logger: Optional[Logger] = None
 ) -> None:
     """
     Remove all folders with a specific name within a given root path.

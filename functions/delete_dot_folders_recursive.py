@@ -33,8 +33,8 @@ def find_dot_folders(root_path: Path, excluded_names: List[str]) -> PathSequence
         item
         for item in root_path.rglob("*")
         if item.is_dir()
-        and item.name.startswith(Config.HIDDEN_PREFIX)
-        and item.name not in excluded_names
+           and item.name.startswith(Config.HIDDEN_PREFIX)
+           and item.name not in excluded_names
     ]
     return sorted(dot_folders, key=lambda x: len(x.parts), reverse=True)
 
@@ -59,10 +59,10 @@ def delete_folder(folder: Path, config: DeletionConfig) -> None:
 
 
 def delete_dot_folders_recursive(
-    root_path: Path,
-    excluded_names: Optional[List[str]] = None,
-    dry_run: bool = False,
-    logger: Optional[Logger] = None,
+        root_path: Path,
+        excluded_names: Optional[List[str]] = None,
+        dry_run: bool = False,
+        logger: Optional[Logger] = None,
 ) -> None:
     """
     Recursively find and delete folders that start with a dot (hidden folders).

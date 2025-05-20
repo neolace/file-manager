@@ -139,14 +139,14 @@ class FileOperationManager:
 
 
 def process_files(
-    operation: str,
-    path: PathLike,
-    *,
-    extensions: Optional[ExtensionList] = None,
-    excluded_names: Optional[ExcludedNames] = None,
-    dry_run: bool = False,
-    recursive: bool = True,
-    log_file: Optional[PathLike] = None,
+        operation: str,
+        path: PathLike,
+        *,
+        extensions: Optional[ExtensionList] = None,
+        excluded_names: Optional[ExcludedNames] = None,
+        dry_run: bool = False,
+        recursive: bool = True,
+        log_file: Optional[PathLike] = None,
 ) -> Optional[int]:
     logger = setup_logging(Path(log_file) if log_file else Path("file_operations.log"))
     manager = FileOperationManager(operation, path, logger)

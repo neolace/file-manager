@@ -100,12 +100,12 @@ class FileOrganizer:
 
 
 def organize_files_by_date(
-    root_path: Path,
-    target_folder: Path,
-    date_format: str = "%Y-%m",
-    use_modified_date: bool = True,
-    dry_run: bool = False,
-    logger: Optional[logging.Logger] = None,
+        root_path: Path,
+        target_folder: Path,
+        date_format: str = "%Y-%m",
+        use_modified_date: bool = True,
+        dry_run: bool = False,
+        logger: Optional[logging.Logger] = None,
 ) -> None:
     config = OrganizerConfig(
         root_path=Path(root_path),

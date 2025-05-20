@@ -15,7 +15,7 @@ class LoggerProtocol(Protocol):
 
 
 def validate_inputs(
-    root_path: Path, extensions: List[str], logger: LoggerProtocol
+        root_path: Path, extensions: List[str], logger: LoggerProtocol
 ) -> bool:
     """Validate input parameters before processing."""
     if not extensions:
@@ -34,10 +34,10 @@ def validate_inputs(
 
 
 def rename_all_files_by_extensions(
-    root_path: Path,
-    extensions: List[str],
-    dry_run: bool = False,
-    logger: Optional[LoggerProtocol] = None,
+        root_path: Path,
+        extensions: List[str],
+        dry_run: bool = False,
+        logger: Optional[LoggerProtocol] = None,
 ) -> None:
     """
     Rename all files with specified extensions in the given directory.

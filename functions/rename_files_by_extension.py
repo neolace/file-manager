@@ -5,6 +5,7 @@ from typing import List, Optional, Protocol
 
 class LoggerProtocol(Protocol):
     def info(self, msg: str) -> None: ...
+
     def error(self, msg: str) -> None: ...
 
 
@@ -30,11 +31,11 @@ def rename_single_file(file: Path, new_path: Path, logger: LoggerProtocol) -> bo
 
 
 def rename_files_by_extension(
-    directory: Path,
-    extension: str,
-    new_base_name: str,
-    dry_run: bool = False,
-    logger: Optional[LoggerProtocol] = None,
+        directory: Path,
+        extension: str,
+        new_base_name: str,
+        dry_run: bool = False,
+        logger: Optional[LoggerProtocol] = None,
 ) -> None:
     """
     Rename all files of a specific type in the directory.

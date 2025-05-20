@@ -5,10 +5,10 @@ from typing import Optional
 
 
 def delete_empty_folders(
-    path: Path,
-    dry_run: bool = False,
-    recursive: bool = True,
-    logger: Optional[Logger] = None,
+        path: Path,
+        dry_run: bool = False,
+        recursive: bool = True,
+        logger: Optional[Logger] = None,
 ) -> int:
     """
     Delete empty folders starting from the given path.

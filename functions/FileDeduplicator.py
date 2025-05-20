@@ -21,6 +21,7 @@ def safe_action(func: Callable[..., T]) -> Callable[..., Optional[T]]:
     Returns:
         A wrapped function that catches exceptions and returns None on failure.
     """
+
     def wrapper(*args: Any, **kwargs: Any) -> Optional[T]:
         try:
             return func(*args, **kwargs)
@@ -29,16 +30,17 @@ def safe_action(func: Callable[..., T]) -> Callable[..., Optional[T]]:
             logger = logging.getLogger(__name__)
             logger.error(f"Error in {func.__name__}: {e}")
             return None
+
     return wrapper
 
 
 class FileDeduplicator:
     def __init__(
-        self,
-        directory: str,
-        max_workers: int = Config.DEFAULT_MAX_WORKERS,
-        logger: Optional[Logger] = None,
-        dry_run: bool = False,
+            self,
+            directory: str,
+            max_workers: int = Config.DEFAULT_MAX_WORKERS,
+            logger: Optional[Logger] = None,
+            dry_run: bool = False,
     ) -> None:
         self.directory_path = Path(directory)
         self.max_workers = max_workers
@@ -68,7 +70,7 @@ class FileDeduplicator:
         hasher = hashlib.md5()
         try:
             with file.open("rb") as f:
-                 while chunk := f.read(Config.DEFAULT_BUFFER_SIZE):
+                while chunk := f.read(Config.DEFAULT_BUFFER_SIZE):
                     hasher.update(chunk)
         except UnicodeEncodeError as e:
             print(f"File: {file.name} - Encoding error: {e}")
@@ -84,21 +86,22 @@ class FileDeduplicator:
         """Find duplicate files based on their hash."""
         self.file_hashes.clear()
         self.duplicates.clear()
-        
+
         self.logger.info(f"Scanning for files in {self.directory_path}")
-        
+
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             # Process files in parallel
             for file, file_hash in executor.map(
-                self._calculate_file_hash, self._get_files()
+                    self._calculate_file_hash, self._get_files()
             ):
                 if file_hash in self.file_hashes:
                     self.duplicates.append(file)
                     self.logger.debug(f"Found duplicate: {file} (matches {self.file_hashes[file_hash]})")
                 else:
                     self.file_hashes[file_hash] = file
-        
-        self.logger.info(f"Found {len(self.duplicates)} duplicates out of {len(self.file_hashes) + len(self.duplicates)} files")
+
+        self.logger.info(
+            f"Found {len(self.duplicates)} duplicates out of {len(self.file_hashes) + len(self.duplicates)} files")
 
     def _remove_duplicate(self, duplicate: Path) -> None:
         """Remove a duplicate file and log the action."""
@@ -142,5 +145,5 @@ class FileDeduplicator:
             self.logger.info(f"Dry run: {len(self.duplicates)} duplicates found.")
         else:
             self.logger.info(f"Deduplication complete: {len(self.duplicates)} duplicates removed.")
-        
+
         return self.get_statistics()

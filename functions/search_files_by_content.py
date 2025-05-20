@@ -2,16 +2,17 @@ import logging
 import re
 from pathlib import Path
 from typing import List, Optional
+
 from config import fm_FileType
 from config.Config import Config
 
 
 def search_files_by_content(
-    root_path: Path,
-    search_text: str,
-    file_types: Optional[List[str]] = None,
-    case_sensitive: bool = False,
-    logger: Optional[logging.Logger] = None,
+        root_path: Path,
+        search_text: str,
+        file_types: Optional[List[str]] = None,
+        case_sensitive: bool = False,
+        logger: Optional[logging.Logger] = None,
 ) -> List[Path]:
     """
     Search for files containing specific text in their content.
@@ -51,11 +52,11 @@ def search_files_by_content(
 
 
 def _find_matching_files(
-    root_path: Path,
-    search_text: str,
-    file_types: List[str],
-    case_sensitive: bool,
-    logger: logging.Logger,
+        root_path: Path,
+        search_text: str,
+        file_types: List[str],
+        case_sensitive: bool,
+        logger: logging.Logger,
 ) -> List[Path]:
     """Find files containing the search text in the given directory."""
     files = _collect_files(root_path, file_types)
@@ -81,15 +82,15 @@ def _collect_files(root_path: Path, file_types: List[str]) -> List[Path]:
 
 
 def _file_contains_pattern(
-    file: Path, pattern: re.Pattern, logger: logging.Logger
+        file: Path, pattern: re.Pattern, logger: logging.Logger
 ) -> bool:
     """Check if a file contains the given pattern."""
     try:
         with open(
-            file,
-            "r",
-            encoding=Config.DEFAULT_ENCODING,
-            errors="ignore",
+                file,
+                "r",
+                encoding=Config.DEFAULT_ENCODING,
+                errors="ignore",
         ) as f:
             return any(pattern.search(line) for line in f)
     except IOError as e:

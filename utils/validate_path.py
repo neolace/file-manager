@@ -10,7 +10,7 @@ def get_default_logger() -> Logger:
 
 
 def validate_path(
-    path: Path, require_existence: bool = True, logger: Logger | None = None
+        path: Path, require_existence: bool = True, logger: Logger | None = None
 ) -> bool:
     """
     Validate a file or directory path.

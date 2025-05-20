@@ -3,7 +3,7 @@ from typing import List, Optional
 
 
 def find_files(
-    directory: Path, pattern: str = "*", extensions: Optional[List[str]] = None
+        directory: Path, pattern: str = "*", extensions: Optional[List[str]] = None
 ) -> List[Path]:
     """
     Find all files in a directory and its subdirectories with optional filtering.

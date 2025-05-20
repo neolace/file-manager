@@ -16,9 +16,9 @@ class FolderCleanupConfig:
 
 
 def drop_all_empty_folders(
-    path: Path,
-    dry_run: bool = False,
-    logger: Optional[Logger] = None,
+        path: Path,
+        dry_run: bool = False,
+        logger: Optional[Logger] = None,
 ) -> None:
     """
     Recursively find and delete all empty folders within the given path.

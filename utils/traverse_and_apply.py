@@ -12,7 +12,7 @@ def get_default_logger() -> Logger:
 
 
 def apply_action_to_item(
-    item: Path, action: Callable[[Path], None], logger: Logger, dry_run: bool = False
+        item: Path, action: Callable[[Path], None], logger: Logger, dry_run: bool = False
 ) -> None:
     """Apply the given action to an item with proper logging."""
     if dry_run:
@@ -27,11 +27,11 @@ def apply_action_to_item(
 
 
 def traverse_and_apply(
-    root_path: Path,
-    action: Callable[[Path], None],
-    filter_func: Optional[Callable[[Path], bool]] = None,
-    dry_run: bool = False,
-    logger: Optional[Logger] = None,
+        root_path: Path,
+        action: Callable[[Path], None],
+        filter_func: Optional[Callable[[Path], bool]] = None,
+        dry_run: bool = False,
+        logger: Optional[Logger] = None,
 ) -> None:
     """
     Traverse directories and apply an action to each item.

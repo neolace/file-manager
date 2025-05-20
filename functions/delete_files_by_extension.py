@@ -39,8 +39,8 @@ class FileDeleter:
     def _should_delete_file(self, file_path: Path) -> bool:
         """Check if a file should be deleted based on its extension"""
         return (
-            file_path.is_file()
-            and file_path.suffix.lower().lstrip(".") in self.normalized_extensions
+                file_path.is_file()
+                and file_path.suffix.lower().lstrip(".") in self.normalized_extensions
         )
 
     def _delete_file(self, file_path: Path) -> None:
@@ -65,10 +65,10 @@ class FileDeleter:
 
 
 def delete_files_by_extension(
-    path: Path,
-    extensions: ExtensionList,
-    dry_run: bool = False,
-    logger: Optional[Logger] = None,
+        path: Path,
+        extensions: ExtensionList,
+        dry_run: bool = False,
+        logger: Optional[Logger] = None,
 ) -> None:
     """
     Delete all files with the specified extensions in the given path.
