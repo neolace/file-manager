@@ -4,7 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="869004b0-2a94-4f61-b66c-7d7f1263b9cd" name="Changes" comment="Refactor function signatures for consistency and readability across multiple files" />
+    <list default="true" id="869004b0-2a94-4f61-b66c-7d7f1263b9cd" name="Changes" comment="Refactor workspace.xml to improve task management and update commit message format">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/config/Config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/Config.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/FileDeduplicator.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/FileDeduplicator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/delete_all_hidden_folders.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/delete_all_hidden_folders.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/delete_dot_folders_recursive.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/delete_dot_folders_recursive.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/delete_files_by_extension.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/delete_files_by_extension.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/extract_7z_files_into_folder.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/extract_7z_files_into_folder.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/loop_through_array_of_file_extensions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/loop_through_array_of_file_extensions.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/move_files_by_extension.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/move_files_by_extension.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/process_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/process_files.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/search_files_by_content.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/search_files_by_content.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/fm_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/fm_logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/get_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/get_logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/safe_action.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/safe_action.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/traverse_and_apply.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/traverse_and_apply.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/validate_path.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/validate_path.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -26,7 +44,7 @@
   }
 }</component>
   <component name="ProblemsViewState">
-    <option name="selectedTabId" value="QODANA_PROBLEMS_VIEW_TAB" />
+    <option name="selectedTabId" value="ProjectErrors" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
@@ -40,19 +58,20 @@
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.main.executor&quot;: &quot;Run&quot;,
-    &quot;Python.parse_arguments.executor&quot;: &quot;Run&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;SHARE_PROJECT_CONFIGURATION_FILES&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.pluginManager&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "Python.main.executor": "Run",
+    "Python.parse_arguments.executor": "Run",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "run.code.analysis.last.selected.profile": "aDefault",
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
-}</component>
+}]]></component>
   <component name="RunManager">
     <configuration name="parse_arguments" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
       <module name="file-manager" />
@@ -100,7 +119,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747784625900</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="Refactor workspace.xml to improve task management and update commit message format">
+      <option name="closed" value="true" />
+      <created>1747907087077</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1747907087077</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -116,6 +143,7 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Refactor function signatures for consistency and readability across multiple files" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor function signatures for consistency and readability across multiple files" />
+    <MESSAGE value="Refactor workspace.xml to improve task management and update commit message format" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor workspace.xml to improve task management and update commit message format" />
   </component>
 </project>
