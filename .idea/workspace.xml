@@ -4,24 +4,8 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="869004b0-2a94-4f61-b66c-7d7f1263b9cd" name="Changes" comment="Refactor workspace.xml to improve task management and update commit message format">
+    <list default="true" id="869004b0-2a94-4f61-b66c-7d7f1263b9cd" name="Changes" comment="Refactor workspace.xml to enhance task management and update commit message format">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/Config.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/Config.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/FileDeduplicator.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/FileDeduplicator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/delete_all_hidden_folders.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/delete_all_hidden_folders.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/delete_dot_folders_recursive.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/delete_dot_folders_recursive.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/delete_files_by_extension.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/delete_files_by_extension.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/extract_7z_files_into_folder.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/extract_7z_files_into_folder.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/loop_through_array_of_file_extensions.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/loop_through_array_of_file_extensions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/move_files_by_extension.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/move_files_by_extension.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/process_files.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/process_files.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/search_files_by_content.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/search_files_by_content.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/fm_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/fm_logger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/get_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/get_logger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/safe_action.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/safe_action.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/traverse_and_apply.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/traverse_and_apply.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/validate_path.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/validate_path.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -127,7 +111,15 @@
       <option name="project" value="LOCAL" />
       <updated>1747907087077</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Refactor workspace.xml to enhance task management and update commit message format">
+      <option name="closed" value="true" />
+      <created>1747908966565</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1747908966565</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -144,6 +136,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Refactor function signatures for consistency and readability across multiple files" />
     <MESSAGE value="Refactor workspace.xml to improve task management and update commit message format" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor workspace.xml to improve task management and update commit message format" />
+    <MESSAGE value="Refactor workspace.xml to enhance task management and update commit message format" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor workspace.xml to enhance task management and update commit message format" />
   </component>
 </project>
