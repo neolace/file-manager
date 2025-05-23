@@ -13,13 +13,13 @@ class OrganizerConfig:
     date_format: str = "%Y-%m"
     use_modified_date: bool = True
     dry_run: bool = False
-    logger: Optional[logging.Logger] = None
+    logger: logging.Logger
 
 
 class FileOrganizer:
     def __init__(self, config: OrganizerConfig):
         self.config = config
-        self.logger = config.logger or logging.getLogger(__name__)
+        self.logger = config.logger
         self.organized_count = 0
 
     def organize_files(self) -> None:

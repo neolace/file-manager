@@ -27,7 +27,6 @@ class Config:
     DEFAULT_ENCODING: Final[str] = "utf-8"
     DEFAULT_BUFFER_SIZE: Final = 65536
     DEFAULT_MAX_WORKERS: Final = 1
-    DEFAULT_LOG_FILENAME: Final = Path("default.log")
     DEFAULT_LOG_PATH: Final[Path] = Path("app.log")
     HIDDEN_PREFIX: Final = "."
     DEFAULT_LOG_LEVEL: Final = LogLevel.INFO

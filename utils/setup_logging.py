@@ -3,24 +3,27 @@ import logging
 from pathlib import Path
 
 
-def setup_logging(log_file: Path) -> logging.Logger:
+def setup_logging(log_file: Path, log_level_str: str) -> logging.Logger:
     """
     Sets up the logging configuration with error handling.
 
     :param log_file: Path to the log file.
+    :param log_level_str: Logging level as a string (e.g., "INFO", "DEBUG").
     :return: Configured logger instance.
     """
+    numeric_level = getattr(logging, log_level_str.upper(), logging.INFO)
+
     logger = logging.getLogger("file_manager")
-    logger.setLevel(logging.DEBUG)  # Set the default logging level to DEBUG
+    logger.setLevel(numeric_level)
 
     try:
         # Create a file handler
         file_handler = logging.FileHandler(log_file)
-        file_handler.setLevel(logging.DEBUG)
+        file_handler.setLevel(numeric_level)
 
         # Create a console handler
         console_handler = logging.StreamHandler()
-        console_handler.setLevel(logging.INFO)
+        console_handler.setLevel(numeric_level)
 
         # Define log format
         formatter = logging.Formatter(

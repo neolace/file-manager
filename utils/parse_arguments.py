@@ -1,5 +1,6 @@
 import argparse
 from pathlib import Path
+from config import Config, LogLevel
 
 
 def parse_arguments():
@@ -13,6 +14,13 @@ def parse_arguments():
     # Common arguments
     parser.add_argument("--log", default="app.log",
                         help="Log file path (default: app.log)")
+    parser.add_argument(
+        "--log-level",
+        type=lambda level: LogLevel[level.upper()],
+        choices=LogLevel,
+        default=Config.DEFAULT_LOG_LEVEL,
+        help="Set the logging level (default: INFO)"
+    )
     parser.add_argument("--dry-run", action="store_true",
                         help="Run without making changes")
 
