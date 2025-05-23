@@ -39,23 +39,15 @@ class FileDeduplicator:
             self,
             directory: str,
             max_workers: int = Config.DEFAULT_MAX_WORKERS,
-            logger: Optional[Logger] = None,
+            logger: Logger,
             dry_run: bool = False,
     ) -> None:
         self.directory_path = Path(directory)
         self.max_workers = max_workers
-        self.logger = self._setup_logger(logger)
+        self.logger = logger
         self.dry_run = dry_run
         self.file_hashes: Dict[str, Path] = {}
         self.duplicates: List[Path] = []
-
-    @staticmethod
-    def _setup_logger(logger: Optional[Logger]) -> Logger:
-        if logger is None:
-            import logging
-
-            return logging.getLogger(__name__)
-        return logger
 
     @staticmethod
     def _calculate_file_hash(file: Path) -> FileHashResult:

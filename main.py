@@ -1,5 +1,5 @@
 import logging
-from abc import abstractmethod
+from abc import ABC, abstractmethod
 from argparse import Namespace
 from enum import Enum, auto
 from pathlib import Path
@@ -7,6 +7,7 @@ from typing import Dict, Type
 
 from functions.FileDeduplicator import FileDeduplicator
 from utils.parse_arguments import parse_arguments
+from utils.setup_logging import setup_logging
 
 
 class CommandType(Enum):
@@ -18,7 +19,7 @@ class CommandType(Enum):
     REMOVE_FOLDER = auto()
 
 
-class CommandInterface:
+class CommandInterface(ABC):
     """Base interface for all commands"""
 
     @abstractmethod
@@ -114,8 +115,8 @@ class CommandHandler:
 def main() -> int:
     args = parse_arguments()
     log_file = Path(args.log)
-    from utils.setup_logging import setup_logging
-    logger = setup_logging(log_file)
+    # Ensure args.log_level is a string name of the enum member for setup_logging
+    logger = setup_logging(log_file=log_file, log_level_str=args.log_level.name)
     handler = CommandHandler(logger)
     return handler.execute(args)
 
