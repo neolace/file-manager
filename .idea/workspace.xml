@@ -4,103 +4,78 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="0fe705b3-ae53-4599-bacd-30543995412d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/functions/CompressFilesCommand.py" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/functions/RenameFilesCommand.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" />
+    <list default="true" id="5b43427c-b494-4229-b78a-5e503aee1f2c" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/Interface/CommandInterface.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/file-manager.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/file-manager.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/FileDeduplicator.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/FileDeduplicator.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/FileOrganizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/FileOrganizer.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/move_files_by_extension.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/move_files_by_extension.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/process_files.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/CompressFilesCommand.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/RenameFilesCommand.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/RenameFilesCommand.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/delete_all_hidden_folders.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/delete_dot_folders_recursive.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/delete_empty_folders.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/delete_files_by_extension.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/delete_files_by_name.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/drop_all_empty_folders.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/find_all_files_recursive.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/find_first_char.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/list_files_by_extension.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/loop_through_array_of_file_extensions.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/move_files_by_extension.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/remove_folder_by_name.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/rename_files_by_extension.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/search_files_by_content.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/get_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/get_logger.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/utils/parse_arguments.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/parse_arguments.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="FileTemplateManagerImpl">
-    <option name="RECENT_TEMPLATES">
-      <list>
-        <option value="Python Script" />
-      </list>
-    </option>
-  </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory">{
-  &quot;lastFilter&quot;: {
-    &quot;state&quot;: &quot;OPEN&quot;,
-    &quot;assignee&quot;: &quot;neolace&quot;
+  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
+  "lastFilter": {
+    "state": "OPEN",
+    "assignee": "neolace"
   }
-}</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/neolace/file-manager.git&quot;,
-    &quot;accountId&quot;: &quot;64358b72-ab6e-4d00-a42c-13c32aeed799&quot;
+}]]></component>
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/neolace/file-manager.git",
+    "accountId": "64358b72-ab6e-4d00-a42c-13c32aeed799"
   }
-}</component>
+}]]></component>
+  <component name="Make.Settings">
+    <option name="useCygwin" value="true" />
+  </component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
   </component>
-  <component name="ProjectColorInfo">{
-  &quot;customColor&quot;: &quot;&quot;,
-  &quot;associatedIndex&quot;: 7
-}</component>
-  <component name="ProjectId" id="2xukHyJEFJkbEZlGmcitaPvyIZE" />
+  <component name="ProjectColorInfo"><![CDATA[{
+  "customColor": "",
+  "associatedIndex": 7
+}]]></component>
+  <component name="ProjectId" id="2xuyGObF6dxtlYhMuz6Us2PE5pS" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent">{
-  &quot;keyToString&quot;: {
-    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
-    &quot;Python.process_files.executor&quot;: &quot;Debug&quot;,
-    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
-    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
-    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;,
-    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "git-widget-placeholder": "main",
+    "ignore.virus.scanning.warn.message": "true",
+    "run.code.analysis.last.selected.profile": "aDefault",
+    "settings.editor.selected.configurable": "Errors"
   }
-}</component>
-  <component name="RunManager">
-    <configuration name="fm_process_files" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
-      <module name="file-manager" />
-      <option name="ENV_FILES" value="" />
-      <option name="INTERPRETER_OPTIONS" value="" />
-      <option name="PARENT_ENVS" value="true" />
-      <envs>
-        <env name="PYTHONUNBUFFERED" value="1" />
-      </envs>
-      <option name="SDK_HOME" value="" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/utils" />
-      <option name="IS_MODULE_SDK" value="true" />
-      <option name="ADD_CONTENT_ROOTS" value="true" />
-      <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="C:\Users\terti\PycharmProjects\file-manager\utils\fm_process_files.py" />
-      <option name="PARAMETERS" value="" />
-      <option name="SHOW_COMMAND_LINE" value="false" />
-      <option name="EMULATE_TERMINAL" value="false" />
-      <option name="MODULE_MODE" value="false" />
-      <option name="REDIRECT_INPUT" value="false" />
-      <option name="INPUT_FILE" value="" />
-      <method v="2" />
-    </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.fm_process_files" />
-      </list>
-    </recent_temporary>
+}]]></component>
+  <component name="PyDebuggerOptionsProvider">
+    <option name="mySaveCallSignatures" value="true" />
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -111,23 +86,12 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="0fe705b3-ae53-4599-bacd-30543995412d" name="Changes" comment="" />
-      <created>1748795262091</created>
+      <changelist id="5b43427c-b494-4229-b78a-5e503aee1f2c" name="Changes" comment="" />
+      <created>1748802158350</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1748795262091</updated>
+      <updated>1748802158350</updated>
     </task>
     <servers />
-  </component>
-  <component name="Vcs.Log.Tabs.Properties">
-    <option name="TAB_STATES">
-      <map>
-        <entry key="MAIN">
-          <value>
-            <State />
-          </value>
-        </entry>
-      </map>
-    </option>
   </component>
 </project>
