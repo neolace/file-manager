@@ -4,7 +4,7 @@ from logging import Logger
 from pathlib import Path
 from typing import Optional, Iterator, Dict, List, Tuple, Callable, Any, TypeVar
 
-from config.Config import Config
+from config.settings import Config
 
 # Type aliases
 FileHashResult = Tuple[Path, str]

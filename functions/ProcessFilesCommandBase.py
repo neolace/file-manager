@@ -8,6 +8,12 @@ from Interface.CommandInterface import CommandInterface
 from utils.fm_process_files import process_files  # Assuming this will be updated
 
 
+def _parse_string_list_arg(arg_value: Optional[str | List[str]]) -> Optional[List[str]]:
+    if isinstance(arg_value, str):
+        return [item.strip() for item in arg_value.split(',') if item.strip()]
+    return arg_value
+
+
 class ProcessFilesCommandBase(CommandInterface):
     """Base class for commands using the fm_process_files.py function."""
 
@@ -20,14 +26,9 @@ class ProcessFilesCommandBase(CommandInterface):
         if not path_obj.is_dir():
             raise ValueError(f"Path is not a directory: {args.path}")
 
-    def _parse_string_list_arg(self, arg_value: Optional[str | List[str]]) -> Optional[List[str]]:
-        if isinstance(arg_value, str):
-            return [item.strip() for item in arg_value.split(',') if item.strip()]
-        return arg_value
-
     def execute(self, args: Namespace, logger: logging.Logger) -> None:
-        extensions = self._parse_string_list_arg(getattr(args, 'extensions', None))
-        excluded_names = self._parse_string_list_arg(getattr(args, 'excluded_names', None))
+        extensions = _parse_string_list_arg(getattr(args, 'extensions', None))
+        excluded_names = _parse_string_list_arg(getattr(args, 'excluded_names', None))
 
         file_operation = self._get_file_operation(args, logger)
 

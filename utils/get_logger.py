@@ -2,7 +2,7 @@ from logging import Logger
 from pathlib import Path
 from typing import Optional
 
-from config.Config import Config
+from config.settings import Config
 from utils.setup_logging import setup_logging
 
 

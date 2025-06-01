@@ -3,7 +3,7 @@ import subprocess
 from pathlib import Path
 from typing import Optional
 
-from config.Config import Config
+from config.settings import Config
 
 
 def validate_paths(

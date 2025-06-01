@@ -1,7 +1,7 @@
 import logging
 from typing import Callable, Optional, Any
 
-from config.Config import Config
+from config.settings import Config
 
 
 def safe_action(

@@ -6,18 +6,13 @@ from typing import Dict, Type
 from Interface import CommandInterface
 from utils.parse_arguments import parse_arguments
 from utils.setup_logging import setup_logging
+from functions import CommandType, DeduplicateCommand, DeleteHiddenFilesCommand, DeleteByExtensionCommand, MoveCommand, CleanFolderCommand, DeleteEmptyFoldersCommand, RenameFilesCommand, CompressFilesCommand
 
 
 class CommandRegistry:
     """Registry for available commands"""
 
     def __init__(self):
-        from Interface import CommandInterface
-        from functions import CommandType
-        from functions import DeduplicateCommand
-        from functions import DeleteHiddenFilesCommand
-        from functions import DeleteByExtensionCommand
-        from functions import MoveCommand, CleanFolderCommand, DeleteEmptyFoldersCommand, RenameFilesCommand, CompressFilesCommand
         self._commands: Dict[str, Type[CommandInterface]] = {
             CommandType.DEDUPLICATE.name.lower(): DeduplicateCommand,
             CommandType.MOVE.name.lower(): MoveCommand,
@@ -50,7 +45,7 @@ class CommandHandler:
             command = self.registry.get_command(command_name)
             command.validate(args)
             command.execute(args, self.logger)
-            self.logger.info(f"Command '{command_name}' ({command.description}) executed successfully.")
+            self.logger.info(f"Command '{command_name}' executed successfully.")
             return 0
         except ValueError as ve:
             self.logger.error(f"Configuration error: {ve}")
@@ -62,7 +57,7 @@ class CommandHandler:
             self.logger.error(f"An unexpected error occurred during command '{args.command}': {e}", exc_info=True)
             return 1
 
-
+# main.py
 def main() -> int:
     args = parse_arguments()
     log_file_path = Path(args.log).resolve()
