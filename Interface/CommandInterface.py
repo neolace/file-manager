@@ -1,3 +1,8 @@
+import logging
+from abc import abstractmethod, ABC
+from argparse import Namespace
+
+
 class CommandInterface(ABC):
     """Base interface for all commands"""
 

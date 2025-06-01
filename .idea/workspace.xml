@@ -4,29 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b43427c-b494-4229-b78a-5e503aee1f2c" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/Interface/CommandInterface.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/file-manager.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/file-manager.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
+    <list default="true" id="5b43427c-b494-4229-b78a-5e503aee1f2c" name="Changes" comment="Add CommandInterface for command structure and validation">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/CompressFilesCommand.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/RenameFilesCommand.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/RenameFilesCommand.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/delete_all_hidden_folders.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/delete_dot_folders_recursive.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/delete_empty_folders.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/delete_files_by_extension.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/delete_files_by_name.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/drop_all_empty_folders.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/find_all_files_recursive.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/find_first_char.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/list_files_by_extension.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/loop_through_array_of_file_extensions.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/move_files_by_extension.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/remove_folder_by_name.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/rename_files_by_extension.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/search_files_by_content.py" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/Interface/CommandInterface.py" beforeDir="false" afterPath="$PROJECT_DIR$/Interface/CommandInterface.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -36,28 +16,25 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="GitHubPullRequestSearchHistory"><![CDATA[{
-  "lastFilter": {
-    "state": "OPEN",
-    "assignee": "neolace"
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;neolace&quot;
   }
-}]]></component>
-  <component name="GithubPullRequestsUISettings"><![CDATA[{
-  "selectedUrlAndAccountId": {
-    "url": "https://github.com/neolace/file-manager.git",
-    "accountId": "64358b72-ab6e-4d00-a42c-13c32aeed799"
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;https://github.com/neolace/file-manager.git&quot;,
+    &quot;accountId&quot;: &quot;64358b72-ab6e-4d00-a42c-13c32aeed799&quot;
   }
-}]]></component>
-  <component name="Make.Settings">
-    <option name="useCygwin" value="true" />
-  </component>
+}</component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 7
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 7
+}</component>
   <component name="ProjectId" id="2xuyGObF6dxtlYhMuz6Us2PE5pS" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
@@ -71,12 +48,9 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "run.code.analysis.last.selected.profile": "aDefault",
-    "settings.editor.selected.configurable": "Errors"
+    "settings.editor.selected.configurable": "reference.settingsdialog.project.make"
   }
 }]]></component>
-  <component name="PyDebuggerOptionsProvider">
-    <option name="mySaveCallSignatures" value="true" />
-  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -92,6 +66,30 @@
       <option name="presentableId" value="Default" />
       <updated>1748802158350</updated>
     </task>
+    <task id="LOCAL-00001" summary="Add CommandInterface for command structure and validation">
+      <option name="closed" value="true" />
+      <created>1748803151045</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1748803151045</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Add CommandInterface for command structure and validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add CommandInterface for command structure and validation" />
   </component>
 </project>
