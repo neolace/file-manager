@@ -10,7 +10,7 @@ class CleanFolderCommand(ProcessFilesCommandBase):
     def description(self) -> str:
         return "Clean a folder by deleting its contents (files), optionally excluding some names"
 
-    def _get_file_operation(cmd_args: Namespace, cmd_logger: logging.Logger) -> Callable[[str], None]:
+    def _get_file_operation(self, cmd_args: Namespace, cmd_logger: logging.Logger) -> Callable[[str], None]:
         def operation_func(file_path_str: str):
             if not cmd_args.dry_run:
                 try:

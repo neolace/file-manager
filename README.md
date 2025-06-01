@@ -27,8 +27,10 @@ All commands are run from the terminal using `main.py`.
 
 ### Common Arguments
 
-- `--log <filepath>`: Specifies the path to the log file. Defaults to `app.log` if not specified, or as defined in `config/Config.py`.
-- `--dry-run`: If present, the script will simulate the actions and log what would happen, but will not make any actual changes to the filesystem.
+- `--log <filepath>`: Specifies the path to the log file. Defaults to `app.log` if not specified, or as defined in
+  `config/Config.py`.
+- `--dry-run`: If present, the script will simulate the actions and log what would happen, but will not make any actual
+  changes to the filesystem.
 - `--log-level`: Sets the logging level. Default is typically INFO.
 
 ### Deduplicate Files
@@ -131,10 +133,10 @@ python main.py --command "compress_files" --directory "C:\path\to\your\directory
 - `main.py`: Main entry point for the application, handles command parsing and execution.
 - `config/settings.py`: Contains application-wide configuration settings, constants, and type aliases.
 - `functions/`: Module for different file operations.
-  - Files for each command implementation (DeduplicateCommand, MoveCommand, etc.)
+    - Files for each command implementation (DeduplicateCommand, MoveCommand, etc.)
 - `utils/`: Contains utility modules.
-  - `parse_arguments.py`: Handles parsing of command-line arguments.
-  - `setup_logging.py`: Configures logging for the application.
+    - `parse_arguments.py`: Handles parsing of command-line arguments.
+    - `setup_logging.py`: Configures logging for the application.
 
 ## Extending
 
@@ -142,9 +144,9 @@ To add new functionality:
 
 1. Define a new command type in `CommandType` enum in `main.py`.
 2. Create a new class that implements the `CommandInterface`. This class should include:
-   * A `description` property.
-   * A `validate(self, args: Namespace)` method to check command-specific arguments.
-   * An `execute(self, args: Namespace, logger: logging.Logger)` method to perform the command's action.
+    * A `description` property.
+    * A `validate(self, args: Namespace)` method to check command-specific arguments.
+    * An `execute(self, args: Namespace, logger: logging.Logger)` method to perform the command's action.
 3. Register your new command class in the `_commands` dictionary within the `CommandRegistry` class in `main.py`.
 4. Update `utils/parse_arguments.py` to include any new command-specific arguments.
 

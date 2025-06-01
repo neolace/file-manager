@@ -5,7 +5,6 @@ from pathlib import Path
 from typing import Optional, List, Callable
 
 from Interface.CommandInterface import CommandInterface
-from utils.fm_process_files import process_files  # Assuming this will be updated
 
 
 def _parse_string_list_arg(arg_value: Optional[str | List[str]]) -> Optional[List[str]]:

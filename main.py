@@ -4,9 +4,10 @@ from pathlib import Path
 from typing import Dict, Type
 
 from Interface import CommandInterface
+from functions import CommandType, DeduplicateCommand, DeleteHiddenFilesCommand, DeleteByExtensionCommand, MoveCommand, \
+    CleanFolderCommand, DeleteEmptyFoldersCommand, RenameFilesCommand, CompressFilesCommand
 from utils.parse_arguments import parse_arguments
 from utils.setup_logging import setup_logging
-from functions import CommandType, DeduplicateCommand, DeleteHiddenFilesCommand, DeleteByExtensionCommand, MoveCommand, CleanFolderCommand, DeleteEmptyFoldersCommand, RenameFilesCommand, CompressFilesCommand
 
 
 class CommandRegistry:
@@ -56,6 +57,7 @@ class CommandHandler:
         except Exception as e:
             self.logger.error(f"An unexpected error occurred during command '{args.command}': {e}", exc_info=True)
             return 1
+
 
 # main.py
 def main() -> int:
