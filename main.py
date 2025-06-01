@@ -15,12 +15,12 @@ class CommandRegistry:
 
     def __init__(self):
         self._commands: Dict[str, Type[CommandInterface]] = {
-            CommandType.DEDUPLICATE.name.lower(): DeduplicateCommand,
-            CommandType.MOVE.name.lower(): MoveCommand,
-            CommandType.DELETE_BY_EXTENSION.name.lower(): DeleteByExtensionCommand,
-            CommandType.CLEAN_FOLDER.name.lower(): CleanFolderCommand,
-            CommandType.DELETE_EMPTY.name.lower(): DeleteEmptyFoldersCommand,
-            CommandType.DELETE_HIDDEN_FILES.name.lower(): DeleteHiddenFilesCommand,
+            CommandType.CommandType.DEDUPLICATE.name.lower(): DeduplicateCommand,
+            CommandType.CommandType.MOVE.name.lower(): MoveCommand,
+            CommandType.CommandType.DELETE_BY_EXTENSION.name.lower(): DeleteByExtensionCommand,
+            CommandType.CommandType.CLEAN_FOLDER.name.lower(): CleanFolderCommand,
+            CommandType.CommandType.DELETE_EMPTY.name.lower(): DeleteEmptyFoldersCommand,
+            CommandType.CommandType.DELETE_HIDDEN_FILES.name.lower(): DeleteHiddenFilesCommand,
             "rename_files": RenameFilesCommand,
             "compress_files": CompressFilesCommand,
         }

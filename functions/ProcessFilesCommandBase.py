@@ -31,16 +31,44 @@ class ProcessFilesCommandBase(CommandInterface):
 
         file_operation = self._get_file_operation(args, logger)
 
-        process_files(
-            operation=file_operation,
-            path=Path(args.path),
-            extensions=extensions,
-            excluded_names=excluded_names,
-            dry_run=args.dry_run,
-            recursive=getattr(args, 'recursive', True),
-            log_file=Path(args.log)
-        )
+        if not file_operation:
+            raise ValueError(f"No file operation defined for the '{self.description}' command.")
+
+        # Process the files in the specified path
+        path_obj = Path(args.path)
+        count = 0
+
+        for file_path in self._get_files_to_process(path_obj, extensions, excluded_names):
+            try:
+                file_operation(str(file_path))
+                count += 1
+            except Exception as e:
+                logger.error(f"Error processing {file_path}: {e}")
+
+        logger.info(f"Processed {count} files.")
         logger.info(f"'{self.description}' command finished processing path '{args.path}'.")
+
+    # noinspection PyMethodMayBeStatic
+    def _get_files_to_process(self, directory: Path, extensions: Optional[List[str]] = None,
+                              excluded_names: Optional[List[str]] = None) -> List[Path]:
+        """Return a list of files to the process based on given filters."""
+        files = []
+
+        for path in directory.rglob('*'):
+            if not path.is_file():
+                continue
+
+            # Skip files with excluded names
+            if excluded_names and any(excluded in path.name for excluded in excluded_names):
+                continue
+
+            # Filter by extensions if specified
+            if extensions and path.suffix.lower().lstrip('.') not in [ext.lower().lstrip('.') for ext in extensions]:
+                continue
+
+            files.append(path)
+
+        return files
 
     @abstractmethod
     def _get_file_operation(self, args: Namespace, logger: logging.Logger) -> Callable[[str], None]:

@@ -1,22 +1,14 @@
-from enum import Enum
 from pathlib import Path
 from typing import Final, List, Optional, Union, TypeAlias, TypeVar, Callable, Sequence
 
 import config.fm_FileType
+from config.LogLevel import LogLevel
 
 PathLike: TypeAlias = Union[str, Path]
 ExtensionList: TypeAlias = List[str]
 ExcludedNames: TypeAlias = List[str]
 OperationHandler: TypeAlias = Callable[..., Optional[int]]
 PathSequence = Sequence[Path]
-
-
-class LogLevel(str, Enum):
-    INFO = "INFO"
-    DEBUG = "DEBUG"
-    WARNING = "WARNING"
-    ERROR = "ERROR"
-    CRITICAL = "CRITICAL"
 
 
 class Config:
