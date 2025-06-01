@@ -38,8 +38,8 @@ class FileDeduplicator:
     def __init__(
             self,
             directory: str,
-            max_workers: int = Config.DEFAULT_MAX_WORKERS,
             logger: Logger,
+            max_workers: int = Config.DEFAULT_MAX_WORKERS,
             dry_run: bool = False,
     ) -> None:
         self.directory_path = Path(directory)

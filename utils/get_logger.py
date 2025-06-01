@@ -17,4 +17,5 @@ def configure_logger(log_file: Optional[Path] = Config.DEFAULT_LOG_PATH) -> Logg
     Returns:
         Logger: Configured logging instance ready for use.
     """
-    return setup_logging(log_file=log_file)
+    return setup_logging(log_file=log_file,
+                         log_level_str=Config.DEFAULT_LOG_LEVEL)

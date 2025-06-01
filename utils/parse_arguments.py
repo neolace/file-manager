@@ -1,39 +1,33 @@
 import argparse
-from pathlib import Path
-from config import Config, LogLevel
 
 
-def parse_arguments():
-    """Parse command-line arguments."""
-    parser = argparse.ArgumentParser(description="File management utility")
-
-    # Main command argument
-    parser.add_argument("--command", default="deduplicate",
-                        help="Command to execute (deduplicate, move, etc.)")
+def parse_arguments() -> argparse.Namespace:
+    parser = argparse.ArgumentParser(description="File Management Utility")
 
     # Common arguments
-    parser.add_argument("--log", default="app.log",
-                        help="Log file path (default: app.log)")
-    parser.add_argument(
-        "--log-level",
-        type=lambda level: LogLevel[level.upper()],
-        choices=LogLevel,
-        default=Config.DEFAULT_LOG_LEVEL,
-        help="Set the logging level (default: INFO)"
-    )
-    parser.add_argument("--dry-run", action="store_true",
-                        help="Run without making changes")
+    parser.add_argument("--log", type=str, default="app.log", help="Path to the log file")
+    parser.add_argument("--dry-run", action="store_true", help="Simulate actions without making changes")
+    parser.add_argument("--log-level", type=str, default="INFO", help="Logging level (e.g., DEBUG, INFO, WARNING)")
+
+    # Command argument
+    parser.add_argument("--command", type=str, required=True, help="Command to execute (e.g., deduplicate, move)")
 
     # Deduplicate command arguments
-    parser.add_argument("--directory", type=Path,
-                        help="Directory to process")
-    parser.add_argument("--max-workers", type=int, default=4,
-                        help="Maximum number of worker threads (default: 4)")
+    parser.add_argument("--directory", type=str, help="Target directory for deduplication")
+    parser.add_argument("--max-workers", type=int, default=1, help="Maximum number of worker threads")
 
     # Move command arguments
-    parser.add_argument("--src-dir", type=Path,
-                        help="Source directory")
-    parser.add_argument("--dst-dir", type=Path,
-                        help="Destination directory")
+    parser.add_argument("--src-dir", type=str, help="Source directory for moving files")
+    parser.add_argument("--dst-dir", type=str, help="Destination directory for moving files")
+
+    # Delete by extension command arguments
+    parser.add_argument("--path", type=str, help="Target directory for file operations")
+    parser.add_argument("--extensions", type=str, help="Comma-separated list of file extensions to delete")
+
+    # Clean folder command arguments
+    parser.add_argument("--excluded-names", type=str, help="Comma-separated list of names to exclude from cleaning")
+
+    # Delete empty folders command arguments
+    parser.add_argument("--recursive", action="store_true", help="Recursively delete empty folders")
 
     return parser.parse_args()

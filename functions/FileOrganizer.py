@@ -10,10 +10,10 @@ from typing import List, Optional
 class OrganizerConfig:
     root_path: Path
     target_folder: Path
+    logger: logging.Logger
     date_format: str = "%Y-%m"
     use_modified_date: bool = True
     dry_run: bool = False
-    logger: logging.Logger
 
 
 class FileOrganizer:

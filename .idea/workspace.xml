@@ -4,13 +4,35 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="869004b0-2a94-4f61-b66c-7d7f1263b9cd" name="Changes" comment="Refactor workspace.xml to enhance task management and update commit message format">
+    <list default="true" id="0fe705b3-ae53-4599-bacd-30543995412d" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/functions/CompressFilesCommand.py" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/functions/RenameFilesCommand.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dictionaries/project.xml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/file-manager.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/file-manager.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/inspectionProfiles/profiles_settings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/FileDeduplicator.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/FileDeduplicator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/FileOrganizer.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/FileOrganizer.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/move_files_by_extension.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/move_files_by_extension.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/process_files.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/requirements.txt" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/get_logger.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/get_logger.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/utils/parse_arguments.py" beforeDir="false" afterPath="$PROJECT_DIR$/utils/parse_arguments.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Python Script" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -34,30 +56,25 @@
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 7
 }</component>
-  <component name="ProjectId" id="2xKsMOsOfKC6Kgn62cYHHnYpbQ4" />
-  <component name="ProjectLevelVcsManager">
-    <ConfirmationsSetting value="2" id="Add" />
-  </component>
+  <component name="ProjectId" id="2xukHyJEFJkbEZlGmcitaPvyIZE" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "ModuleVcsDetector.initialDetectionPerformed": "true",
-    "Python.main.executor": "Run",
-    "Python.parse_arguments.executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "RunOnceActivity.git.unshallow": "true",
-    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
-    "git-widget-placeholder": "main",
-    "ignore.virus.scanning.warn.message": "true",
-    "run.code.analysis.last.selected.profile": "aDefault",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;ModuleVcsDetector.initialDetectionPerformed&quot;: &quot;true&quot;,
+    &quot;Python.process_files.executor&quot;: &quot;Debug&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;main&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;run.code.analysis.last.selected.profile&quot;: &quot;aDefault&quot;,
+    &quot;settings.editor.selected.configurable&quot;: &quot;preferences.lookFeel&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
-    <configuration name="parse_arguments" type="PythonConfigurationType" factoryName="Python" nameIsGenerated="true">
+    <configuration name="fm_process_files" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
       <module name="file-manager" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -70,8 +87,8 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
-      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/utils/parse_arguments.py" />
-      <option name="PARAMETERS" value="--log &quot;c:\tmp\default.log&quot; --dest &quot;C:\Users\terti\Downloads\testting\New folder&quot;" />
+      <option name="SCRIPT_NAME" value="C:\Users\terti\PycharmProjects\file-manager\utils\fm_process_files.py" />
+      <option name="PARAMETERS" value="" />
       <option name="SHOW_COMMAND_LINE" value="false" />
       <option name="EMULATE_TERMINAL" value="false" />
       <option name="MODULE_MODE" value="false" />
@@ -79,6 +96,11 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.fm_process_files" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -89,37 +111,12 @@
   </component>
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="869004b0-2a94-4f61-b66c-7d7f1263b9cd" name="Changes" comment="" />
-      <created>1747698050855</created>
+      <changelist id="0fe705b3-ae53-4599-bacd-30543995412d" name="Changes" comment="" />
+      <created>1748795262091</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1747698050855</updated>
+      <updated>1748795262091</updated>
     </task>
-    <task id="LOCAL-00001" summary="Refactor function signatures for consistency and readability across multiple files">
-      <option name="closed" value="true" />
-      <created>1747784625900</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1747784625900</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Refactor workspace.xml to improve task management and update commit message format">
-      <option name="closed" value="true" />
-      <created>1747907087077</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1747907087077</updated>
-    </task>
-    <task id="LOCAL-00003" summary="Refactor workspace.xml to enhance task management and update commit message format">
-      <option name="closed" value="true" />
-      <created>1747908966565</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1747908966565</updated>
-    </task>
-    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -132,11 +129,5 @@
         </entry>
       </map>
     </option>
-  </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="Refactor function signatures for consistency and readability across multiple files" />
-    <MESSAGE value="Refactor workspace.xml to improve task management and update commit message format" />
-    <MESSAGE value="Refactor workspace.xml to enhance task management and update commit message format" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor workspace.xml to enhance task management and update commit message format" />
   </component>
 </project>
