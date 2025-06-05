@@ -1,8 +1,8 @@
 import logging
 from argparse import Namespace
-from pathlib import Path
 
 from Interface.CommandInterface import CommandInterface
+from utils.validate_arguments import validate_required_arg, validate_path
 
 
 class MoveCommand(CommandInterface):
@@ -11,14 +11,18 @@ class MoveCommand(CommandInterface):
         return "Move files between directories"
 
     def validate(self, args: Namespace) -> None:
-        if not args.src_dir or not args.dst_dir:
-            raise ValueError("Both 'src_dir' and 'dst_dir' arguments are required for the 'move' command.")
-        if not Path(args.src_dir).is_dir():
-            raise ValueError(f"Source directory not found: {args.src_dir}")
-        try:
-            Path(args.dst_dir)
-        except Exception:
-            raise ValueError(f"Invalid destination directory path: {args.dst_dir}")
+        # Validate required source directory argument
+        src_dir = validate_required_arg(args, 'src_dir', self.description)
+
+        # Validate required destination directory argument
+        dst_dir = validate_required_arg(args, 'dst_dir', self.description)
+
+        # Validate that the source directory exists and is a directory
+        validate_path(src_dir, must_exist=True, must_be_dir=True)
+
+        # Validate that the destination directory path is valid
+        # We don't require it to exist, as we might create it during execution
+        validate_path(dst_dir, must_exist=False)
 
     def execute(self, args: Namespace, logger: logging.Logger) -> None:
         logger.info(

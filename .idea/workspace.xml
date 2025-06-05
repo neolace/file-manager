@@ -4,11 +4,20 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b43427c-b494-4229-b78a-5e503aee1f2c" name="Changes" comment="Add LogLevel enum for standardized logging levels and refactor ProcessFilesCommandBase for improved file processing">
+    <list default="true" id="5b43427c-b494-4229-b78a-5e503aee1f2c" name="Changes" comment="Refactor: Implement DeduplicateCommand for improved file deduplication and enhance argument validation">
+      <change afterPath="$PROJECT_DIR$/docs/tasks.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/file-manager.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/file-manager.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/DeduplicateCommand.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/CleanFolderCommand.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/CleanFolderCommand.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/CommandType.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/CommandType.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/CompressFilesCommand.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/CompressFilesCommand.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/DeleteByExtensionCommand.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/DeleteByExtensionCommand.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/DeleteHiddenFilesCommand.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/DeleteHiddenFilesCommand.py" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/functions/FileDeduplicator.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/FileDeduplicator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/MoveCommand.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/MoveCommand.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/ProcessFilesCommandBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/ProcessFilesCommandBase.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/RenameFilesCommand.py" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -32,12 +41,12 @@
     &quot;assignee&quot;: &quot;neolace&quot;
   }
 }</component>
-  <component name="GithubPullRequestsUISettings">{
-  &quot;selectedUrlAndAccountId&quot;: {
-    &quot;url&quot;: &quot;https://github.com/neolace/file-manager.git&quot;,
-    &quot;accountId&quot;: &quot;64358b72-ab6e-4d00-a42c-13c32aeed799&quot;
+  <component name="GithubPullRequestsUISettings"><![CDATA[{
+  "selectedUrlAndAccountId": {
+    "url": "https://github.com/neolace/file-manager.git",
+    "accountId": "1b0c95ce-afd8-49d2-a487-548ee99cad62"
   }
-}</component>
+}]]></component>
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="ProjectErrors" />
   </component>
@@ -57,16 +66,25 @@
   "keyToString": {
     "ModuleVcsDetector.initialDetectionPerformed": "true",
     "Python.main.executor": "Run",
+    "Python.main_deduplicate.executor": "Run",
+    "Python.main_move.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
+    "junie.onboarding.icon.badge.shown": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
     "run.code.analysis.last.selected.profile": "aDefault",
-    "settings.editor.selected.configurable": "preferences.pluginManager"
+    "settings.editor.selected.configurable": "ml.llm.AIAssistantPromptsLibrary",
+    "vue.rearranger.settings.migration": "true"
   }
 }]]></component>
-  <component name="RunManager">
-    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+  <component name="RunManager" selected="Python.main_deduplicate">
+    <configuration name="main_deduplicate" type="PythonConfigurationType" factoryName="Python">
       <module name="file-manager" />
       <option name="ENV_FILES" value="" />
       <option name="INTERPRETER_OPTIONS" value="" />
@@ -79,6 +97,7 @@
       <option name="IS_MODULE_SDK" value="true" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
       <option name="PARAMETERS" value="--command &quot;deduplicate&quot; --directory &quot;$USER_HOME$/OneDrive/pdf&quot; --dry-run --log &quot;logfile.log&quot;" />
       <option name="SHOW_COMMAND_LINE" value="false" />
@@ -88,16 +107,39 @@
       <option name="INPUT_FILE" value="" />
       <method v="2" />
     </configuration>
-    <recent_temporary>
-      <list>
-        <item itemvalue="Python.main" />
-      </list>
-    </recent_temporary>
+    <configuration name="main_move" type="PythonConfigurationType" factoryName="Python">
+      <module name="file-manager" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="false" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="--command &quot;move&quot; --src_dir &quot;C:\Users\terti\Downloads\New folder\jpeg&quot; --dst_dir=&quot;C:\Users\terti\onedrive&quot; --dry-run --log &quot;logfile.log&quot;" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <list>
+      <item itemvalue="Python.main_deduplicate" />
+      <item itemvalue="Python.main_move" />
+    </list>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
-        <option value="bundled-python-sdk-dfff61a61320-9cdd278e9d02-com.jetbrains.pycharm.community.sharedIndexes.bundled-PC-251.25410.159" />
+        <option value="bundled-js-predefined-d6986cc7102b-6a121458b545-JavaScript-PY-251.25410.159" />
+        <option value="bundled-python-sdk-e0ed3721d81e-36ea0e71a18c-com.jetbrains.pycharm.pro.sharedIndexes.bundled-PY-251.25410.159" />
       </set>
     </attachedChunks>
   </component>
@@ -108,6 +150,7 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1748802158350</updated>
+      <workItem from="1749119332260" duration="14470000" />
     </task>
     <task id="LOCAL-00001" summary="Add CommandInterface for command structure and validation">
       <option name="closed" value="true" />
@@ -157,8 +200,19 @@
       <option name="project" value="LOCAL" />
       <updated>1748808895225</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Refactor: Implement DeduplicateCommand for improved file deduplication and enhance argument validation">
+      <option name="closed" value="true" />
+      <created>1749082193674</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1749082193674</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
     <option name="TAB_STATES">
@@ -178,17 +232,10 @@
     <MESSAGE value="Update README.md to include new file management commands and usage examples" />
     <MESSAGE value="Refactor: Update CleanFolderCommand method signature and clean up imports" />
     <MESSAGE value="Add LogLevel enum for standardized logging levels and refactor ProcessFilesCommandBase for improved file processing" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add LogLevel enum for standardized logging levels and refactor ProcessFilesCommandBase for improved file processing" />
+    <MESSAGE value="Refactor: Implement DeduplicateCommand for improved file deduplication and enhance argument validation" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor: Implement DeduplicateCommand for improved file deduplication and enhance argument validation" />
   </component>
-  <component name="XDebuggerManager">
-    <breakpoint-manager>
-      <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/main.py</url>
-          <line>64</line>
-          <option name="timeStamp" value="1" />
-        </line-breakpoint>
-      </breakpoints>
-    </breakpoint-manager>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/file_manager$main_deduplicate.coverage" NAME="main_deduplicate Coverage Results" MODIFIED="1749137948196" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="coverage.py" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="false" WORKING_DIRECTORY="$PROJECT_DIR$" />
   </component>
 </project>

@@ -13,7 +13,7 @@ class DeleteHiddenFilesCommand(ProcessFilesCommandBase):
     def description(self) -> str:
         return "Delete hidden files, optionally excluding some names"
 
-    def _get_file_operation(self, cmd_args: Namespace, cmd_logger: logging.Logger) -> Callable[[str], None]:
+    def _get_file_operation(self, args: Namespace, logger: logging.Logger) -> Callable[[str], None]:
         def operation_func(file_path_str: str):
             try:
                 is_hidden = False
@@ -26,12 +26,12 @@ class DeleteHiddenFilesCommand(ProcessFilesCommandBase):
                     is_hidden = True
 
                 if is_hidden:
-                    if not cmd_args.dry_run:
+                    if not args.dry_run:
                         os.remove(file_path_str)
-                        cmd_logger.info(f"Deleted hidden file: {file_path_str}")
+                        logger.info(f"Deleted hidden file: {file_path_str}")
                     else:
-                        cmd_logger.info(f"[DRY RUN] Would delete hidden file: {file_path_str}")
+                        logger.info(f"[DRY RUN] Would delete hidden file: {file_path_str}")
             except OSError as e:
-                cmd_logger.error(f"Error during hidden file check/delete for {file_path_str}: {e}")
+                logger.error(f"Error during hidden file check/delete for {file_path_str}: {e}")
 
         return operation_func

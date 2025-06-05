@@ -62,11 +62,11 @@ python main.py --command "move" --src-dir "C:\path\to\source_directory" --dst-di
 Removes files with specified extensions from a directory.
 
 ```bash
-python main.py --command "delete_by_extension" --directory "C:\path\to\your\directory" --extensions ".tmp,.bak" [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command "delete_by_extension" --path "C:\path\to\your\directory" --extensions ".tmp,.bak" [--log "C:\path\to\your\logfile.log"] [--dry-run]
 ```
 
 - `--command "delete_by_extension"`: Specifies the delete by extension command.
-- `--directory "C:\path\to\your\directory"`: **Required.** The directory to scan for files.
+- `--path "C:\path\to\your\directory"`: **Required.** The directory to scan for files.
 - `--extensions`: **Required.** Comma-separated list of file extensions to delete.
 
 ### Clean Folder
@@ -74,44 +74,44 @@ python main.py --command "delete_by_extension" --directory "C:\path\to\your\dire
 Removes temporary and unwanted files from a directory based on predefined patterns.
 
 ```bash
-python main.py --command "clean_folder" --directory "C:\path\to\your\directory" [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command "clean_folder" --path "C:\path\to\your\directory" [--log "C:\path\to\your\logfile.log"] [--dry-run]
 ```
 
 - `--command "clean_folder"`: Specifies the clean folder command.
-- `--directory "C:\path\to\your\directory"`: **Required.** The directory to clean.
+- `--path "C:\path\to\your\directory"`: **Required.** The directory to clean.
 
 ### Delete Empty Folders
 
 Removes empty directories recursively from a specified directory.
 
 ```bash
-python main.py --command "delete_empty" --directory "C:\path\to\your\directory" [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command "delete_empty" --path "C:\path\to\your\directory" [--log "C:\path\to\your\logfile.log"] [--dry-run]
 ```
 
 - `--command "delete_empty"`: Specifies the delete empty folders command.
-- `--directory "C:\path\to\your\directory"`: **Required.** The directory to scan for empty folders.
+- `--path "C:\path\to\your\directory"`: **Required.** The directory to scan for empty folders.
 
 ### Delete Hidden Files
 
 Removes hidden files from a directory.
 
 ```bash
-python main.py --command "delete_hidden_files" --directory "C:\path\to\your\directory" [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command "delete_hidden_files" --path "C:\path\to\your\directory" [--log "C:\path\to\your\logfile.log"] [--dry-run]
 ```
 
 - `--command "delete_hidden_files"`: Specifies the delete hidden files command.
-- `--directory "C:\path\to\your\directory"`: **Required.** The directory to scan for hidden files.
+- `--path "C:\path\to\your\directory"`: **Required.** The directory to scan for hidden files.
 
 ### Rename Files
 
 Renames files in a directory based on specified patterns.
 
 ```bash
-python main.py --command "rename_files" --directory "C:\path\to\your\directory" --pattern "old_pattern" --replacement "new_pattern" [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command "rename_files" --path "C:\path\to\your\directory" --pattern "old_pattern" --replacement "new_pattern" [--log "C:\path\to\your\logfile.log"] [--dry-run]
 ```
 
 - `--command "rename_files"`: Specifies the rename files command.
-- `--directory "C:\path\to\your\directory"`: **Required.** The directory containing files to rename.
+- `--path "C:\path\to\your\directory"`: **Required.** The directory containing files to rename.
 - `--pattern`: **Required.** The pattern to match in filenames.
 - `--replacement`: **Required.** The replacement pattern.
 
@@ -120,13 +120,11 @@ python main.py --command "rename_files" --directory "C:\path\to\your\directory" 
 Compresses files in a directory into an archive format.
 
 ```bash
-python main.py --command "compress_files" --directory "C:\path\to\your\directory" --output "C:\path\to\archive.zip" [--format "zip"] [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command "compress_files" --path "C:\path\to\your\directory" [--log "C:\path\to\your\logfile.log"] [--dry-run]
 ```
 
 - `--command "compress_files"`: Specifies the compress files command.
-- `--directory "C:\path\to\your\directory"`: **Required.** The directory containing files to compress.
-- `--output`: **Required.** The output archive file path.
-- `--format`: (Optional) The archive format (e.g., zip, tar.gz). Default to zip.
+- `--path "C:\path\to\your\directory"`: **Required.** The directory containing files to compress.
 
 ## Project Structure
 

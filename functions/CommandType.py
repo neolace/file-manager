@@ -9,3 +9,5 @@ class CommandType(Enum):
     CLEAN_FOLDER = auto()
     DELETE_EMPTY = auto()
     DELETE_HIDDEN_FILES = auto()  # Renamed from DELETE_HIDDEN
+    RENAME_FILES = auto()
+    COMPRESS_FILES = auto()

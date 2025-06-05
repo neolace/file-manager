@@ -5,6 +5,9 @@ from pathlib import Path
 from typing import Optional, List, Callable
 
 from Interface.CommandInterface import CommandInterface
+from functions.exceptions import OperationError
+from utils.file_filter import FileFilter
+from utils.validate_arguments import validate_required_arg, validate_path, validate_extensions
 
 
 def _parse_string_list_arg(arg_value: Optional[str | List[str]]) -> Optional[List[str]]:
@@ -14,16 +17,18 @@ def _parse_string_list_arg(arg_value: Optional[str | List[str]]) -> Optional[Lis
 
 
 class ProcessFilesCommandBase(CommandInterface):
-    """Base class for commands using the fm_process_files.py function."""
+    """Base class for commands that process files in a directory."""
 
     def validate(self, args: Namespace) -> None:
-        if not args.path:
-            raise ValueError(f"'path' argument is required for the '{self.description}' command.")
-        path_obj = Path(args.path)
-        if not path_obj.exists():
-            raise ValueError(f"Path not found: {args.path}")
-        if not path_obj.is_dir():
-            raise ValueError(f"Path is not a directory: {args.path}")
+        # Validate required path argument
+        path = validate_required_arg(args, 'path', self.description)
+
+        # Validate that the path exists and is a directory
+        validate_path(path, must_exist=True, must_be_dir=True)
+
+        # Validate extensions if provided
+        if hasattr(args, 'extensions') and args.extensions:
+            validate_extensions(args.extensions)
 
     def execute(self, args: Namespace, logger: logging.Logger) -> None:
         extensions = _parse_string_list_arg(getattr(args, 'extensions', None))
@@ -32,7 +37,7 @@ class ProcessFilesCommandBase(CommandInterface):
         file_operation = self._get_file_operation(args, logger)
 
         if not file_operation:
-            raise ValueError(f"No file operation defined for the '{self.description}' command.")
+            raise OperationError(f"No file operation defined for the '{self.description}' command.")
 
         # Process the files in the specified path
         path_obj = Path(args.path)
@@ -44,6 +49,8 @@ class ProcessFilesCommandBase(CommandInterface):
                 count += 1
             except Exception as e:
                 logger.error(f"Error processing {file_path}: {e}")
+                # Re-raise as OperationError to provide more context
+                raise OperationError(f"Failed to process file {file_path}: {e}") from e
 
         logger.info(f"Processed {count} files.")
         logger.info(f"'{self.description}' command finished processing path '{args.path}'.")
@@ -52,23 +59,8 @@ class ProcessFilesCommandBase(CommandInterface):
     def _get_files_to_process(self, directory: Path, extensions: Optional[List[str]] = None,
                               excluded_names: Optional[List[str]] = None) -> List[Path]:
         """Return a list of files to the process based on given filters."""
-        files = []
-
-        for path in directory.rglob('*'):
-            if not path.is_file():
-                continue
-
-            # Skip files with excluded names
-            if excluded_names and any(excluded in path.name for excluded in excluded_names):
-                continue
-
-            # Filter by extensions if specified
-            if extensions and path.suffix.lower().lstrip('.') not in [ext.lower().lstrip('.') for ext in extensions]:
-                continue
-
-            files.append(path)
-
-        return files
+        file_filter = FileFilter(extensions=extensions, excluded_names=excluded_names)
+        return file_filter.filter_files(directory)
 
     @abstractmethod
     def _get_file_operation(self, args: Namespace, logger: logging.Logger) -> Callable[[str], None]:

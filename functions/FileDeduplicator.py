@@ -3,10 +3,12 @@ import logging
 from argparse import Namespace
 from concurrent.futures import ThreadPoolExecutor
 from pathlib import Path
-from typing import  Iterator, Dict, List, Tuple, TypeVar
+from typing import Iterator, Dict, List, Tuple, TypeVar
 
 from Interface.CommandInterface import CommandInterface
 from config.settings import Config
+from functions.exceptions import ArgumentError, FileError, OperationError
+from utils.validate_arguments import validate_required_arg, validate_path
 
 # Type aliases
 FileHashResult = Tuple[Path, str]
@@ -28,11 +30,16 @@ class DeduplicateCommand(CommandInterface):
         return "Deduplicate files in a directory"
 
     def validate(self, args: Namespace) -> None:
-        if not args.directory:
-            raise ValueError("'directory' argument is required for the 'deduplicate' command.")
-        from pathlib import Path
-        if not Path(args.directory).is_dir():
-            raise ValueError(f"Directory not found: {args.directory}")
+        # Validate required directory argument
+        directory = validate_required_arg(args, 'directory', self.description)
+
+        # Validate that the directory exists and is a directory
+        validate_path(directory, must_exist=True, must_be_dir=True)
+
+        # Validate max_workers if provided
+        if hasattr(args, 'max_workers') and args.max_workers is not None:
+            if not isinstance(args.max_workers, int) or args.max_workers < 1:
+                raise ArgumentError(f"'max_workers' must be a positive integer, got {args.max_workers}")
 
     def execute(self, args: Namespace, logger: logging.Logger) -> None:
         self.directory = args.directory
@@ -42,10 +49,9 @@ class DeduplicateCommand(CommandInterface):
         self.file_hashes: Dict[str, Path] = {}
         self.duplicates: List[Path] = []
 
-        self.deduplicate()
+        self._deduplicate()
 
-    @staticmethod
-    def _calculate_file_hash(file: Path) -> FileHashResult:
+    def _calculate_file_hash(self, file: Path) -> FileHashResult:
         """Calculate the hash of a file using a buffered approach.
 
         Args:
@@ -60,14 +66,15 @@ class DeduplicateCommand(CommandInterface):
                 while chunk := f.read(Config.DEFAULT_BUFFER_SIZE):
                     hasher.update(chunk)
         except UnicodeEncodeError as e:
-            print(f"File: {file.name} - Encoding error: {e}")
+            self.logger.error(f"File: {file.name} - Encoding error: {e}")
+            raise FileError(f"Encoding error when processing file {file.name}: {e}") from e
         return file, hasher.hexdigest()
 
     def _get_files(self) -> Iterator[Path]:
         """Get all files in the directory recursively."""
-        if not Path(self.directory).is_dir():
-            raise ValueError(f"{self.directory} is not a valid directory.")
-        return (file for file in Path(self.directory).rglob("*") if file.is_file())
+        # Validate that the directory exists and is a directory
+        directory_path = validate_path(self.directory, must_exist=True, must_be_dir=True)
+        return (file for file in directory_path.rglob("*") if file.is_file())
 
     def _find_duplicates(self) -> None:
         """Find duplicate files based on their hash."""
@@ -79,7 +86,7 @@ class DeduplicateCommand(CommandInterface):
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             # Process files in parallel
             for file, file_hash in executor.map(
-                    self._calculate_file_hash, self._get_files()
+                    lambda f: self._calculate_file_hash(f), self._get_files()
             ):
                 if file_hash in self.file_hashes:
                     self.duplicates.append(file)
@@ -100,15 +107,16 @@ class DeduplicateCommand(CommandInterface):
             )
         except OSError as e:
             self.logger.error(f"Error removing {duplicate}: {e}")
+            raise OperationError(f"Failed to remove duplicate file {duplicate}: {e}") from e
 
     def _remove_duplicates(self) -> None:
         """Remove all identified duplicate files."""
         for duplicate in self.duplicates:
             self._remove_duplicate(duplicate)
 
-    def get_statistics(self) -> Dict[str, int]:
+    def _get_statistics(self) -> Dict[str, int]:
         """Return statistics about the deduplication process.
-        
+
         Returns:
             A dictionary with statistics like total files, unique files, and duplicates.
         """
@@ -119,9 +127,9 @@ class DeduplicateCommand(CommandInterface):
         }
 
 
-    def deduplicate(self) -> Dict[str, int]:
+    def _deduplicate(self) -> Dict[str, int]:
         """Remove duplicate files in the directory based on their hash.
-        
+
         Returns:
             Statistics about the deduplication process.
         """
@@ -133,4 +141,4 @@ class DeduplicateCommand(CommandInterface):
         else:
             self.logger.info(f"Deduplication complete: {len(self.duplicates)} duplicates removed.")
 
-        return self.get_statistics()
+        return self._get_statistics()
