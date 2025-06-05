@@ -4,8 +4,9 @@ from pathlib import Path
 from typing import Dict, Type
 
 from Interface import CommandInterface
-from functions import CommandType, DeduplicateCommand, DeleteHiddenFilesCommand, DeleteByExtensionCommand, MoveCommand, \
+from functions import CommandType, DeleteHiddenFilesCommand, DeleteByExtensionCommand, MoveCommand, \
     CleanFolderCommand, DeleteEmptyFoldersCommand, RenameFilesCommand, CompressFilesCommand
+from functions.FileDeduplicator import DeduplicateCommand
 from utils.parse_arguments import parse_arguments
 from utils.setup_logging import setup_logging
 

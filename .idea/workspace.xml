@@ -4,11 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="5b43427c-b494-4229-b78a-5e503aee1f2c" name="Changes" comment="Refactor: Update CleanFolderCommand method signature and clean up imports">
-      <change afterPath="$PROJECT_DIR$/config/LogLevel.py" afterDir="false" />
+    <list default="true" id="5b43427c-b494-4229-b78a-5e503aee1f2c" name="Changes" comment="Add LogLevel enum for standardized logging levels and refactor ProcessFilesCommandBase for improved file processing">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/config/settings.py" beforeDir="false" afterPath="$PROJECT_DIR$/config/settings.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/functions/ProcessFilesCommandBase.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/ProcessFilesCommandBase.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/README.md" beforeDir="false" afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/DeduplicateCommand.py" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/functions/FileDeduplicator.py" beforeDir="false" afterPath="$PROJECT_DIR$/functions/FileDeduplicator.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/main.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -61,9 +62,38 @@
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "run.code.analysis.last.selected.profile": "aDefault",
-    "settings.editor.selected.configurable": "com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable"
+    "settings.editor.selected.configurable": "preferences.pluginManager"
   }
 }]]></component>
+  <component name="RunManager">
+    <configuration name="main" type="PythonConfigurationType" factoryName="Python" temporary="true" nameIsGenerated="true">
+      <module name="file-manager" />
+      <option name="ENV_FILES" value="" />
+      <option name="INTERPRETER_OPTIONS" value="" />
+      <option name="PARENT_ENVS" value="true" />
+      <envs>
+        <env name="PYTHONUNBUFFERED" value="1" />
+      </envs>
+      <option name="SDK_HOME" value="" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
+      <option name="IS_MODULE_SDK" value="true" />
+      <option name="ADD_CONTENT_ROOTS" value="true" />
+      <option name="ADD_SOURCE_ROOTS" value="true" />
+      <option name="SCRIPT_NAME" value="$PROJECT_DIR$/main.py" />
+      <option name="PARAMETERS" value="--command &quot;deduplicate&quot; --directory &quot;$USER_HOME$/OneDrive/pdf&quot; --dry-run --log &quot;logfile.log&quot;" />
+      <option name="SHOW_COMMAND_LINE" value="false" />
+      <option name="EMULATE_TERMINAL" value="false" />
+      <option name="MODULE_MODE" value="false" />
+      <option name="REDIRECT_INPUT" value="false" />
+      <option name="INPUT_FILE" value="" />
+      <method v="2" />
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Python.main" />
+      </list>
+    </recent_temporary>
+  </component>
   <component name="SharedIndexes">
     <attachedChunks>
       <set>
@@ -119,7 +149,15 @@
       <option name="project" value="LOCAL" />
       <updated>1748808159892</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Add LogLevel enum for standardized logging levels and refactor ProcessFilesCommandBase for improved file processing">
+      <option name="closed" value="true" />
+      <created>1748808895225</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1748808895225</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -139,6 +177,18 @@
     <MESSAGE value="Refactor: Update import paths and enhance command structure" />
     <MESSAGE value="Update README.md to include new file management commands and usage examples" />
     <MESSAGE value="Refactor: Update CleanFolderCommand method signature and clean up imports" />
-    <option name="LAST_COMMIT_MESSAGE" value="Refactor: Update CleanFolderCommand method signature and clean up imports" />
+    <MESSAGE value="Add LogLevel enum for standardized logging levels and refactor ProcessFilesCommandBase for improved file processing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add LogLevel enum for standardized logging levels and refactor ProcessFilesCommandBase for improved file processing" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/main.py</url>
+          <line>64</line>
+          <option name="timeStamp" value="1" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>

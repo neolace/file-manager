@@ -1,9 +1,11 @@
 import hashlib
+import logging
+from argparse import Namespace
 from concurrent.futures import ThreadPoolExecutor
-from logging import Logger
 from pathlib import Path
-from typing import Optional, Iterator, Dict, List, Tuple, Callable, Any, TypeVar
+from typing import  Iterator, Dict, List, Tuple, TypeVar
 
+from Interface.CommandInterface import CommandInterface
 from config.settings import Config
 
 # Type aliases
@@ -11,43 +13,36 @@ FileHashResult = Tuple[Path, str]
 T = TypeVar('T')
 
 
-def safe_action(func: Callable[..., T]) -> Callable[..., Optional[T]]:
-    """
-    A decorator that wraps a function to handle exceptions safely.
-    
-    Args:
-        func: The function to wrap.
-        
-    Returns:
-        A wrapped function that catches exceptions and returns None on failure.
-    """
+class DeduplicateCommand(CommandInterface):
+    def __init__(self):
+        self.directory = None
+        self.duplicates = None
+        self.logger = None
+        self.file_hashes = None
+        self.directory_path = None
+        self.dry_run = True
+        self.max_workers = 1
 
-    def wrapper(*args: Any, **kwargs: Any) -> Optional[T]:
-        try:
-            return func(*args, **kwargs)
-        except Exception as e:
-            import logging
-            logger = logging.getLogger(__name__)
-            logger.error(f"Error in {func.__name__}: {e}")
-            return None
+    @property
+    def description(self) -> str:
+        return "Deduplicate files in a directory"
 
-    return wrapper
+    def validate(self, args: Namespace) -> None:
+        if not args.directory:
+            raise ValueError("'directory' argument is required for the 'deduplicate' command.")
+        from pathlib import Path
+        if not Path(args.directory).is_dir():
+            raise ValueError(f"Directory not found: {args.directory}")
 
-
-class FileDeduplicator:
-    def __init__(
-            self,
-            directory: str,
-            logger: Logger,
-            max_workers: int = Config.DEFAULT_MAX_WORKERS,
-            dry_run: bool = False,
-    ) -> None:
-        self.directory_path = Path(directory)
-        self.max_workers = max_workers
+    def execute(self, args: Namespace, logger: logging.Logger) -> None:
+        self.directory = args.directory
+        self.max_workers = args.max_workers
         self.logger = logger
-        self.dry_run = dry_run
+        self.dry_run = args.dry_run
         self.file_hashes: Dict[str, Path] = {}
         self.duplicates: List[Path] = []
+
+        self.deduplicate()
 
     @staticmethod
     def _calculate_file_hash(file: Path) -> FileHashResult:
@@ -70,16 +65,16 @@ class FileDeduplicator:
 
     def _get_files(self) -> Iterator[Path]:
         """Get all files in the directory recursively."""
-        if not self.directory_path.is_dir():
-            raise ValueError(f"{self.directory_path} is not a valid directory.")
-        return (file for file in self.directory_path.rglob("*") if file.is_file())
+        if not Path(self.directory).is_dir():
+            raise ValueError(f"{self.directory} is not a valid directory.")
+        return (file for file in Path(self.directory).rglob("*") if file.is_file())
 
     def _find_duplicates(self) -> None:
         """Find duplicate files based on their hash."""
         self.file_hashes.clear()
         self.duplicates.clear()
 
-        self.logger.info(f"Scanning for files in {self.directory_path}")
+        self.logger.info(f"Scanning for files in {self.directory}")
 
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             # Process files in parallel
@@ -123,7 +118,7 @@ class FileDeduplicator:
             "duplicates": len(self.duplicates)
         }
 
-    @safe_action
+
     def deduplicate(self) -> Dict[str, int]:
         """Remove duplicate files in the directory based on their hash.
         

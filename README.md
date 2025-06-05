@@ -43,7 +43,7 @@ python main.py --command "deduplicate" --directory "C:\path\to\your\directory" [
 
 - `--command "deduplicate"`: Specifies the deduplication command.
 - `--directory "C:\path\to\your\directory"`: **Required.** The directory to scan for duplicate files.
-- `--max-workers <number>`: (Optional) The maximum number of worker threads to use for processing. Defaults to 1.
+- `--max-workers <number>`: (Optional) The maximum number of worker threads to use for processing. Default to 1.
 
 ### Move Files
 
@@ -126,7 +126,7 @@ python main.py --command "compress_files" --directory "C:\path\to\your\directory
 - `--command "compress_files"`: Specifies the compress files command.
 - `--directory "C:\path\to\your\directory"`: **Required.** The directory containing files to compress.
 - `--output`: **Required.** The output archive file path.
-- `--format`: (Optional) The archive format (e.g., zip, tar.gz). Defaults to zip.
+- `--format`: (Optional) The archive format (e.g., zip, tar.gz). Default to zip.
 
 ## Project Structure
 
