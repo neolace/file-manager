@@ -1,157 +1,231 @@
-# File Management Utility
+# File Manager
 
-A Python command-line tool for file deduplication, moving files, and other file management operations.
+A command-line file management utility for common house-keeping tasks such as
+deduplicating files, deleting files by extension, cleaning folders, removing
+empty directories, deleting hidden files, and compressing files into a ZIP
+archive.
+
+The tool is built around a simple, extensible command pattern: each operation is
+a self-contained command that validates its own arguments and executes against a
+shared logger, with first-class support for a `--dry-run` mode so you can preview
+every action before anything touches disk.
 
 ## Features
 
-- Deduplicate files within a specified directory
-- Move files from a source directory to a destination directory
-- Delete files by extension
-- Clean folders of unwanted files
-- Delete empty folders
-- Delete hidden files
-- Rename files based on patterns
-- Compress files for archiving
-- Configurable logging for all operations
-- Dry-run mode to preview changes without applying them
-- Extensible command registry to easily add new file management operations
+- **Deduplicate** – Find and remove duplicate files using MD5 content hashing,
+  with optional multi-threaded scanning.
+- **Delete by extension** – Delete files matching one or more extensions.
+- **Clean folder** – Delete files in a folder, optionally excluding certain names.
+- **Delete empty folders** – Remove empty directories, optionally recursively.
+- **Delete hidden files** – Remove hidden files (dot-files on POSIX, hidden
+  attribute on Windows).
+- **Compress files** – Bundle files from a directory into a timestamped ZIP
+  archive, with optional extension and name filters.
+- **Dry-run mode** – Preview any command without modifying the file system.
+- **Configurable logging** – Log to a file at a chosen level (`DEBUG`, `INFO`,
+  `WARNING`, ...).
 
 ## Requirements
 
-- Python 3.8+
-- Install dependencies: `pip install -r requirements.txt`
+- Python 3.10+ (uses `TypeAlias` and other modern typing features)
+- Dependencies listed in [requirements.txt](requirements.txt)
+
+## Installation
+
+```bash
+# Clone the repository
+git clone https://github.com/neolace/file-manager.git
+cd file-manager
+
+# (Recommended) create and activate a virtual environment
+python -m venv .venv
+# Windows (PowerShell)
+.venv\Scripts\Activate.ps1
+# macOS / Linux
+source .venv/bin/activate
+
+# Install dependencies
+pip install -r requirements.txt
+```
 
 ## Usage
 
-All commands are run from the terminal using `main.py`.
-
-### Common Arguments
-
-- `--log <filepath>`: Specifies the path to the log file. Defaults to `app.log` if not specified, or as defined in
-  `config/Config.py`.
-- `--dry-run`: If present, the script will simulate the actions and log what would happen, but will not make any actual
-  changes to the filesystem.
-- `--log-level`: Sets the logging level. Default is typically INFO.
-
-### Deduplicate Files
-
-Scans a directory for duplicate files (based on content) and removes them, keeping one copy.
+Run the tool via `main.py`, selecting an operation with `--command`:
 
 ```bash
-python main.py --command "deduplicate" --directory "C:\path\to\your\directory" [--log "C:\path\to\your\logfile.log"] [--dry-run] [--max-workers <number>]
+python main.py --command <command> [options]
 ```
 
-- `--command "deduplicate"`: Specifies the deduplication command.
-- `--directory "C:\path\to\your\directory"`: **Required.** The directory to scan for duplicate files.
-- `--max-workers <number>`: (Optional) The maximum number of worker threads to use for processing. Default to 1.
+### Common options
 
-### Move Files
+These options apply to every command:
 
-Moves files from a source directory to a destination directory.
+| Option        | Default   | Description                                              |
+| ------------- | --------- | -------------------------------------------------------- |
+| `--command`   | *(required)* | Command to execute (see below).                       |
+| `--log`       | `app.log` | Path to the log file.                                    |
+| `--log-level` | `INFO`    | Logging level (`DEBUG`, `INFO`, `WARNING`, ...).         |
+| `--dry-run`   | `false`   | Simulate the action without modifying the file system.   |
+
+## Commands
+
+### `deduplicate`
+
+Find duplicate files by content hash and remove the duplicates.
+
+| Option          | Required | Description                                |
+| --------------- | -------- | ------------------------------------------ |
+| `--directory`   | Yes      | Target directory to scan (recursively).    |
+| `--max-workers` | No       | Worker threads for hashing (default `1`).  |
 
 ```bash
-python main.py --command "move" --src-dir "C:\path\to\source_directory" --dst-dir "C:\path\to\destination_directory" [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command deduplicate --directory ./photos --max-workers 4 --dry-run
 ```
 
-- `--command "move"`: Specifies the move command.
-- `--src-dir "C:\path\to\source_directory"`: **Required.** The source directory containing files to move.
-- `--dst-dir "C:\path\to\destination_directory"`: **Required.** The destination directory where files will be moved.
+### `delete_by_extension`
 
-### Delete Files by Extension
+Delete files matching the given extensions.
 
-Removes files with specified extensions from a directory.
+| Option         | Required | Description                                          |
+| -------------- | -------- | ---------------------------------------------------- |
+| `--path`       | Yes      | Target directory.                                    |
+| `--extensions` | Yes      | Comma-separated list of extensions (e.g. `tmp,log`). |
 
 ```bash
-python main.py --command "delete_by_extension" --path "C:\path\to\your\directory" --extensions ".tmp,.bak" [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command delete_by_extension --path ./downloads --extensions tmp,log
 ```
 
-- `--command "delete_by_extension"`: Specifies the delete by extension command.
-- `--path "C:\path\to\your\directory"`: **Required.** The directory to scan for files.
-- `--extensions`: **Required.** Comma-separated list of file extensions to delete.
+### `clean_folder`
 
-### Clean Folder
+Delete files within a folder, optionally excluding certain names.
 
-Removes temporary and unwanted files from a directory based on predefined patterns.
+| Option             | Required | Description                                       |
+| ------------------ | -------- | ------------------------------------------------- |
+| `--path`           | Yes      | Target directory.                                 |
+| `--excluded-names` | No       | Comma-separated names to exclude from cleaning.   |
 
 ```bash
-python main.py --command "clean_folder" --path "C:\path\to\your\directory" [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command clean_folder --path ./tmp --excluded-names keep.txt,.gitkeep
 ```
 
-- `--command "clean_folder"`: Specifies the clean folder command.
-- `--path "C:\path\to\your\directory"`: **Required.** The directory to clean.
+### `delete_empty`
 
-### Delete Empty Folders
+Delete empty folders, optionally recursively.
 
-Removes empty directories recursively from a specified directory.
+| Option        | Required | Description                                   |
+| ------------- | -------- | --------------------------------------------- |
+| `--path`      | Yes      | Target directory.                             |
+| `--recursive` | No       | Recurse into subdirectories when set.         |
 
 ```bash
-python main.py --command "delete_empty" --path "C:\path\to\your\directory" [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command delete_empty --path ./project --recursive
 ```
 
-- `--command "delete_empty"`: Specifies the delete empty folders command.
-- `--path "C:\path\to\your\directory"`: **Required.** The directory to scan for empty folders.
+### `delete_hidden_files`
 
-### Delete Hidden Files
+Delete hidden files (dot-files on POSIX; hidden attribute on Windows).
 
-Removes hidden files from a directory.
+| Option             | Required | Description                                     |
+| ------------------ | -------- | ----------------------------------------------- |
+| `--path`           | Yes      | Target directory.                               |
+| `--excluded-names` | No       | Comma-separated names to exclude.               |
 
 ```bash
-python main.py --command "delete_hidden_files" --path "C:\path\to\your\directory" [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command delete_hidden_files --path ./repo --dry-run
 ```
 
-- `--command "delete_hidden_files"`: Specifies the delete hidden files command.
-- `--path "C:\path\to\your\directory"`: **Required.** The directory to scan for hidden files.
+### `compress_files`
 
-### Rename Files
+Compress files from a directory into a timestamped ZIP archive. The archive is
+created in the parent directory as `<folder-name>_<YYYYMMDD_HHMMSS>.zip`.
 
-Renames files in a directory based on specified patterns.
+| Option             | Required | Description                                                    |
+| ------------------ | -------- | ------------------------------------------------------------- |
+| `--path`           | Yes      | Directory whose files should be compressed.                  |
+| `--extensions`     | No       | Comma-separated extensions to include (all files if omitted). |
+| `--excluded-names` | No       | Comma-separated names to exclude.                            |
 
 ```bash
-python main.py --command "rename_files" --path "C:\path\to\your\directory" --pattern "old_pattern" --replacement "new_pattern" [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command compress_files --path ./logs --extensions log,txt
 ```
 
-- `--command "rename_files"`: Specifies the rename files command.
-- `--path "C:\path\to\your\directory"`: **Required.** The directory containing files to rename.
-- `--pattern`: **Required.** The pattern to match in filenames.
-- `--replacement`: **Required.** The replacement pattern.
+> **Note:** The `move` command is registered but its execution is not yet
+> implemented.
 
-### Compress Files
+## Dry-run mode
 
-Compresses files in a directory into an archive format.
+Add `--dry-run` to any command to log exactly what would happen without deleting,
+moving, or writing anything:
 
 ```bash
-python main.py --command "compress_files" --path "C:\path\to\your\directory" [--log "C:\path\to\your\logfile.log"] [--dry-run]
+python main.py --command deduplicate --directory ./photos --dry-run
 ```
 
-- `--command "compress_files"`: Specifies the compress files command.
-- `--path "C:\path\to\your\directory"`: **Required.** The directory containing files to compress.
+## Project structure
 
-## Project Structure
+```text
+main.py                       # Entry point: argument parsing, command dispatch, logging
+requirements.txt              # Python dependencies
+config/                       # Configuration and constants
+  settings.py                 # Central Config (buffer sizes, messages, defaults)
+  fm_FileType.py              # Supported file types
+  LogLevel.py                 # Log level definitions
+functions/                    # Command implementations
+  CommandType.py              # Enum of supported commands
+  CompressFilesCommand.py
+  CleanFolderCommand.py
+  DeleteByExtensionCommand.py
+  DeleteEmptyFoldersCommand.py
+  DeleteHiddenFilesCommand.py
+  FileDeduplicator.py
+  MoveCommand.py
+  ProcessFilesCommandBase.py  # Shared base for file-processing commands
+  exceptions.py               # Custom exception hierarchy
+Interface/
+  CommandInterface.py         # Command contract (validate/execute/description)
+utils/                        # Helpers: argument parsing, validation, logging, filtering
+```
 
-- `main.py`: Main entry point for the application, handles command parsing and execution.
-- `config/settings.py`: Contains application-wide configuration settings, constants, and type aliases.
-- `functions/`: Module for different file operations.
-    - Files for each command implementation (DeduplicateCommand, MoveCommand, etc.)
-- `utils/`: Contains utility modules.
-    - `parse_arguments.py`: Handles parsing of command-line arguments.
-    - `setup_logging.py`: Configures logging for the application.
+## Architecture
 
-## Extending
+- **`CommandInterface`** defines the contract every command implements:
+  `validate(args)`, `execute(args, logger)`, and a `description` property.
+- **`CommandRegistry`** maps command names to their implementations.
+- **`CommandHandler`** looks up the command, validates arguments, executes it,
+  and maps known exceptions to friendly log messages.
+- **`ProcessFilesCommandBase`** provides shared file-walking logic for commands
+  that operate on individual files.
 
-To add new functionality:
+### Adding a new command
 
-1. Define a new command type in `CommandType` enum in `main.py`.
-2. Create a new class that implements the `CommandInterface`. This class should include:
-    * A `description` property.
-    * A `validate(self, args: Namespace)` method to check command-specific arguments.
-    * An `execute(self, args: Namespace, logger: logging.Logger)` method to perform the command's action.
-3. Register your new command class in the `_commands` dictionary within the `CommandRegistry` class in `main.py`.
-4. Update `utils/parse_arguments.py` to include any new command-specific arguments.
+1. Add a new value to `CommandType` in [functions/CommandType.py](functions/CommandType.py).
+2. Implement a class that satisfies `CommandInterface` (or extend
+   `ProcessFilesCommandBase`).
+3. Register it in `CommandRegistry.COMMAND_MAP` in [main.py](main.py).
+4. Add any new CLI arguments in [utils/parse_arguments.py](utils/parse_arguments.py).
 
-## License
+## Testing
 
-MIT License
+Tests use `pytest`:
 
-## Contributing
+```bash
+pytest
+# with coverage
+pytest --cov
+```
 
-Contributions are welcome! Please submit a pull request or open an issue to discuss changes.
+## Development
+
+The project ships with common tooling in [requirements.txt](requirements.txt):
+
+- Formatting: `black`, `isort`
+- Linting: `flake8`, `pylint`
+- Type checking: `mypy`
+- Testing: `pytest`, `pytest-cov`
+
+```bash
+black .
+isort .
+flake8
+mypy .
+```
