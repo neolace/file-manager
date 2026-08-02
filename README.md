@@ -74,6 +74,7 @@ deduplication revalidation, and archive publication.
 - [Documentation index](docs/README.md)
 - [User guide](docs/user-guide.md)
 - [Contributing](docs/contributing.md)
+- [Troubleshooting](docs/troubleshooting.md)
 - [Safety model](docs/safety-model.md)
 - [Domain and architecture vocabulary](CONTEXT.md)
 - [Improvement tasks](docs/tasks.md)

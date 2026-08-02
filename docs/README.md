@@ -27,6 +27,8 @@ flowchart TD
   exit statuses.
 - [Contributing](contributing.md) - architecture constraints, test design, and
   required local checks.
+- [Troubleshooting](troubleshooting.md) - common errors, partial failures,
+  logging, and archive publication failures.
 - [Safety model](safety-model.md) - filtering, symlinks, partial failures,
   deduplication revalidation, and archive publication.
 - [Domain context](../CONTEXT.md) - canonical architecture and domain vocabulary.
