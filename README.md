@@ -73,6 +73,7 @@ deduplication revalidation, and archive publication.
 
 - [Documentation index](docs/README.md)
 - [User guide](docs/user-guide.md)
+- [Contributing](docs/contributing.md)
 - [Safety model](docs/safety-model.md)
 - [Domain and architecture vocabulary](CONTEXT.md)
 - [Improvement tasks](docs/tasks.md)
@@ -116,30 +117,10 @@ utils/                        # Argument parsing, logging, and filtering
    `ProcessFilesCommandBase`).
 2. Register it in `CommandRegistry.COMMAND_MAP` in [main.py](main.py).
 3. Add any new CLI arguments in [utils/parse_arguments.py](utils/parse_arguments.py).
-4. Test through the Command interface and both executor adapters as applicable.
+4. Follow the test and documentation checklist in
+   [docs/contributing.md](docs/contributing.md).
 
-## Testing
+## Contributing
 
-Tests use `pytest`:
-
-```bash
-pytest
-# with coverage
-pytest --cov
-```
-
-## Development
-
-The project ships with common tooling in [requirements.txt](requirements.txt):
-
-- Formatting: `black`, `isort`
-- Linting: `flake8`, `pylint`
-- Type checking: `mypy`
-- Testing: `pytest`, `pytest-cov`
-
-```bash
-black .
-isort .
-flake8
-mypy .
-```
+See [docs/contributing.md](docs/contributing.md) for environment setup,
+architecture constraints, test design, formatting, and all required local checks.

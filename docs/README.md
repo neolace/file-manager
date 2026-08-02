@@ -25,6 +25,8 @@ flowchart TD
 
 - [User guide](user-guide.md) - command syntax, recursive behavior, dry-run, and
   exit statuses.
+- [Contributing](contributing.md) - architecture constraints, test design, and
+  required local checks.
 - [Safety model](safety-model.md) - filtering, symlinks, partial failures,
   deduplication revalidation, and archive publication.
 - [Domain context](../CONTEXT.md) - canonical architecture and domain vocabulary.
