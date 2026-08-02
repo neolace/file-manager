@@ -10,27 +10,27 @@ This document contains a prioritized list of tasks for improving the File Manage
 4. [x] Separate business logic from CLI interface for better testability
 5. [ ] Create a configuration system that allows for user-defined settings
 6. [x] Inject real or recording filesystem execution through CommandRequest
-7. [x] Standardize error handling across all commands
+7. [x] Use typed results and centralized handler logging for command errors
 8. [ ] Standardize command argument naming conventions (e.g., use --path consistently instead of mixing --directory, --path, --src-dir)
 9. [ ] Implement a command factory pattern to decouple command creation from the registry
 10. [ ] Implement a more robust command registry with automatic discovery of command classes
-11. [x] Create a unified file filtering system that works consistently across all commands
+11. [x] Create shared file filtering for file-selection Commands
 12. [x] Implement parse and execute lifecycle with typed requests and results
 13. [ ] Separate configuration validation from execution logic in all commands
 
 ## Code Quality
 
 1. [x] Remove CommandType and make CommandRegistry the command-name source
-2. [x] Replace print() statements with logger calls in FileDeduplicator._calculate_file_hash
-3. [x] Remove redundant Path import in DeduplicateCommand.validate method
-4. [x] Fix incorrect docstring reference to fm_process_files.py in ProcessFilesCommandBase
+2. [x] Replace command-level print() calls with logger calls
+3. [x] Remove redundant imports from deduplication validation
+4. [x] Remove obsolete helper-module references from ProcessFilesCommandBase
 5. [x] Standardize method naming conventions across all command classes
 6. [x] Add type hints to all functions and methods
 7. [x] Implement proper exception hierarchy for different error types
 8. [x] Fix inconsistency between README (--directory) and code (--path) parameter names
-9. [x] Add validation for all command arguments
+9. [x] Add validation for required command-specific arguments
 10. [x] Refactor file filtering logic into a separate utility class for reuse
-11. [x] Implement consistent error handling for file operations across all commands
+11. [x] Aggregate per-target OSError failures in destructive Commands
 12. [ ] Add pre-commit hooks for code formatting, linting, and type checking
 13. [ ] Improve variable naming for better code readability (e.g., avoid single-letter variables)
 14. [x] Centralize string-list normalization for file-processing Commands
@@ -42,16 +42,16 @@ This document contains a prioritized list of tasks for improving the File Manage
 
 ## Testing
 
-1. [x] Create pytest fixtures with temporary file trees
+1. [x] Build temporary file trees with pytest's tmp_path fixture
 2. [x] Implement tests for all registered Command classes
 3. [x] Implement integration tests for CommandHandler execution
-4. [ ] Add test coverage reporting
+4. [ ] Configure coverage reporting and an explicit coverage threshold
 5. [ ] Implement property-based testing for file operations
 6. [x] Create a recording FileSystemExecutor for mutation-free tests
 7. [ ] Add CI/CD pipeline for automated testing
 8. [ ] Implement parameterized tests for different file types and edge cases
 9. [x] Add regression test for CommandRegistry class construction
-10. [x] Create test fixtures for common filesystem scenarios
+10. [x] Add reusable helpers for repeated test setup
 11. [ ] Implement performance benchmarks to detect performance regressions
 12. [ ] Add tests for edge cases like very large files, special characters in filenames
 13. [ ] Implement fuzz testing for input validation

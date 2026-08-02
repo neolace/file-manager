@@ -16,8 +16,8 @@ The `--dry-run` mode records target-file mutations without applying them.
 - **Delete by extension** – Delete files matching one or more extensions.
 - **Clean folder** – Delete files in a folder, optionally excluding certain names.
 - **Delete empty folders** – Remove empty directories, optionally recursively.
-- **Delete hidden files** – Remove hidden files (dot-files on POSIX, hidden
-  attribute on Windows).
+- **Delete hidden files** - Remove dot-prefixed files on every supported platform
+  and files with the Windows hidden attribute.
 - **Compress files** – Bundle files from a directory into a timestamped ZIP
   archive, with optional extension and name filters.
 - **Dry-run mode** – Preview target-file mutations without applying them.
@@ -59,12 +59,12 @@ python main.py --command <command> [options]
 
 These options apply to every command:
 
-| Option        | Default   | Description                                              |
-| ------------- | --------- | -------------------------------------------------------- |
-| `--command`   | *(required)* | Command to execute (see below).                       |
-| `--log`       | `app.log` | Path to the log file.                                    |
-| `--log-level` | `INFO`    | Logging level (`DEBUG`, `INFO`, `WARNING`, ...).         |
-| `--dry-run`   | `false`   | Simulate the action without modifying the file system.   |
+| Option        | Default      | Description                                                   |
+| ------------- | ------------ | ------------------------------------------------------------- |
+| `--command`   | *(required)* | Command to execute.                                           |
+| `--log`       | `app.log`    | Path to the diagnostic log file.                              |
+| `--log-level` | `INFO`       | Logging level (`DEBUG`, `INFO`, `WARNING`, ...).               |
+| `--dry-run`   | `false`      | Simulate the action without applying target-file mutations.   |
 
 ## Commands
 

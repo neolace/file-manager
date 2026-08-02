@@ -8,8 +8,8 @@ Architecture reviews, grilling sessions, and ADRs use these terms exactly.
 ## Domain Terms
 
 ### Command
-A self-contained file-system operation (deduplicate, delete-by-extension,
-clean-folder, delete-empty, delete-hidden-files, compress-files).
+A self-contained file-system operation (`deduplicate`, `delete_by_extension`,
+`clean_folder`, `delete_empty`, `delete_hidden_files`, or `compress_files`).
 Every Command implements `CommandInterface`: `parse(args, executor)`,
 `execute(request, logger)`, and a `description` property. Execution returns a
 `CommandResult`.
@@ -59,11 +59,12 @@ not mirror every low-level filesystem function.
 
 ### CommandRequest
 A typed, immutable parameter object produced by a Command from command-line
-arguments. Values are normalized before execution.
+arguments. Values required by a Command are parsed into their request before
+execution; each Command owns any value-specific normalization it needs.
 Every CommandRequest includes the selected `FileSystemExecutor`; specialised
 requests add the inputs required by one Command, e.g. `DeduplicateRequest` or
-`CompressRequest`. The `--dry-run` flag selects the executor but is not retained
-as a second execution-mode field.
+`CompressFilesRequest`. The `--dry-run` flag selects the executor but is not
+retained as a second execution-mode field.
 
 ### CommandResult
 A typed outcome returned by a Command. It reports attempted, succeeded, skipped,
@@ -71,10 +72,12 @@ and failed work, with specialised results adding Command-specific facts.
 
 ### DeduplicationPlan
 The deterministic classification of matching-content files into keepers and
-duplicates before any duplicate is removed. The lexicographically smallest
-normalized absolute path is the keeper when no explicit keeper policy exists.
-A duplicate is removed only while both it and its keeper still match the
-planned content digest.
+duplicates before any duplicate is removed. File symlinks are excluded. The
+lexicographically smallest normalized absolute path is the keeper when no
+explicit keeper policy exists. Immediately before unlinking a duplicate, the
+real executor revalidates the duplicate and keeper against the planned SHA-256
+digest and verifies that their observed file state did not change during that
+revalidation.
 
 ---
 
