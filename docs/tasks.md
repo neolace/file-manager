@@ -72,6 +72,7 @@ This document contains a prioritized list of tasks for improving the File Manage
 10. [x] Document the domain and architecture vocabulary in CONTEXT.md
 11. [ ] Add inline code comments explaining complex logic
 12. [ ] Create a troubleshooting guide for common errors
+13. [x] Document filtering, symlinks, partial failures, and archive publication
 
 ## Features
 

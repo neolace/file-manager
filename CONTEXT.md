@@ -79,6 +79,9 @@ real executor revalidates the duplicate and keeper against the planned SHA-256
 digest and verifies that their observed file state did not change during that
 revalidation.
 
+Filtering, symlink, partial-failure, revalidation, and archive-publication details
+are documented in the [safety model](docs/safety-model.md).
+
 ---
 
 ## Glossary Notes
