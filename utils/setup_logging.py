@@ -27,7 +27,8 @@ def setup_logging(log_file: Path, log_level_str: str) -> logging.Logger:
 
         # Define log format
         formatter = logging.Formatter(
-            "%(asctime)s - %(name)s - %(levelname)s - %(message)s [%(filename)s:%(lineno)d]"
+            "%(asctime)s - %(name)s - %(levelname)s - %(message)s "
+            "[%(filename)s:%(lineno)d]"
         )
         file_handler.setFormatter(formatter)
         console_handler.setFormatter(formatter)

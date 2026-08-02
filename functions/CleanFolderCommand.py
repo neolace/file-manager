@@ -1,25 +1,30 @@
-import logging
-import os
 from argparse import Namespace
-from typing import Callable
+from pathlib import Path
 
-from functions.ProcessFilesCommandBase import ProcessFilesCommandBase
+from functions.exceptions import ArgumentError
+from functions.ProcessFilesCommandBase import (
+    ProcessFilesCommandBase,
+    ProcessFilesRequest,
+    parse_string_list,
+)
+from Interface.FileSystemExecutor import FileSystemExecutor
+from utils.file_filter import FileFilter
 
 
 class CleanFolderCommand(ProcessFilesCommandBase):
     @property
     def description(self) -> str:
-        return "Clean a folder by deleting its contents (files), optionally excluding some names"
+        return "Clean a folder by deleting files, with optional exclusions"
 
-    def _get_file_operation(self, args: Namespace, logger: logging.Logger) -> Callable[[str], None]:
-        def operation_func(file_path_str: str):
-            if not args.dry_run:
-                try:
-                    os.remove(file_path_str)
-                    logger.info(f"CleanFolder: Deleted {file_path_str}")
-                except OSError as e:
-                    logger.error(f"CleanFolder: Failed to delete {file_path_str}: {e}")
-            else:
-                logger.info(f"[DRY RUN] CleanFolder: Would delete {file_path_str}")
-
-        return operation_func
+    def parse(
+        self, args: Namespace, executor: FileSystemExecutor
+    ) -> ProcessFilesRequest:
+        path = getattr(args, "path", None)
+        if not path:
+            raise ArgumentError(f"'path' is required for {self.description}")
+        excluded_names = parse_string_list(getattr(args, "excluded_names", None))
+        return ProcessFilesRequest(
+            executor=executor,
+            path=Path(path),
+            file_filter=FileFilter(excluded_names=excluded_names),
+        )

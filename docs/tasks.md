@@ -5,22 +5,22 @@ This document contains a prioritized list of tasks for improving the File Manage
 ## Architecture and Design
 
 1. [ ] Refactor argument parsing to use subcommands for a more intuitive CLI structure
-2. [ ] Create a consistent interface for file operations across all commands
+2. [x] Create a consistent interface for file operations across all commands
 3. [ ] Implement a plugin system to allow for easier extension with new commands
-4. [ ] Separate business logic from CLI interface for better testability
+4. [x] Separate business logic from CLI interface for better testability
 5. [ ] Create a configuration system that allows for user-defined settings
-6. [ ] Implement a proper dependency injection system for better testability and flexibility
-7. [ ] Standardize error handling across all commands
+6. [x] Inject real or recording filesystem execution through CommandRequest
+7. [x] Standardize error handling across all commands
 8. [ ] Standardize command argument naming conventions (e.g., use --path consistently instead of mixing --directory, --path, --src-dir)
 9. [ ] Implement a command factory pattern to decouple command creation from the registry
 10. [ ] Implement a more robust command registry with automatic discovery of command classes
-11. [ ] Create a unified file filtering system that works consistently across all commands
-12. [ ] Implement a proper lifecycle management for command execution (init, validate, execute, cleanup)
+11. [x] Create a unified file filtering system that works consistently across all commands
+12. [x] Implement parse and execute lifecycle with typed requests and results
 13. [ ] Separate configuration validation from execution logic in all commands
 
 ## Code Quality
 
-1. [x] Fix inconsistency between CommandType enum and command registry (add rename_files and compress_files to enum)
+1. [x] Remove CommandType and make CommandRegistry the command-name source
 2. [x] Replace print() statements with logger calls in FileDeduplicator._calculate_file_hash
 3. [x] Remove redundant Path import in DeduplicateCommand.validate method
 4. [x] Fix incorrect docstring reference to fm_process_files.py in ProcessFilesCommandBase
@@ -30,46 +30,46 @@ This document contains a prioritized list of tasks for improving the File Manage
 8. [x] Fix inconsistency between README (--directory) and code (--path) parameter names
 9. [x] Add validation for all command arguments
 10. [x] Refactor file filtering logic into a separate utility class for reuse
-11. [ ] Implement consistent error handling for file operations across all commands
+11. [x] Implement consistent error handling for file operations across all commands
 12. [ ] Add pre-commit hooks for code formatting, linting, and type checking
 13. [ ] Improve variable naming for better code readability (e.g., avoid single-letter variables)
-14. [ ] Refactor _parse_string_list_arg to a utility module for reuse across the codebase
-15. [ ] Implement static type checking with mypy throughout the codebase
-16. [ ] Add consistent return type annotations to all functions and methods
+14. [x] Centralize string-list normalization for file-processing Commands
+15. [x] Implement static type checking with mypy throughout the codebase
+16. [x] Add consistent return type annotations to all functions and methods
 17. [ ] Implement proper context managers for resource management (files, connections)
 18. [ ] Add input validation for all user-provided parameters to prevent security issues
 19. [ ] Refactor duplicate code in command validation methods
 
 ## Testing
 
-1. [ ] Create a test directory structure with test files
-2. [ ] Implement unit tests for all command classes
-3. [ ] Implement integration tests for end-to-end command execution
+1. [x] Create pytest fixtures with temporary file trees
+2. [x] Implement tests for all registered Command classes
+3. [x] Implement integration tests for CommandHandler execution
 4. [ ] Add test coverage reporting
 5. [ ] Implement property-based testing for file operations
-6. [ ] Create mock filesystem for testing without affecting real files
+6. [x] Create a recording FileSystemExecutor for mutation-free tests
 7. [ ] Add CI/CD pipeline for automated testing
 8. [ ] Implement parameterized tests for different file types and edge cases
-9. [ ] Add regression tests for previously fixed bugs
-10. [ ] Create test fixtures for common test scenarios
+9. [x] Add regression test for CommandRegistry class construction
+10. [x] Create test fixtures for common filesystem scenarios
 11. [ ] Implement performance benchmarks to detect performance regressions
 12. [ ] Add tests for edge cases like very large files, special characters in filenames
 13. [ ] Implement fuzz testing for input validation
 14. [ ] Create tests for concurrent operations to ensure thread safety
-15. [ ] Add tests for error handling and recovery scenarios
+15. [x] Add tests for partial file-operation failures
 
 ## Documentation
 
-1. [ ] Update README to match actual code parameter names (--path vs --directory)
-2. [ ] Fix incorrect reference to Config.py in README (should be settings.py)
-3. [ ] Fix incorrect reference to CommandType location in README
+1. [x] Update README to match actual command parameters
+2. [x] Remove obsolete configuration references from README
+3. [x] Remove obsolete CommandType references from README
 4. [ ] Add docstrings to all classes and methods
 5. [ ] Create API documentation with Sphinx
 6. [ ] Add examples for each command in a separate examples directory
 7. [ ] Create user guide with common use cases
 8. [ ] Add contributing guidelines
 9. [ ] Create a changelog to track version changes
-10. [ ] Document the architecture and design decisions
+10. [x] Document the domain and architecture vocabulary in CONTEXT.md
 11. [ ] Add inline code comments explaining complex logic
 12. [ ] Create a troubleshooting guide for common errors
 
@@ -126,7 +126,7 @@ This document contains a prioritized list of tasks for improving the File Manage
 5. [ ] Implement command completion for shells
 6. [ ] Create a simple TUI (Text User Interface) for easier navigation
 7. [ ] Add support for configuration profiles for different use cases
-8. [ ] Implement a "dry run" mode for all commands that modify files
+8. [x] Implement dry-run through the recording FileSystemExecutor adapter
 9. [ ] Add better progress indicators for long-running operations
 10. [ ] Implement a help system with examples for each command
 11. [ ] Add support for internationalization and localization

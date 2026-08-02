@@ -1,144 +1,154 @@
-import hashlib
 import logging
+import os
 from argparse import Namespace
 from concurrent.futures import ThreadPoolExecutor
+from dataclasses import dataclass
 from pathlib import Path
-from typing import Iterator, Dict, List, Tuple, TypeVar
+from typing import Dict, List, Tuple
 
-from Interface.CommandInterface import CommandInterface
-from config.settings import Config
-from functions.exceptions import ArgumentError, FileError, OperationError
-from utils.validate_arguments import validate_required_arg, validate_path
+from functions.exceptions import ArgumentError, DirectoryError, FileError, PathError
+from Interface.CommandInterface import CommandInterface, CommandRequest, CommandResult
+from Interface.FileSystemExecutor import (
+    FileSystemExecutor,
+    MutationRecord,
+    calculate_file_digest,
+)
 
-# Type aliases
-FileHashResult = Tuple[Path, str]
-T = TypeVar('T')
+
+@dataclass(frozen=True)
+class DuplicateGroup:
+    keeper: Path
+    duplicates: Tuple[Path, ...]
+    digest: str
 
 
-class DeduplicateCommand(CommandInterface):
-    def __init__(self):
-        self.directory = None
-        self.duplicates = None
-        self.logger = None
-        self.file_hashes = None
-        self.directory_path = None
-        self.dry_run = True
-        self.max_workers = 1
+@dataclass(frozen=True)
+class DeduplicationPlan:
+    total_files: int
+    unique_files: int
+    groups: Tuple[DuplicateGroup, ...]
 
+    @property
+    def duplicates_found(self) -> int:
+        return sum(len(group.duplicates) for group in self.groups)
+
+
+@dataclass(frozen=True, kw_only=True)
+class DeduplicateRequest(CommandRequest):
+    directory: Path
+    max_workers: int
+
+
+@dataclass(frozen=True, kw_only=True)
+class DeduplicationResult(CommandResult):
+    total_files: int
+    unique_files: int
+    duplicates_found: int
+    plan: DeduplicationPlan
+
+
+class DeduplicateCommand(CommandInterface[DeduplicateRequest, DeduplicationResult]):
     @property
     def description(self) -> str:
         return "Deduplicate files in a directory"
 
-    def validate(self, args: Namespace) -> None:
-        # Validate required directory argument
-        directory = validate_required_arg(args, 'directory', self.description)
+    def parse(
+        self, args: Namespace, executor: FileSystemExecutor
+    ) -> DeduplicateRequest:
+        directory = getattr(args, "directory", None)
+        if not directory:
+            raise ArgumentError(f"'directory' is required for {self.description}")
+        max_workers = getattr(args, "max_workers", 1)
+        return DeduplicateRequest(
+            executor=executor,
+            directory=Path(directory),
+            max_workers=max_workers,
+        )
 
-        # Validate that the directory exists and is a directory
-        validate_path(directory, must_exist=True, must_be_dir=True)
+    def execute(
+        self, request: DeduplicateRequest, logger: logging.Logger
+    ) -> DeduplicationResult:
+        self._validate(request)
+        plan = self._build_plan(request)
+        records: List[MutationRecord] = []
+        errors: List[str] = []
 
-        # Validate max_workers if provided
-        if hasattr(args, 'max_workers') and args.max_workers is not None:
-            if not isinstance(args.max_workers, int) or args.max_workers < 1:
-                raise ArgumentError(f"'max_workers' must be a positive integer, got {args.max_workers}")
+        for group in plan.groups:
+            logger.debug("Keeping duplicate-group file: %s", group.keeper)
+            for duplicate in group.duplicates:
+                try:
+                    record = request.executor.delete_duplicate(
+                        duplicate, group.keeper, group.digest
+                    )
+                    records.append(record)
+                    action = "Removed" if record.applied else "Would remove"
+                    logger.info("%s duplicate: %s", action, duplicate)
+                except OSError as error:
+                    message = f"{duplicate}: {error}"
+                    errors.append(message)
+                    logger.error("Failed to remove duplicate %s: %s", duplicate, error)
 
-    def execute(self, args: Namespace, logger: logging.Logger) -> None:
-        self.directory = args.directory
-        self.max_workers = args.max_workers
-        self.logger = logger
-        self.dry_run = args.dry_run
-        self.file_hashes: Dict[str, Path] = {}
-        self.duplicates: List[Path] = []
+        return DeduplicationResult(
+            attempted=plan.duplicates_found,
+            succeeded=len(records),
+            skipped=0,
+            failed=len(errors),
+            records=tuple(records),
+            errors=tuple(errors),
+            total_files=plan.total_files,
+            unique_files=plan.unique_files,
+            duplicates_found=plan.duplicates_found,
+            plan=plan,
+        )
 
-        self._deduplicate()
-
-    def _calculate_file_hash(self, file: Path) -> FileHashResult:
-        """Calculate the hash of a file using a buffered approach.
-
-        Args:
-            file: The file to hash.
-
-        Returns:
-            A tuple containing the file path and its MD5 hash.
-        """
-        hasher = hashlib.md5()
-        try:
-            with file.open("rb") as f:
-                while chunk := f.read(Config.DEFAULT_BUFFER_SIZE):
-                    hasher.update(chunk)
-        except UnicodeEncodeError as e:
-            self.logger.error(f"File: {file.name} - Encoding error: {e}")
-            raise FileError(f"Encoding error when processing file {file.name}: {e}") from e
-        return file, hasher.hexdigest()
-
-    def _get_files(self) -> Iterator[Path]:
-        """Get all files in the directory recursively."""
-        # Validate that the directory exists and is a directory
-        directory_path = validate_path(self.directory, must_exist=True, must_be_dir=True)
-        return (file for file in directory_path.rglob("*") if file.is_file())
-
-    def _find_duplicates(self) -> None:
-        """Find duplicate files based on their hash."""
-        self.file_hashes.clear()
-        self.duplicates.clear()
-
-        self.logger.info(f"Scanning for files in {self.directory}")
-
-        with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
-            # Process files in parallel
-            for file, file_hash in executor.map(
-                    lambda f: self._calculate_file_hash(f), self._get_files()
-            ):
-                if file_hash in self.file_hashes:
-                    self.duplicates.append(file)
-                    self.logger.debug(f"Found duplicate: {file} (matches {self.file_hashes[file_hash]})")
-                else:
-                    self.file_hashes[file_hash] = file
-
-        self.logger.info(
-            f"Found {len(self.duplicates)} duplicates out of {len(self.file_hashes) + len(self.duplicates)} files")
-
-    def _remove_duplicate(self, duplicate: Path) -> None:
-        """Remove a duplicate file and log the action."""
-        try:
-            if not self.dry_run:
-                duplicate.unlink()
-            self.logger.info(
-                f"{'Dry run: Would remove' if self.dry_run else 'Removed'} duplicate: {duplicate}"
+    @staticmethod
+    def _validate(request: DeduplicateRequest) -> None:
+        if not request.directory.exists():
+            raise PathError(f"Path not found: {request.directory}")
+        if not request.directory.is_dir():
+            raise DirectoryError(f"Path is not a directory: {request.directory}")
+        if not isinstance(request.max_workers, int) or request.max_workers < 1:
+            raise ArgumentError(
+                f"'max_workers' must be a positive integer, got {request.max_workers}"
             )
-        except OSError as e:
-            self.logger.error(f"Error removing {duplicate}: {e}")
-            raise OperationError(f"Failed to remove duplicate file {duplicate}: {e}") from e
 
-    def _remove_duplicates(self) -> None:
-        """Remove all identified duplicate files."""
-        for duplicate in self.duplicates:
-            self._remove_duplicate(duplicate)
+    def _build_plan(self, request: DeduplicateRequest) -> DeduplicationPlan:
+        files = sorted(
+            (
+                path
+                for path in request.directory.rglob("*")
+                if path.is_file() and not path.is_symlink()
+            ),
+            key=self._path_key,
+        )
+        files_by_hash: Dict[str, List[Path]] = {}
+        with ThreadPoolExecutor(max_workers=request.max_workers) as executor:
+            for path, digest in executor.map(self._hash_file, files):
+                files_by_hash.setdefault(digest, []).append(path)
 
-    def _get_statistics(self) -> Dict[str, int]:
-        """Return statistics about the deduplication process.
+        groups = tuple(
+            DuplicateGroup(
+                keeper=paths[0],
+                duplicates=tuple(paths[1:]),
+                digest=digest,
+            )
+            for digest, paths in files_by_hash.items()
+            if len(paths) > 1
+        )
+        return DeduplicationPlan(
+            total_files=len(files),
+            unique_files=len(files_by_hash),
+            groups=groups,
+        )
 
-        Returns:
-            A dictionary with statistics like total files, unique files, and duplicates.
-        """
-        return {
-            "total_files": len(self.file_hashes) + len(self.duplicates),
-            "unique_files": len(self.file_hashes),
-            "duplicates": len(self.duplicates)
-        }
+    @staticmethod
+    def _path_key(path: Path) -> str:
+        return os.path.normcase(str(path.resolve()))
 
-
-    def _deduplicate(self) -> Dict[str, int]:
-        """Remove duplicate files in the directory based on their hash.
-
-        Returns:
-            Statistics about the deduplication process.
-        """
-        self._find_duplicates()
-        self._remove_duplicates()
-
-        if self.dry_run:
-            self.logger.info(f"Dry run: {len(self.duplicates)} duplicates found.")
-        else:
-            self.logger.info(f"Deduplication complete: {len(self.duplicates)} duplicates removed.")
-
-        return self._get_statistics()
+    @staticmethod
+    def _hash_file(path: Path) -> Tuple[Path, str]:
+        try:
+            digest = calculate_file_digest(path)
+        except OSError as error:
+            raise FileError(f"Failed to read {path}: {error}") from error
+        return path, digest

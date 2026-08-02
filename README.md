@@ -5,14 +5,13 @@ deduplicating files, deleting files by extension, cleaning folders, removing
 empty directories, deleting hidden files, and compressing files into a ZIP
 archive.
 
-The tool is built around a simple, extensible command pattern: each operation is
-a self-contained command that validates its own arguments and executes against a
-shared logger, with first-class support for a `--dry-run` mode so you can preview
-every action before anything touches disk.
+The tool is built around typed Commands. Each Command converts CLI arguments to
+an immutable request, validates before mutation, and returns a structured result.
+The `--dry-run` mode records target-file mutations without applying them.
 
 ## Features
 
-- **Deduplicate** – Find and remove duplicate files using MD5 content hashing,
+- **Deduplicate** – Find and remove duplicate files using SHA-256 content hashing,
   with optional multi-threaded scanning.
 - **Delete by extension** – Delete files matching one or more extensions.
 - **Clean folder** – Delete files in a folder, optionally excluding certain names.
@@ -21,13 +20,13 @@ every action before anything touches disk.
   attribute on Windows).
 - **Compress files** – Bundle files from a directory into a timestamped ZIP
   archive, with optional extension and name filters.
-- **Dry-run mode** – Preview any command without modifying the file system.
+- **Dry-run mode** – Preview target-file mutations without applying them.
 - **Configurable logging** – Log to a file at a chosen level (`DEBUG`, `INFO`,
   `WARNING`, ...).
 
 ## Requirements
 
-- Python 3.10+ (uses `TypeAlias` and other modern typing features)
+- Python 3.10+ (uses modern union types and frozen dataclasses)
 - Dependencies listed in [requirements.txt](requirements.txt)
 
 ## Installation
@@ -149,13 +148,11 @@ created in the parent directory as `<folder-name>_<YYYYMMDD_HHMMSS>.zip`.
 python main.py --command compress_files --path ./logs --extensions log,txt
 ```
 
-> **Note:** The `move` command is registered but its execution is not yet
-> implemented.
-
 ## Dry-run mode
 
-Add `--dry-run` to any command to log exactly what would happen without deleting,
-moving, or writing anything:
+Add `--dry-run` to record the target-file mutations that would be attempted
+without applying them. Diagnostic logging may still write to the configured log
+file:
 
 ```bash
 python main.py --command deduplicate --directory ./photos --dry-run
@@ -166,43 +163,41 @@ python main.py --command deduplicate --directory ./photos --dry-run
 ```text
 main.py                       # Entry point: argument parsing, command dispatch, logging
 requirements.txt              # Python dependencies
-config/                       # Configuration and constants
-  settings.py                 # Central Config (buffer sizes, messages, defaults)
-  fm_FileType.py              # Supported file types
-  LogLevel.py                 # Log level definitions
 functions/                    # Command implementations
-  CommandType.py              # Enum of supported commands
   CompressFilesCommand.py
   CleanFolderCommand.py
   DeleteByExtensionCommand.py
   DeleteEmptyFoldersCommand.py
   DeleteHiddenFilesCommand.py
   FileDeduplicator.py
-  MoveCommand.py
-  ProcessFilesCommandBase.py  # Shared base for file-processing commands
+  ProcessFilesCommandBase.py  # Filtering, mutation, and outcome collection
   exceptions.py               # Custom exception hierarchy
 Interface/
-  CommandInterface.py         # Command contract (validate/execute/description)
-utils/                        # Helpers: argument parsing, validation, logging, filtering
+  CommandInterface.py         # Typed request/result Command interface
+  FileSystemExecutor.py       # Real and recording mutation adapters
+tests/                        # Command, executor, filtering, and handler tests
+utils/                        # Argument parsing, logging, and filtering
 ```
 
 ## Architecture
 
-- **`CommandInterface`** defines the contract every command implements:
-  `validate(args)`, `execute(args, logger)`, and a `description` property.
+- **`CommandInterface`** defines `parse(args, executor)`,
+  `execute(request, logger) -> result`, and a `description` property.
 - **`CommandRegistry`** maps command names to their implementations.
-- **`CommandHandler`** looks up the command, validates arguments, executes it,
-  and maps known exceptions to friendly log messages.
-- **`ProcessFilesCommandBase`** provides shared file-walking logic for commands
-  that operate on individual files.
+- **`CommandHandler`** selects the real or recording executor, builds a typed
+  request, executes the Command, and maps its result to an exit code.
+- **`FileSystemExecutor`** is the seam for semantic target-file mutations. Its
+  real and recording adapters make dry-run use the same Command path.
+- **`ProcessFilesCommandBase`** owns filtering, deletion, accurate counting,
+  and failure aggregation for Commands that delete matching files.
 
 ### Adding a new command
 
-1. Add a new value to `CommandType` in [functions/CommandType.py](functions/CommandType.py).
-2. Implement a class that satisfies `CommandInterface` (or extend
+1. Implement a class that satisfies `CommandInterface` (or extend
    `ProcessFilesCommandBase`).
-3. Register it in `CommandRegistry.COMMAND_MAP` in [main.py](main.py).
-4. Add any new CLI arguments in [utils/parse_arguments.py](utils/parse_arguments.py).
+2. Register it in `CommandRegistry.COMMAND_MAP` in [main.py](main.py).
+3. Add any new CLI arguments in [utils/parse_arguments.py](utils/parse_arguments.py).
+4. Test through the Command interface and both executor adapters as applicable.
 
 ## Testing
 

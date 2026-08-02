@@ -37,6 +37,5 @@ app.log
 .DS_Store
 Thumbs.db
 
-# Local test/output folders
-test_compress_dir/*.zip
+# Generated archives
 *.zip
