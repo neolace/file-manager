@@ -66,7 +66,7 @@ This document contains a prioritized list of tasks for improving the File Manage
 4. [ ] Add docstrings to all classes and methods
 5. [ ] Create API documentation with Sphinx
 6. [ ] Add examples for each command in a separate examples directory
-7. [ ] Create user guide with common use cases
+7. [x] Create a user guide with command behavior and common use cases
 8. [ ] Add contributing guidelines
 9. [ ] Create a changelog to track version changes
 10. [x] Document the domain and architecture vocabulary in CONTEXT.md

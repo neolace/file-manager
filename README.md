@@ -47,116 +47,35 @@ source .venv/bin/activate
 pip install -r requirements.txt
 ```
 
-## Usage
+## Quick Start
 
-Run the tool via `main.py`, selecting an operation with `--command`:
+Run the tool through its only executable entrypoint, `main.py`:
 
-```bash
-python main.py --command <command> [options]
-```
-
-### Common options
-
-These options apply to every command:
-
-| Option        | Default      | Description                                                   |
-| ------------- | ------------ | ------------------------------------------------------------- |
-| `--command`   | *(required)* | Command to execute.                                           |
-| `--log`       | `app.log`    | Path to the diagnostic log file.                              |
-| `--log-level` | `INFO`       | Logging level (`DEBUG`, `INFO`, `WARNING`, ...).               |
-| `--dry-run`   | `false`      | Simulate the action without applying target-file mutations.   |
-
-## Commands
-
-### `deduplicate`
-
-Find duplicate files by content hash and remove the duplicates.
-
-| Option          | Required | Description                                |
-| --------------- | -------- | ------------------------------------------ |
-| `--directory`   | Yes      | Target directory to scan (recursively).    |
-| `--max-workers` | No       | Worker threads for hashing (default `1`).  |
-
-```bash
-python main.py --command deduplicate --directory ./photos --max-workers 4 --dry-run
-```
-
-### `delete_by_extension`
-
-Delete files matching the given extensions.
-
-| Option         | Required | Description                                          |
-| -------------- | -------- | ---------------------------------------------------- |
-| `--path`       | Yes      | Target directory.                                    |
-| `--extensions` | Yes      | Comma-separated list of extensions (e.g. `tmp,log`). |
-
-```bash
-python main.py --command delete_by_extension --path ./downloads --extensions tmp,log
-```
-
-### `clean_folder`
-
-Delete files within a folder, optionally excluding certain names.
-
-| Option             | Required | Description                                       |
-| ------------------ | -------- | ------------------------------------------------- |
-| `--path`           | Yes      | Target directory.                                 |
-| `--excluded-names` | No       | Comma-separated names to exclude from cleaning.   |
-
-```bash
-python main.py --command clean_folder --path ./tmp --excluded-names keep.txt,.gitkeep
-```
-
-### `delete_empty`
-
-Delete empty folders, optionally recursively.
-
-| Option        | Required | Description                                   |
-| ------------- | -------- | --------------------------------------------- |
-| `--path`      | Yes      | Target directory.                             |
-| `--recursive` | No       | Recurse into subdirectories when set.         |
-
-```bash
-python main.py --command delete_empty --path ./project --recursive
-```
-
-### `delete_hidden_files`
-
-Delete hidden files (dot-files on POSIX; hidden attribute on Windows).
-
-| Option             | Required | Description                                     |
-| ------------------ | -------- | ----------------------------------------------- |
-| `--path`           | Yes      | Target directory.                               |
-| `--excluded-names` | No       | Comma-separated names to exclude.               |
-
-```bash
-python main.py --command delete_hidden_files --path ./repo --dry-run
-```
-
-### `compress_files`
-
-Compress files from a directory into a timestamped ZIP archive. The archive is
-created in the parent directory as `<folder-name>_<YYYYMMDD_HHMMSS>.zip`.
-
-| Option             | Required | Description                                                    |
-| ------------------ | -------- | ------------------------------------------------------------- |
-| `--path`           | Yes      | Directory whose files should be compressed.                  |
-| `--extensions`     | No       | Comma-separated extensions to include (all files if omitted). |
-| `--excluded-names` | No       | Comma-separated names to exclude.                            |
-
-```bash
-python main.py --command compress_files --path ./logs --extensions log,txt
-```
-
-## Dry-run mode
-
-Add `--dry-run` to record the target-file mutations that would be attempted
-without applying them. Diagnostic logging may still write to the configured log
-file:
-
-```bash
+```powershell
 python main.py --command deduplicate --directory ./photos --dry-run
+python main.py --command delete_by_extension --path ./downloads --extensions tmp,log --dry-run
+python main.py --command clean_folder --path ./tmp --excluded-names keep.txt --dry-run
+python main.py --command delete_empty --path ./project --recursive --dry-run
+python main.py --command delete_hidden_files --path ./repo --dry-run
+python main.py --command compress_files --path ./logs --extensions log,txt --dry-run
 ```
+
+Start destructive operations with `--dry-run`. It records target-file mutations
+without applying them, although diagnostic logging may still create or append to
+the configured log file.
+
+See the [user guide](docs/user-guide.md) for required arguments, recursive
+behavior, examples, and exit statuses. See the
+[safety model](docs/safety-model.md) for filtering, symlinks, partial failures,
+deduplication revalidation, and archive publication.
+
+## Documentation
+
+- [Documentation index](docs/README.md)
+- [User guide](docs/user-guide.md)
+- [Safety model](docs/safety-model.md)
+- [Domain and architecture vocabulary](CONTEXT.md)
+- [Improvement tasks](docs/tasks.md)
 
 ## Project structure
 
